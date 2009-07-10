@@ -12,7 +12,7 @@ module Bond
   rescue InvalidMissionError
     $stderr.puts "Invalid mission given. Mission needs an action and a condition."
   rescue
-    $stderr.puts "Mission failed with:",$!
+    $stderr.puts "Mission setup failed with:", $!
   end
 
   def agent

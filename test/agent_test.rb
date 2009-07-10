@@ -1,23 +1,68 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 class Bond::AgentTest < Test::Unit::TestCase
+  before(:all) {|e| Bond.debrief(:readline_plugin=>Module.new{ def setup; end; def line_buffer; end }) }
+
   context "InvalidAgent" do
-    before(:all) {|e| Bond.debrief(:readline_plugin=>Module.new{ def setup; end; def line_buffer; end }) }
     test "prints error if no action given for mission" do
       capture_stderr { Bond.complete :on=>/blah/ }.should =~ /Invalid mission/
     end
 
     test "prints error if no condition given" do
-      capture_stderr { Bond.complete {|e| []} }.should =~ /Invalid mission/
+      capture_stderr { Bond.complete {|e,m| []} }.should =~ /Invalid mission/
     end
   
     test "prints error if invalid condition given" do
-      capture_stderr { Bond.complete(:on=>'blah') {|e| []} }.should =~ /Invalid mission/
+      capture_stderr { Bond.complete(:on=>'blah') {|e,m| []} }.should =~ /Invalid mission/
     end
     
-    test "prints error if mission fails unpredictably" do
+    test "prints error if setting mission fails unpredictably" do
       Bond.agent.expects(:complete).raises(ArgumentError)
-      capture_stderr { Bond.complete(:on=>/blah/) {|e| [] } }.should =~ /Mission failed/
+      capture_stderr { Bond.complete(:on=>/blah/) {|e,m| [] } }.should =~ /Mission setup failed/
     end
+  end
+
+  context "Agent" do
+    before(:all) {|e| eval "module ::IRB; module InputCompletor; CompletionProc = lambda {}; end ;end" }
+    before(:each) {|e| Bond.agent.instance_eval("@missions = []") }
+
+    def complete(full_line, last_word=full_line)
+      Bond.agent.stubs(:line_buffer).returns(full_line)
+      Bond.agent.call(last_word)
+    end
+
+    test "chooses default mission if no missions match" do
+      Bond.complete(:on=>/bling/) {|e,m| [] }
+      Bond.agent.expects(:default_mission).returns(lambda {})
+      complete 'blah'
+    end
+
+    test "chooses default mission if mission processing fails" do
+      Bond.agent.expects(:find_mission).raises
+      Bond.agent.expects(:default_mission).returns(lambda {})
+      complete 'blah'
+    end
+
+    test "chooses on mission" do
+      Bond.complete(:on=>/bling/) {|e,m| e.split("") }
+      Bond.complete(:command=>'cool') {|e,m| }
+      complete('some bling', 'bling').should == %w{b l i n g}
+    end
+
+    test "chooses command mission" do
+      Bond.complete(:on=>/bling/) {|e,m| [] }
+      Bond.complete(:command=>'cool') {|e,m| %w{ab cd ef gd}.grep(/#{e}/) }
+      complete('cool d', 'd').should == %w{cd gd}
+    end
+
+    test "chooses mission which uses match" do
+      Bond.complete(:on=>/\s*'([^']+)$/) {|e,m| %w{coco for puffs}.grep(/#{m[1]}/) }
+      complete("require 'co", "co").should == ['coco']
+    end
+  end
+
+  test "default_mission set to a valid lambda if irb doesn't exist" do
+    Object.expects(:const_defined?).with(:IRB).returns(false)
+    Bond.agent.default_mission.respond_to?(:call).should == true
   end
 end
