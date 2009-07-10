@@ -1,7 +1,7 @@
 module Bond
   class Agent
     def initialize(options={})
-      options = {:readline_plugin=>Bond::Readline}.merge options
+      raise ArgumentError unless options[:readline_plugin]
       extend(options[:readline_plugin])
       setup
       @missions = []
