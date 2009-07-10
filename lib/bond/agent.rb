@@ -1,14 +1,10 @@
 module Bond
   class Agent
-    Defaultbreakchars = " \t\n\"\\'`><=;|&{("
-
     def initialize(options={})
+      options = {:readline_plugin=>Bond::Readline}.merge options
+      extend(options[:readline_plugin])
+      setup
       @missions = []
-      Readline.completion_append_character = nil
-      if Readline.respond_to?("basic_word_break_characters=")
-        Readline.basic_word_break_characters = Defaultbreakchars
-      end
-      Readline.completion_proc = self
     end
 
     def complete(options={}, &block)
@@ -26,7 +22,7 @@ module Bond
 
     def find_mission(input)
       if @missions.any? {|e| e.command }
-        all_input = Readline.line_buffer
+        all_input = line_buffer
         match = all_input.match /^\s*(\S+)\s*(.*)$/
         if (command = match[1])
           @missions.each do |mission|
@@ -44,7 +40,8 @@ module Bond
     end
 
     def default_mission
-      Mission.new :action=>IRB::InputCompletor::CompletionProc
+      Object.const_defined?(:IRB) ? Mission.new(:action=>IRB::InputCompletor::CompletionProc) :
+        lambda {|e| [] }
     end
   end
 end
