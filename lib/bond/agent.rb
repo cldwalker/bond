@@ -3,6 +3,7 @@ module Bond
     def initialize(options={})
       raise ArgumentError unless options[:readline_plugin].is_a?(Module)
       extend(options[:readline_plugin])
+      @default_mission_action = options[:default_mission] if options[:default_mission]
       setup
       @missions = []
     end
@@ -30,18 +31,21 @@ module Bond
           end
         end
       end
-      input = all_input[/(\S+)\s*$/,1]
+      # input = all_input[/(\S+)\s*$/,1]
       @missions.each do |mission|
-        if mission.pattern && (match = input.match(mission.pattern))
-          return [mission, input, match]
+        if mission.pattern && (match = all_input.match(mission.pattern))
+          return [mission, all_input, match]
         end
       end
       raise "calling default mission"
     end
 
     def default_mission
-      Object.const_defined?(:IRB) ? Mission.new(:action=>IRB::InputCompletor::CompletionProc) :
-        lambda {|e| [] }
+      Mission.new(:action=>default_mission_action, :default=>true)
+    end
+
+    def default_mission_action
+      @default_mission_action ||= Object.const_defined?(:IRB) ? IRB::InputCompletor::CompletionProc : lambda {|e| [] }
     end
   end
 end

@@ -23,7 +23,7 @@ class Bond::AgentTest < Test::Unit::TestCase
   end
 
   context "Agent" do
-    before(:all) {|e| eval "module ::IRB; module InputCompletor; CompletionProc = lambda {}; end ;end" }
+    before(:all) {|e| eval "module ::IRB; module InputCompletor; CompletionProc = lambda {|e| e.to_sym }; end ;end" }
     before(:each) {|e| Bond.agent.instance_eval("@missions = []") }
 
     def complete(full_line, last_word=full_line)
@@ -33,20 +33,20 @@ class Bond::AgentTest < Test::Unit::TestCase
 
     test "chooses default mission if no missions match" do
       Bond.complete(:on=>/bling/) {|e,m| [] }
-      Bond.agent.expects(:default_mission).returns(lambda {})
       complete 'blah'
+      Bond.agent.default_mission.default.should == true
     end
 
     test "chooses default mission if mission processing fails" do
       Bond.agent.expects(:find_mission).raises
-      Bond.agent.expects(:default_mission).returns(lambda {})
-      complete 'blah'
+      complete('blah')
+      Bond.agent.default_mission.default.should == true
     end
 
     test "chooses on mission" do
       Bond.complete(:on=>/bling/) {|e,m| e.split("") }
       Bond.complete(:command=>'cool') {|e,m| }
-      complete('some bling', 'bling').should == %w{b l i n g}
+      complete('some bling', 'bling').should == "some bling".split("")
     end
 
     test "chooses command mission" do
@@ -61,8 +61,9 @@ class Bond::AgentTest < Test::Unit::TestCase
     end
   end
 
-  test "default_mission set to a valid lambda if irb doesn't exist" do
+  test "default_mission set to a valid mission if irb doesn't exist" do
     Object.expects(:const_defined?).with(:IRB).returns(false)
-    Bond.agent.default_mission.respond_to?(:call).should == true
+    Bond.agent.default_mission.is_a?(Bond::Mission).should == true
+    Bond.agent.default_mission.action.respond_to?(:call).should == true
   end
 end
