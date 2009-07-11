@@ -13,31 +13,16 @@ module Bond
     end
 
     def call(input)
-      mission, new_input, match = find_mission(input)
-      mission.call(new_input, match)
+      find_mission(input).execute
     rescue
       # p $!
       # p $!.backtrace.slice(0,5)
-      default_mission.call(input)
+      default_mission.execute(input)
     end
 
     def find_mission(input)
       all_input = line_buffer
-      if @missions.any? {|e| e.command }
-        match = all_input.match /^\s*(\S+)\s*(.*)$/
-        if (command = match[1])
-          @missions.each do |mission|
-            return [mission, match[2], //] if mission.command == command
-          end
-        end
-      end
-      # input = all_input[/(\S+)\s*$/,1]
-      @missions.each do |mission|
-        if mission.pattern && (match = all_input.match(mission.pattern))
-          return [mission, all_input, match]
-        end
-      end
-      raise "calling default mission"
+      @missions.find {|mission| mission.matches?(all_input) } || raise("calling default mission")
     end
 
     def default_mission
