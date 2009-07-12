@@ -1,5 +1,7 @@
 module Bond
   class Agent
+    attr_reader :missions
+
     def initialize(options={})
       raise ArgumentError unless options[:readline_plugin].is_a?(Module)
       extend(options[:readline_plugin])
@@ -13,16 +15,16 @@ module Bond
     end
 
     def call(input)
-      find_mission(input).execute
+      (mission = find_mission(input)) ? mission.execute : default_mission.execute(input)
     rescue
-      # p $!
-      # p $!.backtrace.slice(0,5)
+      p $!
+      p $!.backtrace.slice(0,5)
       default_mission.execute(input)
     end
 
     def find_mission(input)
       all_input = line_buffer
-      @missions.find {|mission| mission.matches?(all_input) } || raise("calling default mission")
+      @missions.find {|mission| mission.matches?(all_input) }
     end
 
     def default_mission

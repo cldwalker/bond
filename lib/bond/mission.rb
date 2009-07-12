@@ -8,15 +8,15 @@ module Bond
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
       @action = options[:action]
       @condition = options[:on]
-      @default = options[:default]
-      @command = options[:command]
-      @condition = /^\s*(#{@command})\s*(.*)$/ if @command
+      @default = options[:default] || false
+      if (@command = options[:command])
+        @condition = /^\s*(#{@command})\s*['"]?(.*)$/
+      end
     end
 
     def matches?(input)
-      @input = input
-      if (@match = input.match(@condition)) && @command
-        @input = @match[2]
+      if (@match = input.match(@condition))
+        @input = @command ? @match[2] : input
       end
       !!@match
     end

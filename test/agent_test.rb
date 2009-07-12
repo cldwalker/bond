@@ -55,6 +55,12 @@ class Bond::AgentTest < Test::Unit::TestCase
       complete('cool d', 'd').should == %w{cd gd}
     end
 
+    test "chooses quoted command mission" do
+      Bond.complete(:on=>/bling/) {|e,m| [] }
+      Bond.complete(:command=>'cool') {|e,m| %w{ab cd ef gd}.grep(/#{e}/) }
+      complete('cool "d', 'd').should == %w{cd gd}
+    end
+
     test "chooses mission which uses match" do
       Bond.complete(:on=>/\s*'([^']+)$/) {|e,m| %w{coco for puffs}.grep(/#{m[1]}/) }
       complete("require 'co", "co").should == ['coco']
