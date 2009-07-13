@@ -71,6 +71,12 @@ class Bond::AgentTest < Test::Unit::TestCase
       complete("blah and").should == ['and_one']
       complete("blah b-t").should == ['big_two']
     end
+
+    test "chooses object mission" do
+      Bond.complete(:object=>"String") {}
+      Bond.complete(:on=>/man/) { %w{upper upster upful}}
+      complete("'man'.upt").should == ["'man'.upto"]
+    end
   end
 
   test "default_mission set to a valid mission if irb doesn't exist" do

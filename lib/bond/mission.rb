@@ -4,7 +4,7 @@ module Bond
     attr_reader :action, :default
 
     def initialize(options)
-      raise InvalidMissionError unless options[:action] && (options[:command] || options[:on] || options[:default])
+      raise InvalidMissionError unless options[:action] && (options[:command] || options[:on] || options[:default] || options[:object])
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
       @action = options[:action]
       @condition = options[:on]
@@ -13,12 +13,24 @@ module Bond
         method(:default_search))
       if (@command = options[:command])
         @condition = /^\s*(#{@command})\s*['"]?(.*)$/
+      elsif (@object = options[:object])
+        @condition = /^((\.?[^.]+)+)\.([^.]*)$/
       end
     end
 
     def matches?(input)
       if (@match = input.match(@condition))
         @input = @command ? @match[2] : input[/\S+$/]
+        if @object
+          bind = IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
+          @evaled_object = eval("#{@match[1]}",bind)
+          if (new_match = @evaled_object.class.ancestors.any? {|e| e.to_s == @object.to_s })
+            @action = lambda {|e,m| (@evaled_object.methods(false) + @evaled_object.class.instance_methods(false)).uniq }
+            @list_prefix = @match[1] + "."
+            @input = @match[3]
+            @match = new_match
+          end
+        end
       end
       !!@match
     end
@@ -26,7 +38,8 @@ module Bond
     def execute(*args)
       if args.empty?
         list = @action.call(@input, @match)
-        @search ? @search.call(@input, list) : list
+        list = @search ? @search.call(@input, list) : list
+        @list_prefix ? list.map {|e| @list_prefix + e } : list
       else
         @action.call(*args)
       end
