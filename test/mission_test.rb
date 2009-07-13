@@ -7,30 +7,30 @@ class Bond::MissionTest < Test::Unit::TestCase
     before(:each) {|e| Bond.agent.instance_eval("@missions = []") }
     test "completes" do
       Bond.complete(:on=>/bling/) {|e| %w{ab cd fg hi}}
-      Bond.complete(:command=>'cool') {|e| [] }
+      Bond.complete(:method=>'cool') {|e| [] }
       complete('some bling f', 'f').should == %w{fg}
     end
 
-    test "with command completes" do
+    test "with method completes" do
       Bond.complete(:on=>/bling/) {|e| [] }
-      Bond.complete(:command=>'cool') {|e| %w{ab cd ef gd} }
+      Bond.complete(:method=>'cool') {|e| %w{ab cd ef gd} }
       complete('cool c', 'c').should == %w{cd}
     end
 
-    test "with quoted command completes" do
+    test "with quoted method completes" do
       Bond.complete(:on=>/bling/) {|e| [] }
-      Bond.complete(:command=>'cool') {|e| %w{ab cd ef ad} }
+      Bond.complete(:method=>'cool') {|e| %w{ab cd ef ad} }
       complete('cool "a', 'a').should == %w{ab ad}
     end
 
-    test "with string command completes exact matches" do
-      Bond.complete(:command=>'cool?') {|e| [] }
-      Bond.complete(:command=>'cool') {|e| %w{ab cd ef gd} }
+    test "with string method completes exact matches" do
+      Bond.complete(:method=>'cool?') {|e| [] }
+      Bond.complete(:method=>'cool') {|e| %w{ab cd ef gd} }
       complete('cool c', 'c').should == %w{cd}
     end
 
-    test "with regex command completes multiple commands" do
-      Bond.complete(:command=>/cool|ls/) {|e| %w{ab cd ef ad}}
+    test "with regex method completes multiple methods" do
+      Bond.complete(:method=>/cool|ls/) {|e| %w{ab cd ef ad}}
       complete("cool a").should == %w{ab ad}
       complete("ls c").should == %w{cd}
     end

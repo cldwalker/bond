@@ -5,16 +5,16 @@ module Bond
 
     def initialize(options)
       raise InvalidMissionError unless (options[:action] || options[:object]) &&
-        (options[:command] || options[:on] || options[:default] || options[:object])
+        (options[:method] || options[:on] || options[:default] || options[:object])
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
       @action = options[:action]
       @condition = options[:on]
       @default = options[:default] || false
       @search = (options[:search] == false) ? false : (respond_to?("#{options[:search]}_search") ? method("#{options[:search]}_search") :
         method(:default_search))
-      if (@command = options[:command])
-        @command = Regexp.quote(@command.to_s) unless @command.is_a?(Regexp)
-        @condition = /^\s*(#{@command})\s*['"]?(.*)$/
+      if (@method = options[:method])
+        @method = Regexp.quote(@method.to_s) unless @method.is_a?(Regexp)
+        @condition = /^\s*(#{@method})\s*['"]?(.*)$/
       elsif (@object = options[:object])
         @object = /^#{Regexp.quote(@object.to_s)}$/ unless @object.is_a?(Regexp)
         @condition = /^((\.?[^.]+)+)\.([^.]*)$/
@@ -23,7 +23,7 @@ module Bond
 
     def matches?(input)
       if (match = input.match(@condition))
-        @input = @command ? match[-1] : input[/\S+$/]
+        @input = @method ? match[-1] : input[/\S+$/]
         if @object
           bind = IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
           @evaled_object = begin eval("#{match[1]}",bind); rescue Exception; nil end
