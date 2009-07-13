@@ -44,25 +44,25 @@ class Bond::AgentTest < Test::Unit::TestCase
     end
 
     test "chooses on mission" do
-      Bond.complete(:on=>/bling/) {|e,m| e.split("") }
+      Bond.complete(:on=>/bling/) {|e,m| %w{ab cd fg hi}}
       Bond.complete(:command=>'cool') {|e,m| }
-      complete('some bling', 'bling').should == "some bling".split("")
+      complete('some bling f', 'bling').should == %w{fg}
     end
 
     test "chooses command mission" do
       Bond.complete(:on=>/bling/) {|e,m| [] }
-      Bond.complete(:command=>'cool') {|e,m| %w{ab cd ef gd}.grep(/#{e}/) }
-      complete('cool d', 'd').should == %w{cd gd}
+      Bond.complete(:command=>'cool') {|e,m| %w{ab cd ef gd} }
+      complete('cool c', 'c').should == %w{cd}
     end
 
     test "chooses quoted command mission" do
       Bond.complete(:on=>/bling/) {|e,m| [] }
-      Bond.complete(:command=>'cool') {|e,m| %w{ab cd ef gd}.grep(/#{e}/) }
-      complete('cool "d', 'd').should == %w{cd gd}
+      Bond.complete(:command=>'cool') {|e,m| %w{ab cd ef ad} }
+      complete('cool "a', 'a').should == %w{ab ad}
     end
 
-    test "chooses mission which uses match" do
-      Bond.complete(:on=>/\s*'([^']+)$/) {|e,m| %w{coco for puffs}.grep(/#{m[1]}/) }
+    test "chooses mission which uses match and no search option" do
+      Bond.complete(:on=>/\s*'([^']+)$/, :search=>false) {|e,m| %w{coco for puffs}.grep(/#{m[1]}/) }
       complete("require 'co", "co").should == ['coco']
     end
   end
