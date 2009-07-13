@@ -24,7 +24,7 @@ class Bond::MissionTest < Test::Unit::TestCase
     end
 
     test "with no search option and matching completes" do
-      Bond.complete(:on=>/\s*'([^']+)$/, :search=>false) {|e,m| %w{coco for puffs}.grep(/#{m[1]}/) }
+      Bond.complete(:on=>/\s*'([^']+)$/, :search=>false) {|e,m| %w{coco for puffs}.grep(/#{e.matched[1]}/) }
       complete("require 'co", "co").should == ['coco']
     end
 
@@ -34,10 +34,16 @@ class Bond::MissionTest < Test::Unit::TestCase
       complete("blah b-t").should == ['big_two']
     end
 
-    test "with object completes" do
+    test "with object and default action completes" do
       Bond.complete(:object=>"String")
       Bond.complete(:on=>/man/) { %w{upper upster upful}}
-      complete("'man'.upt").should == ["'man'.upto"]
+      complete("'man'.u").should == ["'man'.upcase!", "'man'.unpack", "'man'.untaint", "'man'.upcase", "'man'.upto"]
+    end
+
+    test "with object and explicit action completes" do
+      Bond.complete(:object=>"String") {|e| e.object.class.superclass.instance_methods(true) }
+      Bond.complete(:on=>/man/) { %w{upper upster upful}}
+      complete("'man'.u").should == ["'man'.untaint"]
     end
 
     test "ignores invalid objects" do

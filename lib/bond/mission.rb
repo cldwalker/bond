@@ -20,27 +20,33 @@ module Bond
     end
 
     def matches?(input)
-      if (@match = input.match(@condition))
-        @input = @command ? @match[2] : input[/\S+$/]
+      if (match = input.match(@condition))
+        @input = @command ? match[2] : input[/\S+$/]
         if @object
           bind = IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
-          @evaled_object = eval("#{@match[1]}",bind) rescue nil
-          old_match = @match
-          if @evaled_object && (@match = @evaled_object.class.ancestors.any? {|e| e.to_s == @object.to_s })
-            @action = lambda {|e,m| (@evaled_object.methods(false) + @evaled_object.class.instance_methods(false)).uniq }
+          @evaled_object = begin eval("#{match[1]}",bind); rescue Exception; nil end
+          old_match = match
+          if @evaled_object && (match = @evaled_object.class.ancestors.any? {|e| e.to_s == @object.to_s })
             @list_prefix = old_match[1] + "."
             @input = old_match[3]
+            @input.instance_variable_set("@object", @evaled_object)
+            @input.instance_eval("def self.object; @object ; end")
+            @action ||= lambda {|e| (e.object.methods(true) + e.object.class.instance_methods(true)).uniq }
           else
-            @match = false
+            match = false
           end
         end
       end
-      !!@match
+      if match
+        @input.instance_variable_set("@matched", match)
+        @input.instance_eval("def self.matched; @matched ; end")
+      end
+      !!match
     end
 
     def execute(*args)
       if args.empty?
-        list = @action.call(@input, @match)
+        list = @action.call(@input)
         list = @search ? @search.call(@input, list) : list
         @list_prefix ? list.map {|e| @list_prefix + e } : list
       else
