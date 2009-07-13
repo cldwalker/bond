@@ -4,7 +4,8 @@ module Bond
     attr_reader :action, :default
 
     def initialize(options)
-      raise InvalidMissionError unless options[:action] && (options[:command] || options[:on] || options[:default] || options[:object])
+      raise InvalidMissionError unless (options[:action] || options[:object]) &&
+        (options[:command] || options[:on] || options[:default] || options[:object])
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
       @action = options[:action]
       @condition = options[:on]
@@ -23,12 +24,14 @@ module Bond
         @input = @command ? @match[2] : input[/\S+$/]
         if @object
           bind = IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
-          @evaled_object = eval("#{@match[1]}",bind)
-          if (new_match = @evaled_object.class.ancestors.any? {|e| e.to_s == @object.to_s })
+          @evaled_object = eval("#{@match[1]}",bind) rescue nil
+          old_match = @match
+          if @evaled_object && (@match = @evaled_object.class.ancestors.any? {|e| e.to_s == @object.to_s })
             @action = lambda {|e,m| (@evaled_object.methods(false) + @evaled_object.class.instance_methods(false)).uniq }
-            @list_prefix = @match[1] + "."
-            @input = @match[3]
-            @match = new_match
+            @list_prefix = old_match[1] + "."
+            @input = old_match[3]
+          else
+            @match = false
           end
         end
       end

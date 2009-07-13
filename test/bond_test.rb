@@ -12,12 +12,12 @@ class BondTest < Test::Unit::TestCase
     end
 
     test "no error if valid readline_plugin" do
-      capture_stderr {Bond.debrief :readline_plugin=>Module.new{ def setup; end; def line_buffer; end } }.should == ''
+      capture_stderr {Bond.debrief :readline_plugin=>valid_readline_plugin }.should == ''
     end
 
     test "sets default mission" do
       default_mission = lambda {}
-      Bond.debrief :default_mission=>default_mission, :readline_plugin=>Module.new{ def setup; end; def line_buffer; end }
+      Bond.debrief :default_mission=>default_mission, :readline_plugin=>valid_readline_plugin
       Bond.agent.default_mission.action.should == default_mission
     end
   end

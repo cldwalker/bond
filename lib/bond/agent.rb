@@ -28,7 +28,7 @@ module Bond
     end
 
     def default_mission
-      Mission.new(:action=>default_mission_action, :default=>true)
+      @default_mission ||= Mission.new(:action=>default_mission_action, :default=>true)
     end
 
     def default_mission_action

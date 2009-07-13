@@ -17,4 +17,13 @@ class Test::Unit::TestCase
     end
     fake.string
   end
+
+  def complete(full_line, last_word=full_line)
+    Bond.agent.stubs(:line_buffer).returns(full_line)
+    Bond.agent.call(last_word)
+  end
+
+  def valid_readline_plugin
+    Module.new{ def setup; end; def line_buffer; end }
+  end
 end
