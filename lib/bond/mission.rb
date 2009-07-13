@@ -16,6 +16,7 @@ module Bond
         @command = Regexp.quote(@command.to_s) unless @command.is_a?(Regexp)
         @condition = /^\s*(#{@command})\s*['"]?(.*)$/
       elsif (@object = options[:object])
+        @object = /^#{Regexp.quote(@object.to_s)}$/ unless @object.is_a?(Regexp)
         @condition = /^((\.?[^.]+)+)\.([^.]*)$/
       end
     end
@@ -27,7 +28,7 @@ module Bond
           bind = IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
           @evaled_object = begin eval("#{match[1]}",bind); rescue Exception; nil end
           old_match = match
-          if @evaled_object && (match = @evaled_object.class.ancestors.any? {|e| e.to_s == @object.to_s })
+          if @evaled_object && (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object })
             @list_prefix = old_match[1] + "."
             @input = old_match[3]
             @input.instance_variable_set("@object", @evaled_object)

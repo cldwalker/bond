@@ -52,6 +52,12 @@ class Bond::MissionTest < Test::Unit::TestCase
       complete("'man'.u").should == ["'man'.upcase!", "'man'.unpack", "'man'.untaint", "'man'.upcase", "'man'.upto"]
     end
 
+    test "with regex object completes" do
+      Bond.complete(:object=>/Str/) {|e| e.object.class.superclass.instance_methods(true) }
+      Bond.complete(:on=>/man/) { %w{upper upster upful}}
+      complete("'man'.u").should == ["'man'.untaint"]
+    end
+
     test "with object and explicit action completes" do
       Bond.complete(:object=>"String") {|e| e.object.class.superclass.instance_methods(true) }
       Bond.complete(:on=>/man/) { %w{upper upster upful}}
