@@ -46,7 +46,7 @@ class Bond::AgentTest < Test::Unit::TestCase
     test "chooses on mission" do
       Bond.complete(:on=>/bling/) {|e,m| %w{ab cd fg hi}}
       Bond.complete(:command=>'cool') {|e,m| }
-      complete('some bling f', 'bling').should == %w{fg}
+      complete('some bling f', 'f').should == %w{fg}
     end
 
     test "chooses command mission" do
@@ -64,6 +64,12 @@ class Bond::AgentTest < Test::Unit::TestCase
     test "chooses mission which uses match and no search option" do
       Bond.complete(:on=>/\s*'([^']+)$/, :search=>false) {|e,m| %w{coco for puffs}.grep(/#{m[1]}/) }
       complete("require 'co", "co").should == ['coco']
+    end
+
+    test "chooses mission with underscore search" do
+      Bond.complete(:on=>/blah/, :search=>:underscore) {|e,m| %w{and_one big_two can_three} }
+      complete("blah and").should == ['and_one']
+      complete("blah b-t").should == ['big_two']
     end
   end
 

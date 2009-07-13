@@ -9,7 +9,8 @@ module Bond
       @action = options[:action]
       @condition = options[:on]
       @default = options[:default] || false
-      @search = options.has_key?(:search) ? options[:search] : method(:default_search)
+      @search = (options[:search] == false) ? false : (respond_to?("#{options[:search]}_search") ? method("#{options[:search]}_search") :
+        method(:default_search))
       if (@command = options[:command])
         @condition = /^\s*(#{@command})\s*['"]?(.*)$/
       end
@@ -33,6 +34,13 @@ module Bond
 
     def default_search(input, list)
       list.grep(/^#{input}/)
+    end
+
+    def underscore_search(input, list)
+      split_input = input.split("-").join("")
+      list.select {|c|
+        c.split("_").map {|g| g[0,1] }.join("") =~ /^#{split_input}/ || c =~ /^#{input}/
+      }
     end
   end
 end
