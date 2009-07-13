@@ -13,6 +13,7 @@ module Bond
       @search = (options[:search] == false) ? false : (respond_to?("#{options[:search]}_search") ? method("#{options[:search]}_search") :
         method(:default_search))
       if (@command = options[:command])
+        @command = Regexp.quote(@command.to_s) unless @command.is_a?(Regexp)
         @condition = /^\s*(#{@command})\s*['"]?(.*)$/
       elsif (@object = options[:object])
         @condition = /^((\.?[^.]+)+)\.([^.]*)$/
@@ -21,7 +22,7 @@ module Bond
 
     def matches?(input)
       if (match = input.match(@condition))
-        @input = @command ? match[2] : input[/\S+$/]
+        @input = @command ? match[-1] : input[/\S+$/]
         if @object
           bind = IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
           @evaled_object = begin eval("#{match[1]}",bind); rescue Exception; nil end

@@ -9,16 +9,16 @@ class Bond::AgentTest < Test::Unit::TestCase
     end
 
     test "prints error if no condition given" do
-      capture_stderr { Bond.complete {|e,m| []} }.should =~ /Invalid mission/
+      capture_stderr { Bond.complete {|e| []} }.should =~ /Invalid mission/
     end
   
     test "prints error if invalid condition given" do
-      capture_stderr { Bond.complete(:on=>'blah') {|e,m| []} }.should =~ /Invalid mission/
+      capture_stderr { Bond.complete(:on=>'blah') {|e| []} }.should =~ /Invalid mission/
     end
     
     test "prints error if setting mission fails unpredictably" do
       Bond.agent.expects(:complete).raises(ArgumentError)
-      capture_stderr { Bond.complete(:on=>/blah/) {|e,m| [] } }.should =~ /Mission setup failed/
+      capture_stderr { Bond.complete(:on=>/blah/) {|e| [] } }.should =~ /Mission setup failed/
     end
   end
 
@@ -27,13 +27,13 @@ class Bond::AgentTest < Test::Unit::TestCase
     before(:each) {|e| Bond.agent.instance_eval("@missions = []") }
 
     test "chooses default mission if no missions match" do
-      Bond.complete(:on=>/bling/) {|e,m| [] }
+      Bond.complete(:on=>/bling/) {|e| [] }
       Bond.agent.default_mission.expects(:execute)
       complete 'blah'
     end
 
     test "chooses default mission if mission processing fails" do
-      Bond.complete(:on=>/bling/) {|e,m| [] }
+      Bond.complete(:on=>/bling/) {|e| [] }
       Bond.agent.expects(:find_mission).raises
       Bond.agent.default_mission.expects(:execute)
       complete('bling')
