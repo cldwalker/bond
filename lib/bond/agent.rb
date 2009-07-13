@@ -16,6 +16,8 @@ module Bond
 
     def call(input)
       (mission = find_mission(input)) ? mission.execute : default_mission.execute(input)
+    rescue FailedExecutionError
+      $stderr.puts "", $!.message
     rescue
       p $!
       p $!.backtrace.slice(0,5)

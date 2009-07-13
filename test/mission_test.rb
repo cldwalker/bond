@@ -17,7 +17,7 @@ class Bond::MissionTest < Test::Unit::TestCase
       complete('cool c', 'c').should == %w{cd}
     end
 
-    test "with quoted method completes" do
+    test "with method and quoted argument completes" do
       Bond.complete(:on=>/bling/) {|e| [] }
       Bond.complete(:method=>'cool') {|e| %w{ab cd ef ad} }
       complete('cool "a', 'a').should == %w{ab ad}

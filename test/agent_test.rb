@@ -32,11 +32,16 @@ class Bond::AgentTest < Test::Unit::TestCase
       complete 'blah'
     end
 
-    test "chooses default mission if mission processing fails" do
+    test "chooses default mission if internal processing fails" do
       Bond.complete(:on=>/bling/) {|e| [] }
       Bond.agent.expects(:find_mission).raises
       Bond.agent.default_mission.expects(:execute)
       complete('bling')
+    end
+
+    test "prints error if action generates failure" do
+      Bond.complete(:on=>/bling/) {|e| raise "whoops" }
+      capture_stderr { complete('bling') }.should =~ /bling.*whoops/m
     end
   end
 

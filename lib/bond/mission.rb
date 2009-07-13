@@ -1,5 +1,6 @@
 module Bond
   class InvalidMissionError < StandardError; end
+  class FailedExecutionError < StandardError; end
   class Mission
     attr_reader :action, :default
 
@@ -49,11 +50,15 @@ module Bond
     def execute(*args)
       if args.empty?
         list = @action.call(@input)
-        list = @search ? @search.call(@input, list) : list
+        list = (@search ? @search.call(@input, list) : list) || []
         @list_prefix ? list.map {|e| @list_prefix + e } : list
       else
         @action.call(*args)
       end
+    rescue
+      error_message = "Mission action failed to execute properly. Check your mission action for pattern #{@condition.inspect}.\n" +
+        "Failed with error: #{$!.message}"
+      raise FailedExecutionError, error_message
     end
 
     def default_search(input, list)
