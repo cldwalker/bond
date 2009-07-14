@@ -6,6 +6,8 @@ module Bond
     def self.create(options)
       if options[:method]
         Missions::MethodMission.new(options)
+      elsif options[:object]
+        Missions::ObjectMission.new(options)
       else
         new(options)
       end
@@ -15,43 +17,29 @@ module Bond
     OPERATORS = ["%", "&", "*", "**", "+",  "-",  "/", "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>", "[]", "[]=", "^"]
 
     def initialize(options)
-      raise InvalidMissionError unless (options[:action] || options[:object]) &&
-        (options[:on] || options[:default] || options[:object])
+      raise InvalidMissionError unless (options[:action] || respond_to?(:default_action)) &&
+        (options[:on] || options[:default])
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
       @action = options[:action]
       @condition = options[:on]
       @default = options[:default] || false
-      @eval_binding = options[:eval_binding]
       @search = (options[:search] == false) ? false : (respond_to?("#{options[:search]}_search") ? method("#{options[:search]}_search") :
         method(:default_search))
-      if (@object = options[:object])
-        @object = /^#{Regexp.quote(@object.to_s)}$/ unless @object.is_a?(Regexp)
-        @condition = /^((\.?[^.]+)+)\.([^.]*)$/
-      end
     end
 
     def set_input(input, match)
       @input = input[/\S+$/]
     end
 
-    def matches?(input)
+    def handle_valid_match(input)
       if (match = input.match(@condition))
         set_input(input, match)
-        if @object
-          @evaled_object = begin eval("#{match[1]}", @eval_binding); rescue Exception; nil end
-          old_match = match
-          if @evaled_object && (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object })
-            @list_prefix = old_match[1] + "."
-            @input = old_match[3]
-            @input.instance_variable_set("@object", @evaled_object)
-            @input.instance_eval("def self.object; @object ; end")
-            @action ||= lambda {|e| default_object_action(e.object) }
-          else
-            match = false
-          end
-        end
       end
-      if match
+      match
+    end
+
+    def matches?(input)
+      if (match = handle_valid_match(input))
         @input.instance_variable_set("@matched", match)
         @input.instance_eval("def self.matched; @matched ; end")
       end
@@ -70,10 +58,6 @@ module Bond
       error_message = "Mission action failed to execute properly. Check your mission action for pattern #{@condition.inspect}.\n" +
         "Failed with error: #{$!.message}"
       raise FailedExecutionError, error_message
-    end
-
-    def default_object_action(obj)
-      obj.methods - OPERATORS
     end
 
     def default_search(input, list)
