@@ -1,13 +1,22 @@
 module Bond
   class InvalidMissionError < StandardError; end
   class FailedExecutionError < StandardError; end
+  class Missions; end
   class Mission
+    def self.create(options)
+      if options[:method]
+        Missions::MethodMission.new(options)
+      else
+        new(options)
+      end
+    end
+
     attr_reader :action, :default
     OPERATORS = ["%", "&", "*", "**", "+",  "-",  "/", "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>", "[]", "[]=", "^"]
 
     def initialize(options)
       raise InvalidMissionError unless (options[:action] || options[:object]) &&
-        (options[:method] || options[:on] || options[:default] || options[:object])
+        (options[:on] || options[:default] || options[:object])
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
       @action = options[:action]
       @condition = options[:on]
@@ -15,18 +24,19 @@ module Bond
       @eval_binding = options[:eval_binding]
       @search = (options[:search] == false) ? false : (respond_to?("#{options[:search]}_search") ? method("#{options[:search]}_search") :
         method(:default_search))
-      if (@method = options[:method])
-        @method = Regexp.quote(@method.to_s) unless @method.is_a?(Regexp)
-        @condition = /^\s*(#{@method})\s*['"]?(.*)$/
-      elsif (@object = options[:object])
+      if (@object = options[:object])
         @object = /^#{Regexp.quote(@object.to_s)}$/ unless @object.is_a?(Regexp)
         @condition = /^((\.?[^.]+)+)\.([^.]*)$/
       end
     end
 
+    def set_input(input, match)
+      @input = input[/\S+$/]
+    end
+
     def matches?(input)
       if (match = input.match(@condition))
-        @input = @method ? match[-1] : input[/\S+$/]
+        set_input(input, match)
         if @object
           @evaled_object = begin eval("#{match[1]}", @eval_binding); rescue Exception; nil end
           old_match = match

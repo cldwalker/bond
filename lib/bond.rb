@@ -4,6 +4,7 @@ require 'bond/readline'
 require 'bond/rawline'
 require 'bond/agent'
 require 'bond/mission'
+require 'bond/missions/method_mission'
 
 module Bond
   extend self

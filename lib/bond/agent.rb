@@ -12,7 +12,7 @@ module Bond
     end
 
     def complete(options={}, &block)
-      @missions << Mission.new(options.merge(:action=>block, :eval_binding=>eval_binding))
+      @missions << Mission.create(options.merge(:action=>block, :eval_binding=>eval_binding))
     end
 
     def call(input)
