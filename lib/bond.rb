@@ -4,6 +4,7 @@ require 'bond/readline'
 require 'bond/rawline'
 require 'bond/agent'
 require 'bond/mission'
+require 'bond/missions/default_mission'
 require 'bond/missions/method_mission'
 require 'bond/missions/object_mission'
 

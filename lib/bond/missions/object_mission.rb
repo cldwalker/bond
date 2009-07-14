@@ -3,7 +3,7 @@ class Bond::Missions::ObjectMission < Bond::Mission
     @object = options.delete(:object)
     @object = /^#{Regexp.quote(@object.to_s)}$/ unless @object.is_a?(Regexp)
     options[:on] = /^((\.?[^.]+)+)\.([^.]*)$/
-    @eval_binding = options[:eval_binding]
+    @eval_binding = options[:eval_binding] || default_eval_binding
     super
   end
 
@@ -25,5 +25,9 @@ class Bond::Missions::ObjectMission < Bond::Mission
 
   def default_action(obj)
     obj.methods - OPERATORS
+  end
+
+  def default_eval_binding
+    Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding : ::TOPLEVEL_BINDING
   end
 end

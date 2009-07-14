@@ -13,29 +13,17 @@ module Bond
       end
     end
 
-    attr_reader :action, :default
+    attr_reader :action
     OPERATORS = ["%", "&", "*", "**", "+",  "-",  "/", "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>", "[]", "[]=", "^"]
 
     def initialize(options)
       raise InvalidMissionError unless (options[:action] || respond_to?(:default_action)) &&
-        (options[:on] || options[:default])
+        (options[:on] || is_a?(Missions::DefaultMission))
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
       @action = options[:action]
       @condition = options[:on]
-      @default = options[:default] || false
       @search = (options[:search] == false) ? false : (respond_to?("#{options[:search]}_search") ? method("#{options[:search]}_search") :
         method(:default_search))
-    end
-
-    def set_input(input, match)
-      @input = input[/\S+$/]
-    end
-
-    def handle_valid_match(input)
-      if (match = input.match(@condition))
-        set_input(input, match)
-      end
-      match
     end
 
     def matches?(input)
@@ -58,6 +46,17 @@ module Bond
       error_message = "Mission action failed to execute properly. Check your mission action for pattern #{@condition.inspect}.\n" +
         "Failed with error: #{$!.message}"
       raise FailedExecutionError, error_message
+    end
+
+    def set_input(input, match)
+      @input = input[/\S+$/]
+    end
+
+    def handle_valid_match(input)
+      if (match = input.match(@condition))
+        set_input(input, match)
+      end
+      match
     end
 
     def default_search(input, list)

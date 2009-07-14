@@ -12,7 +12,7 @@ module Bond
     end
 
     def complete(options={}, &block)
-      @missions << Mission.create(options.merge(:action=>block, :eval_binding=>eval_binding))
+      @missions << Mission.create(options.merge(:action=>block, :eval_binding=>@eval_binding))
     end
 
     def call(input)
@@ -31,15 +31,7 @@ module Bond
     end
 
     def default_mission
-      @default_mission ||= Mission.new(:action=>default_mission_action, :default=>true)
-    end
-
-    def default_mission_action
-      @default_mission_action ||= Object.const_defined?(:IRB) ? IRB::InputCompletor::CompletionProc : lambda {|e| [] }
-    end
-
-    def eval_binding
-      @eval_binding ||= Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding : ::TOPLEVEL_BINDING
+      @default_mission ||= Missions::DefaultMission.new(:action=>@default_mission_action)
     end
   end
 end
