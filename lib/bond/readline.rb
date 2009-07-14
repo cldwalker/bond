@@ -1,7 +1,7 @@
 
 module Bond
   module Readline
-    Defaultbreakchars = " \t\n\"\\'`><=;|&{("
+    DefaultBreakCharacters = " \t\n\"\\'`><=;|&{("
 
     def setup
       require 'inline'
@@ -24,7 +24,7 @@ module Bond
 
       ::Readline.completion_append_character = nil
       if ::Readline.respond_to?("basic_word_break_characters=")
-        ::Readline.basic_word_break_characters = Defaultbreakchars
+        ::Readline.basic_word_break_characters = DefaultBreakCharacters
       end
       ::Readline.completion_proc = self
     end

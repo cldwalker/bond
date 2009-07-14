@@ -3,6 +3,7 @@ module Bond
   class FailedExecutionError < StandardError; end
   class Mission
     attr_reader :action, :default
+    OPERATORS = ["%", "&", "*", "**", "+",  "-",  "/", "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>", "[]", "[]=", "^"]
 
     def initialize(options)
       raise InvalidMissionError unless (options[:action] || options[:object]) &&
@@ -34,7 +35,7 @@ module Bond
             @input = old_match[3]
             @input.instance_variable_set("@object", @evaled_object)
             @input.instance_eval("def self.object; @object ; end")
-            @action ||= lambda {|e| (e.object.methods(true) + e.object.class.instance_methods(true)).uniq }
+            @action ||= lambda {|e| default_object_action(e.object) }
           else
             match = false
           end
@@ -59,6 +60,10 @@ module Bond
       error_message = "Mission action failed to execute properly. Check your mission action for pattern #{@condition.inspect}.\n" +
         "Failed with error: #{$!.message}"
       raise FailedExecutionError, error_message
+    end
+
+    def default_object_action(obj)
+      obj.methods - OPERATORS
     end
 
     def default_search(input, list)
