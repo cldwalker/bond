@@ -6,12 +6,13 @@ module Bond
       raise ArgumentError unless options[:readline_plugin].is_a?(Module)
       extend(options[:readline_plugin])
       @default_mission_action = options[:default_mission] if options[:default_mission]
+      @eval_binding = options[:eval_binding] if options[:eval_binding]
       setup
       @missions = []
     end
 
     def complete(options={}, &block)
-      @missions << Mission.new(options.merge(:action=>block))
+      @missions << Mission.new(options.merge(:action=>block, :eval_binding=>eval_binding))
     end
 
     def call(input)
@@ -35,6 +36,10 @@ module Bond
 
     def default_mission_action
       @default_mission_action ||= Object.const_defined?(:IRB) ? IRB::InputCompletor::CompletionProc : lambda {|e| [] }
+    end
+
+    def eval_binding
+      @eval_binding ||= Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding : ::TOPLEVEL_BINDING
     end
   end
 end

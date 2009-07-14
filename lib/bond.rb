@@ -19,6 +19,10 @@ module Bond
     @agent ||= Agent.new(config)
   end
 
+  # Options:
+  # [:readline_plugin]
+  # [:default_mission]
+  # [:eval_binding]
   def debrief(options={})
     config.merge! options
     plugin_methods = %w{setup line_buffer}

@@ -11,6 +11,7 @@ module Bond
       @action = options[:action]
       @condition = options[:on]
       @default = options[:default] || false
+      @eval_binding = options[:eval_binding]
       @search = (options[:search] == false) ? false : (respond_to?("#{options[:search]}_search") ? method("#{options[:search]}_search") :
         method(:default_search))
       if (@method = options[:method])
@@ -26,8 +27,7 @@ module Bond
       if (match = input.match(@condition))
         @input = @method ? match[-1] : input[/\S+$/]
         if @object
-          bind = IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
-          @evaled_object = begin eval("#{match[1]}",bind); rescue Exception; nil end
+          @evaled_object = begin eval("#{match[1]}", @eval_binding); rescue Exception; nil end
           old_match = match
           if @evaled_object && (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object })
             @list_prefix = old_match[1] + "."

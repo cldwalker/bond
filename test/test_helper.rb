@@ -7,6 +7,19 @@ $LOAD_PATH.unshift(File.join(File.dirname(__FILE__), '..', 'lib'))
 require 'bond'
 
 class Test::Unit::TestCase
+  before(:all) {
+    # Mock irb
+    unless Object.const_defined?(:IRB)
+      eval %[
+        module ::IRB
+          class<<self; attr_accessor :CurrentContext; end
+          module InputCompletor; CompletionProc = lambda {|e| [] }; end
+        end
+      ]
+      ::IRB.CurrentContext = stub(:workspace=>stub(:binding=>binding))
+    end
+  }
+
   def capture_stderr(&block)
     original_stderr = $stderr
     $stderr = fake = StringIO.new
@@ -27,3 +40,4 @@ class Test::Unit::TestCase
     Module.new{ def setup; end; def line_buffer; end }
   end
 end
+
