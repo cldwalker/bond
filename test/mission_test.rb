@@ -37,7 +37,22 @@ class Bond::MissionTest < Test::Unit::TestCase
 
     test "with no search option and matching completes" do
       Bond.complete(:on=>/\s*'([^']+)$/, :search=>false) {|e| %w{coco for puffs}.grep(/#{e.matched[1]}/) }
-      complete("require 'co", "co").should == ['coco']
+      complete("require 'ff").should == ['puffs']
+    end
+
+    test "with search proc completes" do
+      Bond.complete(:method=>'blah', :search=>proc {|input, list| list.grep(/#{input}/)}) {|e| %w{coco for puffs} }
+      complete("blah 'ff").should == ['puffs']
+    end
+
+    test "with anywhere search completes" do
+      Bond.complete(:method=>'blah', :search=>:anywhere) {|e| %w{coco for puffs} }
+      complete("blah 'ff").should == ['puffs']
+    end
+
+    test "with ignore case search completes" do
+      Bond.complete(:method=>'blah', :search=>:ignore_case) {|e| %w{Coco For PufFs} }
+      complete("blah 'ff").should == ['PufFs']
     end
 
     test "with underscore search completes" do

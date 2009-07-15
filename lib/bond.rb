@@ -3,6 +3,7 @@ $:.unshift(current_dir) unless $:.include?(current_dir) || $:.include?(File.expa
 require 'bond/readline'
 require 'bond/rawline'
 require 'bond/agent'
+require 'bond/search'
 require 'bond/mission'
 require 'bond/missions/default_mission'
 require 'bond/missions/method_mission'

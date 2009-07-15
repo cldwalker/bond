@@ -3,6 +3,8 @@ module Bond
   class FailedExecutionError < StandardError; end
   class Missions; end
   class Mission
+    include Search
+
     def self.create(options)
       if options[:method]
         Missions::MethodMission.new(options)
@@ -22,8 +24,8 @@ module Bond
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
       @action = options[:action]
       @condition = options[:on]
-      @search = (options[:search] == false) ? false : (respond_to?("#{options[:search]}_search") ? method("#{options[:search]}_search") :
-        method(:default_search))
+      @search = options.has_key?(:search) ? options[:search] : method(:default_search)
+      @search = method("#{options[:search]}_search") if respond_to?("#{options[:search]}_search")
     end
 
     def matches?(input)
@@ -57,17 +59,6 @@ module Bond
         set_input(input, match)
       end
       match
-    end
-
-    def default_search(input, list)
-      list.grep(/^#{input}/)
-    end
-
-    def underscore_search(input, list)
-      split_input = input.split("-").join("")
-      list.select {|c|
-        c.split("_").map {|g| g[0,1] }.join("") =~ /^#{split_input}/ || c =~ /^#{input}/
-      }
     end
   end
 end
