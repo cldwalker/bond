@@ -21,4 +21,11 @@ class BondTest < Test::Unit::TestCase
       Bond.agent.default_mission.action.should == default_mission
     end
   end
+
+  test "reset clears existing missions" do
+    Bond.complete(:on=>/blah/) {[]}
+    Bond.agent.missions.size.should_not == 0
+    Bond.reset
+    Bond.agent.missions.size.should == 0
+  end
 end

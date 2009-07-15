@@ -13,14 +13,21 @@ module Bond
 
   def complete(options={}, &block)
     agent.complete(options, &block)
+    true
   rescue InvalidMissionError
     $stderr.puts "Invalid mission given. Mission needs an action and a condition."
+    false
   rescue
     $stderr.puts "Mission setup failed with:", $!
+    false
   end
 
   def agent
     @agent ||= Agent.new(config)
+  end
+
+  def reset
+    @agent = nil
   end
 
   # Options:
