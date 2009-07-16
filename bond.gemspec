@@ -40,6 +40,7 @@ Gem::Specification.new do |s|
   s.homepage = %q{http://tagaholic.me/bond/}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
+  s.rubyforge_project = %q{tagaholic}
   s.rubygems_version = %q{1.3.2}
   s.summary = %q{Mission: Easy custom autocompletion for arguments, methods and beyond. Accomplished for irb and any other readline-like console environments.}
   s.test_files = [

@@ -23,6 +23,7 @@ begin
     s.email = "gabriel.horner@gmail.com"
     s.homepage = "http://tagaholic.me/bond/"
     s.authors = ["Gabriel Horner"]
+    s.rubyforge_project = 'tagaholic'
     s.has_rdoc = true
     s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
     s.extensions = ["ext/readline_line_buffer/extconf.rb"]
