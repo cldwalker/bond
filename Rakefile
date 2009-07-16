@@ -18,15 +18,15 @@ begin
   require 'jeweler'
   Jeweler::Tasks.new do |s|
     s.name = "bond"
-    s.description = "Easy irb/console autocompletion for methods, arguments and more."
-    s.summary = s.description
+    s.summary = "Mission: Easy custom autocompletion for arguments, methods and beyond. Accomplished for irb and any other readline-like console environments."
+    s.description = "Bond is on a mission to make custom autocompletion easy in irb and other console/readline-like environments. Bond supports custom argument completion of methods, method completion of objects and anything else your wicked regex's can do. Bond comes armed with a Readline C extension to get the full line of input as opposed to irb's last-word based completion. Bond makes custom searching of possible completions easy which allows for nontraditional ways of autocompleting i.e. instant aliasing of multi worded methods."
     s.email = "gabriel.horner@gmail.com"
-    s.homepage = "http://github.com/cldwalker/bond"
+    s.homepage = "http://tagaholic.me/bond/"
     s.authors = ["Gabriel Horner"]
     s.has_rdoc = true
     s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
     s.extensions = ["ext/readline_line_buffer/extconf.rb"]
-    s.files = FileList["Rakefile", "README.rdoc", "VERSION.yml", "LICENSE.txt", "{bin,lib,test,ext}/**/*"]
+    s.files = FileList["CHANGELOG.rdoc", "Rakefile", "README.rdoc", "VERSION.yml", "LICENSE.txt", "{bin,lib,test,ext}/**/*"]
   end
 
 rescue LoadError
