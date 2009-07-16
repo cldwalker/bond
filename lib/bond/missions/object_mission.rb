@@ -1,4 +1,8 @@
+# Represents a completion mission specified by :object in Bond.complete. Unlike other missions, this
+# one needs to both match the mission condition and have the current object being completed have
+# an ancestor specified by :object.
 class Bond::Missions::ObjectMission < Bond::Mission
+  #:stopdoc:
   def initialize(options={})
     @object = options.delete(:object)
     @object = /^#{Regexp.quote(@object.to_s)}$/ unless @object.is_a?(Regexp)
@@ -30,4 +34,5 @@ class Bond::Missions::ObjectMission < Bond::Mission
   def default_eval_binding
     Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding : ::TOPLEVEL_BINDING
   end
+  #:startdoc:
 end

@@ -52,7 +52,7 @@ class Bond::MissionTest < Test::Unit::TestCase
 
     test "with ignore case search completes" do
       Bond.complete(:method=>'blah', :search=>:ignore_case) {|e| %w{Coco For PufFs} }
-      complete("blah 'ff").should == ['PufFs']
+      complete("blah 'pu").should == ['PufFs']
     end
 
     test "with underscore search completes" do

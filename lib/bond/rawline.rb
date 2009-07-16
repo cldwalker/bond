@@ -1,4 +1,6 @@
 module Bond
+  # A readline plugin for use with {Rawline}[http://github.com/h3rald/rawline/tree/master]. This plugin
+  # should be used in conjunction with {a Rawline shell}[http://www.h3rald.com/articles/real-world-rawline-usage].
   module Rawline
     def setup
       require 'rawline'

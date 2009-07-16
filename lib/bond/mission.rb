@@ -1,10 +1,16 @@
 module Bond
+  # Occurs when a mission is incorrectly defined.
   class InvalidMissionError < StandardError; end
+  # Occurs when a mission or search action fails.
   class FailedExecutionError < StandardError; end
+  # Namespace for subclasses of Bond::Mission.
   class Missions; end
+
+  # A set of conditions and actions to take for a completion scenario or mission in Bond's mind.
   class Mission
     include Search
 
+    # Handles creation of proper Mission class depending on the options passed.
     def self.create(options)
       if options[:method]
         Missions::MethodMission.new(options)
@@ -18,6 +24,8 @@ module Bond
     attr_reader :action
     OPERATORS = ["%", "&", "*", "**", "+",  "-",  "/", "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>", "[]", "[]=", "^"]
 
+    # Options are almost the same as those explained at Bond.complete. The only difference is that the action is passed
+    # as an :action option here.
     def initialize(options)
       raise InvalidMissionError unless (options[:action] || respond_to?(:default_action)) &&
         (options[:on] || is_a?(Missions::DefaultMission))
@@ -28,6 +36,7 @@ module Bond
       @search = method("#{options[:search]}_search") if respond_to?("#{options[:search]}_search")
     end
 
+    # Returns a boolean indicating if a mission matches the given input.
     def matches?(input)
       if (match = handle_valid_match(input))
         @input.instance_variable_set("@matched", match)
@@ -36,6 +45,7 @@ module Bond
       !!match
     end
 
+    # Called when a mission has been chosen to autocomplete.
     def execute(*args)
       if args.empty?
         list = @action.call(@input)
@@ -50,6 +60,7 @@ module Bond
       raise FailedExecutionError, error_message
     end
 
+    #:stopdoc:
     def set_input(input, match)
       @input = input[/\S+$/]
     end
@@ -60,5 +71,6 @@ module Bond
       end
       match
     end
+    #:startdoc:
   end
 end
