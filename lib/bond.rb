@@ -73,6 +73,7 @@ module Bond
   #                    enabled, uses irb completion. Otherwise defaults to a proc with an empty completion list.
   # [:eval_binding] Specifies a binding to be used with Bond::Missions::ObjectMission. When in irb, defaults to irb's main binding. Otherwise
   #                 defaults to TOPLEVEL_BINDING.
+  # [:debug]  Boolean to print unexpected errors when autocompletion fails. Default is false.
   def debrief(options={})
     config.merge! options
     plugin_methods = %w{setup line_buffer}
@@ -86,6 +87,6 @@ module Bond
   end
 
   def config #:nodoc:
-    @config ||= {:readline_plugin=>Bond::Readline}
+    @config ||= {:readline_plugin=>Bond::Readline, :debug=>false}
   end
 end

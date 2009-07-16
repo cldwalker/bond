@@ -23,8 +23,10 @@ module Bond
     rescue FailedExecutionError
       $stderr.puts "", $!.message
     rescue
-      p $!
-      p $!.backtrace.slice(0,5)
+      if Bond.config[:debug]
+        p $!
+        p $!.backtrace.slice(0,5)
+      end
       default_mission.execute(input)
     end
 
