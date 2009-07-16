@@ -39,7 +39,7 @@ module Bond
     # Returns a boolean indicating if a mission matches the given input.
     def matches?(input)
       if (match = handle_valid_match(input))
-        @input.instance_variable_set("@matched", match)
+        @input.instance_variable_set("@matched", @matched)
         @input.instance_eval("def self.matched; @matched ; end")
       end
       !!match
@@ -48,8 +48,8 @@ module Bond
     # Called when a mission has been chosen to autocomplete.
     def execute(*args)
       if args.empty?
-        list = @action.call(@input)
-        list = (@search ? @search.call(@input, list) : list) || []
+        list = @action.call(@input) || []
+        list = @search ? @search.call(@input, list) : list
         @list_prefix ? list.map {|e| @list_prefix + e } : list
       else
         @action.call(*args)
@@ -68,6 +68,7 @@ module Bond
     def handle_valid_match(input)
       if (match = input.match(@condition))
         set_input(input, match)
+        @matched ||= match
       end
       match
     end
