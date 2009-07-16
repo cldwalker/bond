@@ -45,7 +45,7 @@ module Bond
         @action.call(*args)
       end
     rescue
-      error_message = "Mission action failed to execute properly. Check your mission action for pattern #{@condition.inspect}.\n" +
+      error_message = "Mission action failed to execute properly. Check your mission action with pattern #{@condition.inspect}.\n" +
         "Failed with error: #{$!.message}"
       raise FailedExecutionError, error_message
     end
