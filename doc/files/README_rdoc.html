@@ -1,0 +1,117 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>File: README.rdoc [RDoc Documentation]</title>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <link href='../rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='file' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>README.rdoc</h1>
+        <div class='paths'>
+          README.rdoc
+        </div>
+        <div class='last-update'>
+          Last Update:
+          <span class='datetime'>Thu Jul 16 17:40:09 -0400 2009</span>
+        </div>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='description'>
+            <h2>Description</h2>
+            <p>
+            <a href="../classes/Bond.html">Bond</a> is on a mission to make custom
+            autocompletion easy in irb and other console/readline-like environments. <a
+            href="../classes/Bond.html">Bond</a> supports custom argument completion of
+            methods, method completion of objects and anything else your wicked
+            regex&#8217;s can do. <a href="../classes/Bond.html">Bond</a> comes armed
+            with a Readline C extension to get the full line of input as opposed to
+            irb&#8217;s last-word based completion. <a
+            href="../classes/Bond.html">Bond</a> makes custom searching of possible
+            completions easy which allows for nontraditional ways of autocompleting
+            i.e. instant aliasing of multi worded methods.
+            </p>
+            <h2>Install</h2>
+            <p>
+            Install the gem with:
+            </p>
+            <pre>sudo gem install cldwalker-bond --source http://gems.github.com</pre>
+            <h2>Usage</h2>
+            <h3>Argument Completion for Methods</h3>
+            <pre>bash&gt; irb -rirb/completion -rubygems&#x000A;# This loads Bond but it doesn't take over completion yet.&#x000A;&gt;&gt; require 'bond'&#x000A;&#x000A;# For Bond to handle completions, we must explicitly define a completion mission.&#x000A;# Order matters since the order they're declared in is the order they're searched.&#x000A;&gt;&gt; Bond.complete(:method=&gt;'method1') {|input|  %w{some args to autocomplete} }&#x000A;=&gt; true&#x000A;&gt;&gt; Bond.complete(:method=&gt;'method2') {|input|  %w{more args to autocomplete} }&#x000A;=&gt; true&#x000A;&#x000A;# Works as above&#x000A;&gt;&gt; method1 [TAB]&#x000A;args   autocomplete   some   to&#x000A;&gt;&gt; method1 'a[TAB]&#x000A;args   autocomplete&#x000A;&gt;&gt; method1 'au[TAB]&#x000A;&gt;&gt; method1 'autocomplete'&#x000A;&#x000A;# Anything not matched by the above completion missions defaults to irb completion&#x000A;&gt;&gt; $std[TAB]&#x000A;$stderr  $stdin   $stdout</pre>
+            <h3>File Argument Completion for Methods</h3>
+            <pre># Pass :search=&gt;false to turn off Bond searching since FILENAME_COMPLETION_PROC does it for us.&#x000A;&gt;&gt; Bond.complete(:method=&gt;&quot;File.read&quot;, :search=&gt;false) {|input|&#x000A;    Readline::FILENAME_COMPLETION_PROC.call(input) || [] }&#x000A;=&gt; true&#x000A;&#x000A;# Test drive it&#x000A;&gt;&gt; File.read '[TAB]&#x000A;.git/   LICENSE.txt   README.rdoc   Rakefile      VERSION.yml   bond.gemspec  ext/    lib/     test/&#x000A;&gt;&gt; File.read 'l[TAB]&#x000A;&gt;&gt; File.read 'lib/&#x000A;&gt;&gt; File.read 'lib/bond.[TAB]&#x000A;&gt;&gt; File.read 'lib/bond.rb'&#x000A;&#x000A;# Since File.read doesn't understand ~, let's improve the above completion proc&#x000A;&gt;&gt; file_completion = proc {|input| (Readline::FILENAME_COMPLETION_PROC.call(input) ||&#x000A;    []).map {|f| f =~ /^~/ ?  File.expand_path(f) : f } }&#x000A;=&gt; #&lt; Proc:0x0100f1d0@(irb):20&gt;&#x000A;&gt;&gt; Bond.reset; Bond.complete :method=&gt;&quot;File.read&quot;, :search=&gt;false, &amp;file_completion&#x000A;=&gt; true&#x000A;&#x000A;# Tilda test driving&#x000A;&gt;&gt; File.read &quot;~/[TAB]&#x000A;&gt;&gt; File.read &quot;/Users/bozo/&#x000A;&gt;&gt; File.read &quot;/Users/bozo/.alias.[TAB]&#x000A;&gt;&gt; File.read &quot;/Users/bozo/.alias.yml&quot;&#x000A;&#x000A;# Let's add this to *all* our File methods:&#x000A;&gt;&gt; Bond.reset; Bond.complete :method=&gt;/File\.(#{Regexp.union(*File.methods(false))})/,&#x000A;    :search=&gt;false, &amp;file_completion&#x000A;=&gt; true</pre>
+            <h3>Method Autocompletion on Specified Objects</h3>
+            <pre># Let's explore Bond::Agent's functionality&#x000A; &gt;&gt; ba = Bond.agent; nil&#x000A; =&gt; nil&#x000A; # Irb let's you autocomplete everything that an object responds to for better or worse.&#x000A; &gt;&gt; ba.[TAB]&#x000A; ba.__id__                      ba.eql?                        ba.instance_eval               ba.method                      ba.send                        ba.to_yaml&#x000A; ba.__send__                    ba.equal?                      ba.instance_of?                ba.methods                     ba.setup                       ba.to_yaml_properties&#x000A; ba.call                        ba.extend                      ba.instance_variable_defined?  ba.missions                    ba.singleton_methods           ba.to_yaml_style&#x000A; ba.class                       ba.find_mission                ba.instance_variable_get       ba.nil?                        ba.taguri                      ba.type&#x000A; ba.clone                       ba.freeze                      ba.instance_variable_set       ba.object_id                   ba.taguri=                     ba.untaint&#x000A; ba.complete                    ba.frozen?                     ba.instance_variables          ba.private_methods             ba.taint&#x000A; ba.default_mission             ba.hash                        ba.is_a?                       ba.protected_methods           ba.tainted?&#x000A; ba.display                     ba.id                          ba.kind_of?                    ba.public_methods              ba.to_a&#x000A; ba.dup                         ba.inspect                     ba.line_buffer                 ba.respond_to?                 ba.to_s&#x000A;&#x000A; # Since it's hard to see Bond::Agent's functionality amidst all the Object and Kernel methods,&#x000A; # let's autocomplete just it's instance methods.&#x000A; &gt;&gt; Bond.complete(:object=&gt;Bond::Agent) {|input| input.object.class.instance_methods(false) }&#x000A; =&gt; true&#x000A;&#x000A; # A less cluttered display of Bond::Agent's functionality.&#x000A; &gt;&gt; ba.[TAB]&#x000A; ba.call             ba.complete         ba.default_mission  ba.find_mission     ba.missions&#x000A;&#x000A; # Let's have all Bond::* objects do this.&#x000A; &gt;&gt; Bond.reset; Bond.complete(:object=&gt;/^Bond::/) {|input| input.object.class.instance_methods(false) }&#x000A; =&gt; true&#x000A;&#x000A;# Let's revert method autocompletion back to irb's defaults for Bond::* objects.&#x000A;&gt;&gt; Bond.reset; Bond.complete :object=&gt;/^Bond::/</pre>
+            <h3>Underscore Search</h3>
+            <pre># Firing up a rails console&#x000A;bash&gt; script/console&#x000A;&gt;&gt; require 'bond'&#x000A;=&gt; true&#x000A;&#x000A;# Set all ActiveRecord::Base descendants to use the predefined underscore search&#x000A;&gt;&gt; Bond.complete :object=&gt;ActiveRecord::Base, :search=&gt;:underscore&#x000A;=&gt; true&#x000A;&#x000A;# With this search we can still autocomplete the traditional way.&#x000A;# Url is a model object&#x000A;&gt;&gt; Url.first.tag_[TAB]&#x000A;Url.first.tag_add_and_remove   Url.first.tag_and_save         Url.first.tag_ids=             Url.first.tag_list=&#x000A;Url.first.tag_add_and_save     Url.first.tag_ids              Url.first.tag_list             Url.first.tag_remove_and_save&#x000A;&gt;&gt; Url.tag_ad[TAB]&#x000A;&gt;&gt; Url.tag_add_and_&#x000A;&gt;&gt; Url.tag_add_and_[TAB]&#x000A;Url.first.tag_add_and_remove  Url.first.tag_add_and_save&#x000A;&gt;&gt; Url.tag_add_and_s[TAB]&#x000A;&gt;&gt; Url.tag_add_and_save&#x000A;&#x000A;# But this search goes the extra mile with textmate-like searching.&#x000A;# Type just the first letter of each underscored word separated by '-'&#x000A;&gt;&gt; Url.first.t-a-a-s[TAB]&#x000A;&gt;&gt; Url.first.tag_add_and_save&#x000A;&#x000A;# With this search, most multi-worded methods are just a few keystrokes away.&#x000A;# If multiple methods match the underscore alias, it still autocompletes the beginning of the method:&#x000A;&gt;&gt; Url.first.p[TAB]&#x000A;Url.first.partial_updates                  Url.first.pretty_inspect                   Url.first.pretty_print_instance_variables  Url.first.public_methods&#x000A;Url.first.partial_updates?                 Url.first.pretty_print                     Url.first.primary_key_prefix_type&#x000A;Url.first.pluralize_table_names            Url.first.pretty_print_cycle               Url.first.private_methods&#x000A;Url.first.present?                         Url.first.pretty_print_inspect             Url.first.protected_methods&#x000A;&gt;&gt; Url.first.p-p[TAB]&#x000A;&gt;&gt; Url.first.pretty_print&#x000A;&gt;&gt; Url.first.pretty_print_c[TAB]&#x000A;&gt;&gt; Url.first.pretty_print_cycle</pre>
+            <h3>Custom AutoCompletion</h3>
+            <pre>bash&gt; irb -rirb/completion -rubygems -rbond&#x000A;# Let's reuse the file completion from above&#x000A;&gt;&gt; file_completion = proc {|input| (Readline::FILENAME_COMPLETION_PROC.call(input) ||&#x000A;    []).map {|f| f =~ /^~/ ?  File.expand_path(f) : f } }&#x000A;=&gt; #&lt; Proc:0x0100f1d0@(irb):1&gt;&#x000A;&#x000A;# But this time let's trigger it whenever the last word in the line is quoted&#x000A;# fyi this is default behavior if you use irb without requiring irb/completion&#x000A;&gt;&gt; Bond.complete(:on=&gt;/\S+\s*[&quot;']([^'&quot;.]*)$/, :search=&gt;false) {|input| file_completion.call(input.matched[1]) }&#x000A;=&gt; true&#x000A;&#x000A;# Now it doesn't matter what methods come before. If the last word is quoted we get file completion:&#x000A;&gt;&gt; Dir.entries '[TAB]&#x000A;.git/   LICENSE.txt   README.rdoc   Rakefile      VERSION.yml   bond.gemspec  ext/    lib/     test/&#x000A;&gt;&gt; Dir.entries 'l[TAB]&#x000A;&gt;&gt; Dir.entries 'lib/&#x000A;&gt;&gt; `ls 't[TAB]&#x000A;&gt;&gt; `ls 'test/&#x000A;&gt;&gt; `ls 'test/'`&#x000A;&#x000A;# String method completion still works&#x000A;&gt;&gt; '007'.[TAB]&#x000A;Display all 137 possibilities? (y or n)</pre>
+            <h2>Credits</h2>
+            <p>
+            Thanks to Csaba Hank for <a
+            href="http://www.creo.hu/~csaba/ruby/irb-enhancements/doc/files/README.html">providing
+            the C extension</a> which <a href="../classes/Bond.html">Bond</a> uses to
+            read Readline&#8217;s full buffer. Thanks also goes out to Takao Kouji for
+            <a
+            href="http://svn.ruby-lang.org/cgi-bin/viewvc.cgi/trunk/ext/readline/readline.c?view=diff&r1=24018&r2=24019">recently
+            commiting</a> this Readline enhancement to ruby.
+            </p>
+            <h2>Bugs</h2>
+            <p>
+            The underscore search intermittently doesn&#8217;t complete when it should
+            and deletes the last character typed.
+            </p>
+            <h2>Todo</h2>
+            <ul>
+            <li>Allow <a href="../classes/Bond.html">Bond</a> to easily get its completion
+            missions from a module.
+            
+            </li>
+            <li>Provide a set of <a href="../classes/Bond.html">Bond</a> completions which
+            can serve as a drop-in replacement for irb/completion.
+            
+            </li>
+            <li>Bond.spy for easily viewing/debugging what completion mission matches a
+            given input.
+            
+            </li>
+            <li>Argument autocompletion by object class.
+            
+            </li>
+            <li>Make replacement of existing completions not require doing a <a
+            href="../classes/Bond.html#M000002">Bond.reset</a>.
+            
+            </li>
+            </ul>
+          </div>
+          <div id='section'>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>

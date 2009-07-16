@@ -1,0 +1,146 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>: Bond::Search [RDoc Documentation]</title>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <link href='../../rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='class' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>
+          <span class='type'>Module</span>
+          Bond::Search
+        </h1>
+        <ol class='paths'>
+          <li>
+            <a href="../../files/lib/bond/search_rb.html">lib/bond/search.rb</a>
+          </li>
+        </ol>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='description'>
+            <p>
+            Contains search methods used to filter possible completions given what the
+            user has typed for that completion.
+            </p>
+          </div>
+          <div id='method-list'>
+            <h2>Methods</h2>
+            <h3>public instance</h3>
+            <ol>
+              <li><a href="#M000005">anywhere_search</a></li>
+              <li><a href="#M000004">default_search</a></li>
+              <li><a href="#M000006">ignore_case_search</a></li>
+              <li><a href="#M000007">underscore_search</a></li>
+            </ol>
+          </div>
+          <div id='section'>
+            <div id='methods'>
+              <h2>Public instance methods</h2>
+              <div class='public-instance method' id='method-M000005'>
+                <a name='M000005'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>anywhere_search</span>
+                  <span class='arguments'>(input, list)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Searches completions anywhere in the string.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000005-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000005-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 10</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">anywhere_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-node">/#{input}/</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000004'>
+                <a name='M000004'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>default_search</span>
+                  <span class='arguments'>(input, list)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Searches completions from the beginning of the string.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000004-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000004-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 5</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">default_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-node">/^#{input}/</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000006'>
+                <a name='M000006'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>ignore_case_search</span>
+                  <span class='arguments'>(input, list)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Searches completions from the beginning and ignores case.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000006-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000006-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 15</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ignore_case_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-node">/^#{input}/i</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000007'>
+                <a name='M000007'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>underscore_search</span>
+                  <span class='arguments'>(input, list)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Searches completions from the beginning but also provides aliasing of
+                  underscored words. For example &#8216;some_dang_long_word&#8217; can be
+                  specified as &#8217;s-d-l-w&#8217;. Aliases can be any unique string at the
+                  beginning of an underscored word. For example, to choose the first
+                  completion between &#8216;so_long&#8217; and &#8216;so_larger&#8217;, type
+                  &#8217;s-lo&#8217;.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000007-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000007-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 23</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">underscore_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">split_input</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot;-&quot;</span>).<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;&quot;</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-identifier">c</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot;_&quot;</span>).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">g</span><span class="ruby-operator">|</span> <span class="ruby-identifier">g</span>[<span class="ruby-value">0</span>,<span class="ruby-value">1</span>] }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;&quot;</span>) <span class="ruby-operator">=~</span> <span class="ruby-node">/^#{split_input}/</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/^#{input}/</span>&#x000A;      }&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>

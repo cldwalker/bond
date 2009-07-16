@@ -1,0 +1,109 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>: Bond::Readline [RDoc Documentation]</title>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <link href='../../rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='class' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>
+          <span class='type'>Module</span>
+          Bond::Readline
+        </h1>
+        <ol class='paths'>
+          <li>
+            <a href="../../files/lib/bond/readline_rb.html">lib/bond/readline.rb</a>
+          </li>
+        </ol>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='description'>
+            <p>
+            This is the default readline plugin for <a href="../Bond.html">Bond</a>. A
+            valid plugin must define methods setup() and <a
+            href="Readline.html#M000011">line_buffer</a>(). setup() should load the
+            readline-like library and set the completion_proc. <a
+            href="Readline.html#M000011">line_buffer</a>() should give access to the
+            full line of what the user has typed.
+            </p>
+          </div>
+          <div id='method-list'>
+            <h2>Methods</h2>
+            <h3>public instance</h3>
+            <ol>
+              <li><a href="#M000011">line_buffer</a></li>
+              <li><a href="#M000010">setup</a></li>
+            </ol>
+          </div>
+          <div id='section'>
+            <div id='constants-list'>
+              <h2>Constants</h2>
+              <div class='name-list'>
+                <table summary='Constants'>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>DefaultBreakCharacters</td>
+                    <td>=</td>
+                    <td class='context-item-value'>&quot; \t\n\&quot;\\'`&gt;&lt;=;|&amp;{(&quot;</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div id='methods'>
+              <h2>Public instance methods</h2>
+              <div class='public-instance method' id='method-M000011'>
+                <a name='M000011'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>line_buffer</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000011-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000011-source'><span class="ruby-comment cmt"># File lib/bond/readline.rb, line 43</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">line_buffer</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">line_buffer</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000010'>
+                <a name='M000010'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>setup</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000010-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000010-source'><span class="ruby-comment cmt"># File lib/bond/readline.rb, line 9</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup</span>&#x000A;      <span class="ruby-identifier">require</span> <span class="ruby-value str">'readline'</span>&#x000A;      <span class="ruby-keyword kw">begin</span>&#x000A;        <span class="ruby-identifier">require</span> <span class="ruby-value str">'readline_line_buffer'</span>&#x000A;      <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">LoadError</span>&#x000A;        <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Failed to load readline_line_buffer extension. Falling back on RubyInline extension.&quot;</span>&#x000A;        <span class="ruby-identifier">require</span> <span class="ruby-value str">'inline'</span>&#x000A;        <span class="ruby-identifier">eval</span> <span class="ruby-value str">%[&#x000A;          module ::Readline&#x000A;            inline do |builder|&#x000A;              %w(&lt;errno.h&gt; &lt;stdio.h&gt; &lt;readline/readline.h&gt;).each{|h| builder.include h }&#x000A;              builder.c_raw_singleton &lt;&lt;-EOC&#x000A;          static VALUE line_buffer(VALUE self)&#x000A;          {&#x000A;            rb_secure(4);&#x000A;            if (rl_line_buffer == NULL)&#x000A;          return Qnil;&#x000A;            return rb_tainted_str_new2(rl_line_buffer);&#x000A;          }&#x000A;          EOC&#x000A;            end&#x000A;          end&#x000A;        ]</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;&#x000A;      <span class="ruby-comment cmt"># Reinforcing irb defaults</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">completion_append_character</span> = <span class="ruby-keyword kw">nil</span>&#x000A;      <span class="ruby-keyword kw">if</span> <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value str">&quot;basic_word_break_characters=&quot;</span>)&#x000A;        <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">basic_word_break_characters</span> = <span class="ruby-constant">DefaultBreakCharacters</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">completion_proc</span> = <span class="ruby-keyword kw">self</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>
