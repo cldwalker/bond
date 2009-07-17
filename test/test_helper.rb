@@ -31,6 +31,17 @@ class Test::Unit::TestCase
     fake.string
   end
 
+  def capture_stdout(&block)
+    original_stdout = $stdout
+    $stdout = fake = StringIO.new
+    begin
+      yield
+    ensure
+      $stdout = original_stdout
+    end
+    fake.string
+  end
+
   def complete(full_line, last_word=full_line)
     Bond.agent.stubs(:line_buffer).returns(full_line)
     Bond.agent.call(last_word)

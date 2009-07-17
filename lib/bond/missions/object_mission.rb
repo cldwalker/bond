@@ -3,6 +3,8 @@
 # an ancestor specified by :object.
 class Bond::Missions::ObjectMission < Bond::Mission
   #:stopdoc:
+  attr_reader :object_condition
+
   def initialize(options={})
     @object_condition = options.delete(:object)
     @object_condition = /^#{Regexp.quote(@object_condition.to_s)}$/ unless @object_condition.is_a?(Regexp)

@@ -19,7 +19,8 @@ module Bond
 
     # This is where the action starts when a completion is initiated.
     def call(input)
-      (mission = find_mission(input)) ? mission.execute : default_mission.execute(input)
+      # Use line_buffer instead of input since it's more info
+      (mission = find_mission(line_buffer)) ? mission.execute : default_mission.execute(input)
     rescue FailedExecutionError
       $stderr.puts "", $!.message
     rescue
@@ -30,10 +31,23 @@ module Bond
       default_mission.execute(input)
     end
 
-    # No need to use what's passed to the completion proc when we can get the full line.
+    def spy(input)
+      if (mission = find_mission(input))
+        if mission.is_a?(Missions::ObjectMission)
+          puts "Matches completion mission for object with an ancestor matching #{mission.object_condition.inspect}."
+        elsif mission.is_a?(Missions::MethodMission)
+          puts "Matches completion mission for method matching #{mission.method_condition.inspect}."
+        else
+          puts "Matches completion mission with condition #{mission.condition.inspect}."
+        end
+        puts "Possible completions: #{mission.execute.inspect}"
+      else
+        puts "Doesn't match a completion mission."
+      end
+    end
+
     def find_mission(input) #:nodoc:
-      all_input = line_buffer
-      @missions.find {|mission| mission.matches?(all_input) }
+      @missions.find {|mission| mission.matches?(input) }
     end
 
     # Default mission used by agent.

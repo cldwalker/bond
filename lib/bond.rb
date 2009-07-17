@@ -65,7 +65,7 @@ module Bond
     @agent = nil
   end
 
-  # Debriefs Bond to set global defaults.
+  # Debriefs Bond to set global defaults. Call before defining completions.
   # ==== Options:
   # [:readline_plugin] Specifies a Bond plugin to interface with a Readline-like library. Available plugins are Bond::Readline and Bond::Rawline.
   #                    Defaults to Bond::Readline. Note that a plugin doesn't imply use with irb. Irb is joined to the hip with Readline.
@@ -80,6 +80,12 @@ module Bond
     unless config[:readline_plugin].is_a?(Module) && plugin_methods.all? {|e| config[:readline_plugin].instance_methods.include?(e)}
       $stderr.puts "Invalid readline plugin set. Try again."
     end
+  end
+
+  # Reports what completion mission and possible completions would happen for a given input. Helpful for debugging
+  # your completion missions.
+  def spy(input)
+    agent.spy(input)
   end
 
   def agent #:nodoc:

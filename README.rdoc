@@ -186,6 +186,5 @@ character typed.
 == Todo
 * Allow Bond to easily get its completion missions from a module.
 * Provide a set of Bond completions which can serve as a drop-in replacement for irb/completion.
-* Bond.spy for easily viewing/debugging what completion mission matches a given input.
 * Argument autocompletion by object class.
 * Make replacement of existing completions not require doing a Bond.reset.

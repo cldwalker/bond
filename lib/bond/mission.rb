@@ -21,7 +21,7 @@ module Bond
       end
     end
 
-    attr_reader :action
+    attr_reader :action, :condition
     OPERATORS = ["%", "&", "*", "**", "+",  "-",  "/", "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>", "[]", "[]=", "^"]
 
     # Options are almost the same as those explained at Bond.complete. The only difference is that the action is passed

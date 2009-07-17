@@ -43,4 +43,27 @@ class Bond::AgentTest < Test::Unit::TestCase
       capture_stderr { complete('bling') }.should =~ /bling.*whoops/m
     end
   end
+
+  context "spy" do
+    before(:all) {
+      Bond.reset; Bond.complete(:on=>/end$/) { [] }; Bond.complete(:method=>'the') { %w{spy who loved me} }
+      Bond.complete(:object=>"Symbol")
+    }
+
+    test "detects basic mission" do
+      capture_stdout { Bond.spy('the end')}.should =~ /end/
+    end
+
+    test "detects object mission" do
+      capture_stdout { Bond.spy(':dude.i')}.should =~ /object.*Symbol.*dude\.id/m
+    end
+
+    test "detects method mission" do
+      capture_stdout { Bond.spy('the ')}.should =~ /method.*the.*loved/m
+    end
+
+    test "detects no mission" do
+      capture_stdout { Bond.spy('blah')}.should =~ /Doesn't match/
+    end
+  end
 end
