@@ -7,7 +7,7 @@ class Bond::Missions::ObjectMission < Bond::Mission
     @object_condition = options.delete(:object)
     @object_condition = /^#{Regexp.quote(@object_condition.to_s)}$/ unless @object_condition.is_a?(Regexp)
     options[:on] = /^((\.?[^.]+)+)\.([^.]*)$/
-    @eval_binding = options[:eval_binding] || default_eval_binding
+    @eval_binding = options[:eval_binding]
     super
   end
 
@@ -27,11 +27,15 @@ class Bond::Missions::ObjectMission < Bond::Mission
 
   def eval_object(match)
     @matched = match
-    @evaled_object = begin eval("#{match[1]}", @eval_binding); rescue Exception; nil end
+    @evaled_object = begin eval("#{match[1]}", eval_binding); rescue Exception; nil end
   end
 
   def default_action(obj)
     obj.methods - OPERATORS
+  end
+
+  def eval_binding
+    @eval_binding ||= default_eval_binding
   end
 
   def default_eval_binding

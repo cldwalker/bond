@@ -60,28 +60,5 @@ class Bond::MissionTest < Test::Unit::TestCase
       complete("blah and").should == ['and_one']
       complete("blah b-t").should == ['big_two']
     end
-
-    test "with object and default action completes" do
-      Bond.complete(:object=>"String")
-      Bond.complete(:on=>/man/) { %w{upper upster upful}}
-      complete("'man'.u").should == ["'man'.upcase!", "'man'.unpack", "'man'.untaint", "'man'.upcase", "'man'.upto"]
-    end
-
-    test "with regex object completes" do
-      Bond.complete(:object=>/Str/) {|e| e.object.class.superclass.instance_methods(true) }
-      Bond.complete(:on=>/man/) { %w{upper upster upful}}
-      complete("'man'.u").should == ["'man'.untaint"]
-    end
-
-    test "with object and explicit action completes" do
-      Bond.complete(:object=>"String") {|e| e.object.class.superclass.instance_methods(true) }
-      Bond.complete(:on=>/man/) { %w{upper upster upful}}
-      complete("'man'.u").should == ["'man'.untaint"]
-    end
-
-    test "ignores invalid objects" do
-      Bond.complete(:object=>"String")
-      complete("blah.upt").should == []
-    end
   end
 end
