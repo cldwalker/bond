@@ -1,2 +1,7 @@
+== 0.1.1
+* Added Bond.spy to debug completions
+* Fixed object completion failing in irbrc
+* Allow regex characters in completions
+
 == 0.1.0
 * Intial release. Whoop!
