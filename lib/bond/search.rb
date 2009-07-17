@@ -3,17 +3,17 @@ module Bond
   module Search
     # Searches completions from the beginning of the string.
     def default_search(input, list)
-      list.grep(/^#{input}/)
+      list.grep(/^#{Regexp.escape(input)}/)
     end
 
     # Searches completions anywhere in the string.
     def anywhere_search(input, list)
-      list.grep(/#{input}/)
+      list.grep(/#{Regexp.escape(input)}/)
     end
 
     # Searches completions from the beginning and ignores case.
     def ignore_case_search(input, list)
-      list.grep(/^#{input}/i)
+      list.grep(/^#{Regexp.escape(input)}/i)
     end
 
     # Searches completions from the beginning but also provides aliasing of underscored words.
@@ -23,7 +23,7 @@ module Bond
     def underscore_search(input, list)
       split_input = input.split("-").join("")
       list.select {|c|
-        c.split("_").map {|g| g[0,1] }.join("") =~ /^#{split_input}/ || c =~ /^#{input}/
+        c.split("_").map {|g| g[0,1] }.join("") =~ /^#{Regexp.escape(split_input)}/ || c =~ /^#{Regexp.escape(input)}/
       }
     end
   end

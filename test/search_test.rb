@@ -31,4 +31,12 @@ class Bond::SearchTest < Test::Unit::TestCase
       complete("blah b-t").should == ['big_two']
     end
   end
+
+  test "search handles completions with regex characters" do
+    completions = ['[doh]', '.*a', '?ok']
+    Bond.complete(:on=>/blah/) { completions }
+    complete('blah .').should == ['.*a']
+    complete('blah [').should == ['[doh]']
+    complete('blah ?').should == ['?ok']
+  end
 end

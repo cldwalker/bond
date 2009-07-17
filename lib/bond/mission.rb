@@ -49,7 +49,7 @@ module Bond
     def execute(*args)
       if args.empty?
         list = (@action.call(@input) || []).map {|e| e.to_s }
-        list = @search ? @search.call(@input, list) : list
+        list = @search ? @search.call(@input || '', list) : list
         @list_prefix ? list.map {|e| @list_prefix + e } : list
       else
         @action.call(*args)
