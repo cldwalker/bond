@@ -32,5 +32,12 @@ class Bond::ObjectMissionTest < Test::Unit::TestCase
       Object.expects(:const_defined?).never
       Bond.complete(:object=>"String")
     end
+
+    test "sets binding to toplevel binding when not in irb" do
+      Object.expects(:const_defined?).with(:IRB).returns(false)
+      mission = Bond::Mission.create(:object=>'Symbol')
+      mission.matches?(':ok.')
+      mission.eval_binding.should == ::TOPLEVEL_BINDING
+    end
   end
 end
