@@ -77,7 +77,8 @@ module Bond
   def debrief(options={})
     config.merge! options
     plugin_methods = %w{setup line_buffer}
-    unless config[:readline_plugin].is_a?(Module) && plugin_methods.all? {|e| config[:readline_plugin].instance_methods.include?(e)}
+    unless config[:readline_plugin].is_a?(Module) &&
+      plugin_methods.all? {|e| config[:readline_plugin].instance_methods.map {|f| f.to_s}.include?(e)}
       $stderr.puts "Invalid readline plugin set. Try again."
     end
   end

@@ -33,7 +33,7 @@ class Bond::Missions::ObjectMission < Bond::Mission
   end
 
   def default_action(obj)
-    obj.methods - OPERATORS
+    obj.methods.map {|e| e.to_s} - OPERATORS
   end
 
   def eval_binding
