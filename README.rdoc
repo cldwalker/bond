@@ -179,10 +179,6 @@ which Bond uses to read Readline's full buffer. Thanks also goes out to Takao Ko
 commiting}[http://svn.ruby-lang.org/cgi-bin/viewvc.cgi/trunk/ext/readline/readline.c?view=diff&r1=24018&r2=24019]
 this Readline enhancement to ruby.
 
-== Bugs
-The underscore search intermittently doesn't complete when it should and deletes the last
-character typed.
-
 == Todo
 * Allow Bond to easily get its completion missions from a module.
 * Provide a set of Bond completions which can serve as a drop-in replacement for irb/completion.
