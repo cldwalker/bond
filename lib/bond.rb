@@ -54,6 +54,9 @@ module Bond
   rescue InvalidMissionError
     $stderr.puts "Invalid mission given. Mission needs an action and a condition."
     false
+  rescue InvalidMissionActionError
+    $stderr.puts "Invalid mission action given. Make sure action responds to :call or refers to a predefined action that does."
+    false
   rescue
     $stderr.puts "Mission setup failed with:", $!
     false

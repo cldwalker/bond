@@ -44,6 +44,17 @@ class Bond::MissionTest < Test::Unit::TestCase
       Bond.complete(:on=>/.*/) { [:one,:two,:three] }
       complete('ok ').should == %w{one two three}
     end
+
+    test "with symbol action completes" do
+      eval %[module ::Bond::Actions; def blah(input); %w{one two three}; end; end]
+      Bond.complete(:method=>'blah', :action=>:blah)
+      complete('blah ').should == %w{one two three}
+    end
+
+    test "with invalid action prints error" do
+      Bond.complete(:on=>/bling/) {|e| raise "whoops" }
+      capture_stderr { complete('bling') }.should =~ /bling.*whoops/m
+    end
   end
 
   test "default_mission set to a valid mission if irb doesn't exist" do

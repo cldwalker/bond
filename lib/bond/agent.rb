@@ -14,7 +14,8 @@ module Bond
     end
 
     def complete(options={}, &block) #:nodoc:
-      @missions << Mission.create(options.merge(:action=>block, :eval_binding=>@eval_binding))
+      options[:action] ||= block
+      @missions << Mission.create(options.merge(:eval_binding=>@eval_binding))
     end
 
     # This is where the action starts when a completion is initiated.

@@ -183,7 +183,6 @@ this Readline enhancement to ruby.
 * http://tagaholic.me/2009/07/16/bond-from-irb-with-completion-love.html
 
 == Todo
-* Allow Bond to easily get its completion missions from a module.
 * Provide a set of Bond completions which can serve as a drop-in replacement for irb/completion.
 * Argument autocompletion by object class.
 * Make replacement of existing completions not require doing a Bond.reset.

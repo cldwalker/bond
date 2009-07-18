@@ -1,10 +1,14 @@
 module Bond
   # Occurs when a mission is incorrectly defined.
   class InvalidMissionError < StandardError; end
+  # Occurs when a mission action is incorrectly defined.
+  class InvalidMissionActionError < StandardError; end
   # Occurs when a mission or search action fails.
   class FailedExecutionError < StandardError; end
   # Namespace for subclasses of Bond::Mission.
   class Missions; end
+  # Namespace for mission actions.
+  module Actions; end
 
   # A set of conditions and actions to take for a completion scenario or mission in Bond's mind.
   class Mission
@@ -21,6 +25,10 @@ module Bond
       end
     end
 
+    def self.action_object
+      @action_object ||= Object.new.extend(Actions)
+    end
+
     attr_reader :action, :condition
     OPERATORS = ["%", "&", "*", "**", "+",  "-",  "/", "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>", "[]", "[]=", "^"]
 
@@ -30,7 +38,9 @@ module Bond
       raise InvalidMissionError unless (options[:action] || respond_to?(:default_action)) &&
         (options[:on] || is_a?(Missions::DefaultMission))
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
-      @action = options[:action]
+      @action = options[:action].is_a?(Symbol) && self.class.action_object.respond_to?(options[:action]) ?
+        self.class.action_object.method(options[:action]) : options[:action]
+      raise InvalidMissionActionError if @action && !@action.respond_to?(:call)
       @condition = options[:on]
       @search = options.has_key?(:search) ? options[:search] : method(:default_search)
       @search = method("#{options[:search]}_search") if respond_to?("#{options[:search]}_search")
