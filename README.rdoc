@@ -179,6 +179,9 @@ which Bond uses to read Readline's full buffer. Thanks also goes out to Takao Ko
 commiting}[http://svn.ruby-lang.org/cgi-bin/viewvc.cgi/trunk/ext/readline/readline.c?view=diff&r1=24018&r2=24019]
 this Readline enhancement to ruby.
 
+== Links
+* http://tagaholic.me/2009/07/16/bond-from-irb-with-completion-love.html
+
 == Todo
 * Allow Bond to easily get its completion missions from a module.
 * Provide a set of Bond completions which can serve as a drop-in replacement for irb/completion.
