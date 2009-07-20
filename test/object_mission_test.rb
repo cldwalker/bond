@@ -7,19 +7,24 @@ class Bond::ObjectMissionTest < Test::Unit::TestCase
     test "with default action completes" do
       Bond.complete(:object=>"String")
       Bond.complete(:on=>/man/) { %w{upper upster upful}}
-      complete("'man'.u").should == ["'man'.upcase!", "'man'.unpack", "'man'.untaint", "'man'.upcase", "'man'.upto"]
+      complete("'man'.u").should == [".upcase!", ".unpack", ".untaint", ".upcase", ".upto"]
     end
 
     test "with regex condition completes" do
       Bond.complete(:object=>/Str/) {|e| e.object.class.superclass.instance_methods(true) }
       Bond.complete(:on=>/man/) { %w{upper upster upful}}
-      complete("'man'.u").should == ["'man'.untaint"]
+      complete("'man'.u").should == [".untaint"]
     end
 
     test "with explicit action completes" do
       Bond.complete(:object=>"String") {|e| e.object.class.superclass.instance_methods(true) }
       Bond.complete(:on=>/man/) { %w{upper upster upful}}
-      complete("'man'.u").should == ["'man'.untaint"]
+      complete("'man'.u").should == [".untaint"]
+    end
+
+    test "completes without including word break characters" do
+      Bond.complete(:object=>"Hash")
+      complete("{}.f").all? {|e| !e.include?('{')}.should == true
     end
 
     test "ignores invalid invalid ruby" do

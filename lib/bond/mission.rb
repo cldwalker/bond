@@ -55,6 +55,7 @@ module Bond
 
     # Returns a boolean indicating if a mission matches the given input.
     def matches?(input)
+      @matched = @input = @list_prefix = nil
       if (match = handle_valid_match(input))
         @input.instance_variable_set("@matched", @matched)
         @input.instance_eval("def self.matched; @matched ; end")
@@ -67,7 +68,11 @@ module Bond
       if args.empty?
         list = (@action.call(@input) || []).map {|e| e.to_s }
         list = @search ? @search.call(@input || '', list) : list
-        @list_prefix ? list.map {|e| @list_prefix + e } : list
+        if @list_prefix
+          @list_prefix = @list_prefix.split(Regexp.union(*Readline::DefaultBreakCharacters.split('')))[-1]
+          list = list.map {|e| @list_prefix + e }
+        end
+        list
       else
         @action.call(*args)
       end
