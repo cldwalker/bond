@@ -29,19 +29,11 @@ class Bond::Missions::ObjectMission < Bond::Mission
 
   def eval_object(match)
     @matched = match
-    @evaled_object = begin eval("#{match[1]}", eval_binding); rescue Exception; nil end
+    @evaled_object = self.class.current_eval(match[1], @eval_binding)
   end
 
   def default_action(obj)
     obj.methods.map {|e| e.to_s} - OPERATORS
-  end
-
-  def eval_binding
-    @eval_binding ||= default_eval_binding
-  end
-
-  def default_eval_binding
-    Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding : ::TOPLEVEL_BINDING
   end
   #:startdoc:
 end

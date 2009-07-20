@@ -7,8 +7,6 @@ module Bond
   class FailedExecutionError < StandardError; end
   # Namespace for subclasses of Bond::Mission.
   class Missions; end
-  # Namespace for mission actions.
-  module Actions; end
 
   # A set of conditions and actions to take for a completion scenario or mission in Bond's mind.
   class Mission
@@ -27,6 +25,15 @@ module Bond
 
     def self.action_object
       @action_object ||= Object.new.extend(Actions)
+    end
+
+    def self.current_eval(string, eval_binding=nil)
+      eval_binding ||= default_eval_binding
+      begin eval(string, eval_binding); rescue Exception; nil end
+    end
+
+    def self.default_eval_binding
+      Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding : ::TOPLEVEL_BINDING
     end
 
     attr_reader :action, :condition
