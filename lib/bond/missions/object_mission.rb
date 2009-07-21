@@ -21,7 +21,7 @@ class Bond::Missions::ObjectMission < Bond::Mission
         return false
       end
       if (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition })
-        @list_prefix = @matched[1] + "."
+        @completion_prefix = @matched[1] + "."
         @input = @matched[2]
         @input.instance_variable_set("@object", @evaled_object)
         @input.instance_eval("def self.object; @object ; end")

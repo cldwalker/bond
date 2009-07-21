@@ -1,11 +1,12 @@
 # An enhanced irb/completion with some handy argument completions
-
+Bond.debrief(:default_search=>:underscore) unless Bond.config[:default_search]
+Bond.debrief(:default_mission=>:default) unless Bond.config[:default_mission]
 Bond.complete(:method=>/system|`/, :action=>:shell_commands)
 Bond.complete(:method=>'require', :action=>:method_require, :search=>false)
 
 # irb/completion reproduced
-Bond.complete(:object=>"Object", :search=>:underscore)
-Bond.complete(:on=>/([^.\s]+)\.([^.]*)$/, :object=>"Object", :search=>:underscore)
+Bond.complete(:object=>"Object")
+Bond.complete(:on=>/([^.\s]+)\.([^.]*)$/, :object=>"Object")
 Bond.complete(:on=>/(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)$/, :action=>:constants, :search=>false)
 Bond.complete(:on=>/::([A-Z][^:\.\(]*)$/, :search=>false) {|e|
   Object.constants.grep(/^#{Regexp.escape(e.matched[1])}/).collect{|f| "::" + f}

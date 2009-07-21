@@ -16,9 +16,18 @@ class BondTest < Test::Unit::TestCase
     end
 
     test "sets default mission" do
-      default_mission = lambda {}
+      default_mission = lambda { %w{1 2 3}}
+      Bond.reset
       Bond.debrief :default_mission=>default_mission, :readline_plugin=>valid_readline_plugin
-      Bond.agent.default_mission.action.should == default_mission
+      tabtab('1').should == ['1']
+    end
+
+    test "sets default search" do
+      Bond.reset
+      Bond.debrief :default_search=>:underscore
+      complete(:method=>'blah') { %w{all_quiet on_the western_front}}
+      tabtab('blah a-q').should == ["all_quiet"]
+      Bond.reset
     end
   end
 

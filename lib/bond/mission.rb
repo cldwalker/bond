@@ -12,28 +12,37 @@ module Bond
   class Mission
     include Search
 
-    # Handles creation of proper Mission class depending on the options passed.
-    def self.create(options)
-      if options[:method]
-        Missions::MethodMission.new(options)
-      elsif options[:object]
-        Missions::ObjectMission.new(options)
-      else
-        new(options)
+    class<<self
+      # default search used across missions
+      attr_accessor :default_search
+      # Handles creation of proper Mission class depending on the options passed.
+      def create(options)
+        if options[:method]
+          Missions::MethodMission.new(options)
+        elsif options[:object]
+          Missions::ObjectMission.new(options)
+        else
+          new(options)
+        end
       end
-    end
+      #:stopdoc:
+      def action_object
+        @action_object ||= Object.new.extend(Actions)
+      end
 
-    def self.action_object
-      @action_object ||= Object.new.extend(Actions)
-    end
+      def current_eval(string, eval_binding=nil)
+        eval_binding ||= default_eval_binding
+        eval(string, eval_binding)
+      end
 
-    def self.current_eval(string, eval_binding=nil)
-      eval_binding ||= default_eval_binding
-      eval(string, eval_binding)
-    end
+      def default_eval_binding
+        Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding : ::TOPLEVEL_BINDING
+      end
 
-    def self.default_eval_binding
-      Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding : ::TOPLEVEL_BINDING
+      def default_search
+        @default_search ||= :default
+      end
+      #:startdoc:
     end
 
     attr_reader :action, :condition
@@ -49,8 +58,8 @@ module Bond
         self.class.action_object.method(options[:action]) : options[:action]
       raise InvalidMissionActionError if @action && !@action.respond_to?(:call)
       @condition = options[:on]
-      @search = options.has_key?(:search) ? options[:search] : method(:default_search)
-      @search = method("#{options[:search]}_search") if respond_to?("#{options[:search]}_search")
+      @search = options.has_key?(:search) ? options[:search] : Mission.default_search
+      @search = method("#{@search}_search") unless @search.is_a?(Proc) || @search == false
     end
 
     # Returns a boolean indicating if a mission matches the given input.
@@ -64,18 +73,15 @@ module Bond
     end
 
     # Called when a mission has been chosen to autocomplete.
-    def execute(*args)
-      if args.empty?
-        list = (@action.call(@input) || []).map {|e| e.to_s }
-        list = @search ? @search.call(@input || '', list) : list
-        if @list_prefix
-          @list_prefix = @list_prefix.split(Regexp.union(*Readline::DefaultBreakCharacters.split('')))[-1]
-          list = list.map {|e| @list_prefix + e }
-        end
-        list
-      else
-        @action.call(*args)
+    def execute(input=@input)
+      completions = @action.call(input)
+      completions = (completions || []).map {|e| e.to_s }
+      completions =  @search.call(input || '', completions) if @search
+      if @completion_prefix
+        @completion_prefix = @completion_prefix.split(Regexp.union(*Readline::DefaultBreakCharacters.split('')))[-1]
+        completions = completions.map {|e| @completion_prefix + e }
       end
+      completions
     rescue
       error_message = "Mission action failed to execute properly. Check your mission action with pattern #{@condition.inspect}.\n" +
         "Failed with error: #{$!.message}"

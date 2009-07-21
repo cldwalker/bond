@@ -75,6 +75,7 @@ module Bond
   #                    Defaults to Bond::Readline. Note that a plugin doesn't imply use with irb. Irb is joined to the hip with Readline.
   # [:default_mission] A proc to be used as the default completion proc when no completions match or one fails. When in irb with completion
   #                    enabled, uses irb completion. Otherwise defaults to a proc with an empty completion list.
+  # [:default_search] A symbol representing the default search to be used in completions. See Bond.complete's :search option for valid values.
   # [:eval_binding] Specifies a binding to be used with Bond::Missions::ObjectMission. When in irb, defaults to irb's main binding. Otherwise
   #                 defaults to TOPLEVEL_BINDING.
   # [:debug]  Boolean to print unexpected errors when autocompletion fails. Default is false.
