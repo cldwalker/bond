@@ -7,44 +7,44 @@ class Bond::ObjectMissionTest < Test::Unit::TestCase
     test "with default action completes" do
       Bond.complete(:object=>"String")
       Bond.complete(:on=>/man/) { %w{upper upster upful}}
-      complete("'man'.u").should == [".upcase!", ".unpack", ".untaint", ".upcase", ".upto"]
+      tabtab("'man'.u").should == [".upcase!", ".unpack", ".untaint", ".upcase", ".upto"]
     end
 
     test "with regex condition completes" do
       Bond.complete(:object=>/Str/) {|e| e.object.class.superclass.instance_methods(true) }
       Bond.complete(:on=>/man/) { %w{upper upster upful}}
-      complete("'man'.u").should == [".untaint"]
+      tabtab("'man'.u").should == [".untaint"]
     end
 
     test "with explicit action completes" do
       Bond.complete(:object=>"String") {|e| e.object.class.superclass.instance_methods(true) }
       Bond.complete(:on=>/man/) { %w{upper upster upful}}
-      complete("'man'.u").should == [".untaint"]
+      tabtab("'man'.u").should == [".untaint"]
     end
 
     test "completes without including word break characters" do
       Bond.complete(:object=>"Hash")
-      matches = complete("{}.f")
+      matches = tabtab("{}.f")
       assert matches.size > 0
       matches.all? {|e| !e.include?('{')}.should == true
     end
 
     test "completes nil, false and range objects" do
       Bond.complete(:object=>"Object")
-      assert complete("nil.f").size > 0
-      assert complete("false.f").size > 0
-      assert complete("(1..10).f").size > 0
+      assert tabtab("nil.f").size > 0
+      assert tabtab("false.f").size > 0
+      assert tabtab("(1..10).f").size > 0
     end
 
     test "completes hashes and arrays with spaces" do
       Bond.complete(:object=>"Object")
-      assert complete("[1, 2].f").size > 0
-      assert complete("{:a =>1}.f").size > 0
+      assert tabtab("[1, 2].f").size > 0
+      assert tabtab("{:a =>1}.f").size > 0
     end
 
     test "ignores invalid invalid ruby" do
       Bond.complete(:object=>"String")
-      complete("blah.upt").should == []
+      tabtab("blah.upt").should == []
     end
 
     # needed to ensure Bond works in irbrc

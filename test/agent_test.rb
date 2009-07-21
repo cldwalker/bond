@@ -9,14 +9,14 @@ class Bond::AgentTest < Test::Unit::TestCase
     test "chooses default mission if no missions match" do
       Bond.complete(:on=>/bling/) {|e| [] }
       Bond.agent.default_mission.expects(:execute)
-      complete 'blah'
+      tabtab 'blah'
     end
 
     test "chooses default mission if internal processing fails" do
       Bond.complete(:on=>/bling/) {|e| [] }
       Bond.agent.expects(:find_mission).raises
       Bond.agent.default_mission.expects(:execute)
-      complete('bling')
+      tabtab('bling')
     end
   end
 
