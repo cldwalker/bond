@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 class Bond::CompletionTest < Test::Unit::TestCase
-  before(:all) { Bond.agent.reset; Bond.debrief(:readline_plugin=>valid_readline_plugin); require 'bond/completion' }
+  before(:all) { Bond.reset; Bond.debrief(:readline_plugin=>valid_readline_plugin); require 'bond/completion' }
 
   test "completes object methods anywhere" do
     matches = tabtab("blah :man.")
@@ -26,5 +26,9 @@ class Bond::CompletionTest < Test::Unit::TestCase
   test "completes symbols anywhere" do
     Symbol.expects(:all_symbols).returns([:mah])
     assert tabtab("blah :m").size > 0
+  end
+
+  test "methods don't swallow up default completion" do
+    Bond.agent.find_mission("Bond.complete(:method=>'blah') { Arr").should == nil
   end
 end
