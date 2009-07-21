@@ -3,6 +3,8 @@ module Bond
   module Actions  
     def current_eval(string)
       Missions::ObjectMission.current_eval(string)
+    rescue Exception
+      nil
     end
 
     def shell_commands(input)

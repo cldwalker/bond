@@ -8,21 +8,27 @@ class Bond::Missions::ObjectMission < Bond::Mission
   def initialize(options={})
     @object_condition = options.delete(:object)
     @object_condition = /^#{Regexp.quote(@object_condition.to_s)}$/ unless @object_condition.is_a?(Regexp)
-    options[:on] = /^((\.?[^.]+)+)\.([^.]*)$/
+    options[:on] = /((\.?[^\s.]+)+)\.([^.]*)$/
     @eval_binding = options[:eval_binding]
     super
   end
 
   def handle_valid_match(input)
-    match = super
-    if match && eval_object(match) && (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition })
-      @list_prefix = @matched[1] + "."
-      @input = @matched[3]
-      @input.instance_variable_set("@object", @evaled_object)
-      @input.instance_eval("def self.object; @object ; end")
-      @action ||= lambda {|e| default_action(e.object) }
-    else
-      match = false
+    if (match = super)
+      begin
+        eval_object(match)
+      rescue Exception
+        return false
+      end
+      if (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition })
+        @list_prefix = @matched[1] + "."
+        @input = @matched[3]
+        @input.instance_variable_set("@object", @evaled_object)
+        @input.instance_eval("def self.object; @object ; end")
+        @action ||= lambda {|e| default_action(e.object) }
+      else
+        match = false
+      end
     end
     match
   end

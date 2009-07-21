@@ -24,7 +24,23 @@ class Bond::ObjectMissionTest < Test::Unit::TestCase
 
     test "completes without including word break characters" do
       Bond.complete(:object=>"Hash")
-      complete("{}.f").all? {|e| !e.include?('{')}.should == true
+      matches = complete("{}.f")
+      assert matches.size > 0
+      matches.all? {|e| !e.include?('{')}.should == true
+    end
+
+    test "completes nil and false values" do
+      Bond.complete(:object=>"NilClass")
+      Bond.complete(:object=>"FalseClass")
+      assert complete("nil.f").size > 0
+      assert complete("false.f").size > 0
+    end
+
+    test "completes methods anywhere in the line" do
+      Bond.complete(:object=>::Symbol)
+      matches = complete("blah :man.")
+      assert matches.size > 0
+      assert matches.all? {|e| e=~ /^:man/}
     end
 
     test "ignores invalid invalid ruby" do

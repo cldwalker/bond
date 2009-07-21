@@ -29,7 +29,7 @@ module Bond
 
     def self.current_eval(string, eval_binding=nil)
       eval_binding ||= default_eval_binding
-      begin eval(string, eval_binding); rescue Exception; nil end
+      eval(string, eval_binding)
     end
 
     def self.default_eval_binding
