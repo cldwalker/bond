@@ -25,8 +25,9 @@ module Bond
 
     # This is where the action starts when a completion is initiated.
     def call(input)
-      # Use line_buffer instead of input since it's more info
-      (mission = find_mission(line_buffer)) ? mission.execute : default_mission.execute(input)
+      mission_input = line_buffer
+      mission_input = $1 if mission_input !~ /#{Regexp.escape(input)}$/ && mission_input =~ /^(.*#{Regexp.escape(input)})/
+      (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(input)
     rescue FailedExecutionError
       $stderr.puts "", $!.message
     rescue

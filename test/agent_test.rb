@@ -18,6 +18,11 @@ class Bond::AgentTest < Test::Unit::TestCase
       Bond.agent.default_mission.expects(:execute)
       tabtab('bling')
     end
+
+    test "completes in middle of line" do
+      complete(:object=>"Object")
+      tabtab(':man.f blah', ':man.f').include?(':man.freeze').should == true
+    end
   end
 
   context "spy" do

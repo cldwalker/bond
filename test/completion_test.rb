@@ -29,7 +29,7 @@ class Bond::CompletionTest < Test::Unit::TestCase
   end
 
   test "completes string methods anywhere" do
-    tabtab("blah 'man'.f").should =~ /\.freeze/
+    tabtab("blah 'man'.f").include?('.freeze').should == true
   end
 
   test "methods don't swallow up default completion" do
