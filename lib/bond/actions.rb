@@ -33,6 +33,10 @@ module Bond
       }
     end
 
+    def quoted_files(input)
+      files(input.matched[1])
+    end
+
     def method_require(input)
       fs = ::File::SEPARATOR
       extensions_regex = /((\.(so|dll|rb|bundle))|#{fs})$/i

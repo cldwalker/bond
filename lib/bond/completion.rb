@@ -15,5 +15,6 @@ Bond.complete(:on=>/(:[^:\s.]*)$/) {|e|
 Bond.complete(:on=>/(\$[^\s.]*)$/, :search=>false) {|e|
   global_variables.grep(/^#{Regexp.escape(e.matched[1])}/)
 }
+Bond.complete(:on=>/\s+["']([^'"]*)$/, :search=>false, :action=>:quoted_files)
 Bond.complete(:object=>"Object")
 Bond.complete(:on=>/([^.\s]+)\.([^.\s]*)$/, :object=>"Object")

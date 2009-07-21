@@ -28,6 +28,10 @@ class Bond::CompletionTest < Test::Unit::TestCase
     assert tabtab("blah :m").size > 0
   end
 
+  test "completes string methods anywhere" do
+    tabtab("blah 'man'.f").should =~ /\.freeze/
+  end
+
   test "methods don't swallow up default completion" do
     Bond.agent.find_mission("Bond.complete(:method=>'blah') { Arr").should == nil
   end
