@@ -6,6 +6,6 @@ class Bond::Missions::DefaultMission < Bond::Mission
   end
 
   def default_action #:nodoc:
-    Object.const_defined?(:IRB) && IRB.const_defined?(:InputCompletor) ? IRB::InputCompletor::CompletionProc : lambda {|e| [] }
+    Object.const_defined?(:IRB) && IRB.const_defined?(:InputCompletor) ? IRB::InputCompletor::CompletionProc : :default
   end
 end
