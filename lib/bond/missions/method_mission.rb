@@ -3,7 +3,7 @@ class Bond::Missions::MethodMission < Bond::Mission
   attr_reader :method_condition
   def initialize(options={}) #:nodoc:
     @method_condition = options.delete(:method)
-    @method_condition = Regexp.quote(@method_condition.to_s) unless @method_condition.is_a?(Regexp)
+    @method_condition = Regexp.escape(@method_condition.to_s) unless @method_condition.is_a?(Regexp)
     options[:on] = /^\s*(#{@method_condition})\s*['"]?(.*)$/
     super
   end
