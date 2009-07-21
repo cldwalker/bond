@@ -17,8 +17,8 @@ require 'bond/missions/object_mission'
 # * Bond can work outside of irb and readline when debriefed with Bond.debrief. This should be called before any Bond.complete calls.
 # * Bond doesn't take over completion until an explicit Bond.complete is called.
 # * Order of completion missions matters. The order they're defined in is the order Bond searches
-#   when looking for a matching completion. This means that you should probably declare general
-#   completions at the end.
+#   when looking for a matching completion. This means that more specific completions like method and object completions should come
+#   before more general ones.
 # * If no completion missions match, then Bond falls back on a default mission. If using irb and irb/completion
 #   this falls back on irb's completion. Otherwise an empty completion list is returned.
 module Bond
