@@ -6,53 +6,53 @@ class Bond::MissionTest < Test::Unit::TestCase
   context "mission" do
     before(:each) {|e| Bond.agent.reset }
     test "completes" do
-      Bond.complete(:on=>/bling/) {|e| %w{ab cd fg hi}}
-      Bond.complete(:method=>'cool') {|e| [] }
+      complete(:on=>/bling/) {|e| %w{ab cd fg hi}}
+      complete(:method=>'cool') {|e| [] }
       tabtab('some bling f').should == %w{fg}
     end
 
     test "with method completes" do
-      Bond.complete(:on=>/bling/) {|e| [] }
-      Bond.complete(:method=>'cool') {|e| %w{ab cd ef gd} }
+      complete(:on=>/bling/) {|e| [] }
+      complete(:method=>'cool') {|e| %w{ab cd ef gd} }
       tabtab('cool c').should == %w{cd}
     end
 
     test "with method and quoted argument completes" do
-      Bond.complete(:on=>/bling/) {|e| [] }
-      Bond.complete(:method=>'cool') {|e| %w{ab cd ef ad} }
+      complete(:on=>/bling/) {|e| [] }
+      complete(:method=>'cool') {|e| %w{ab cd ef ad} }
       tabtab('cool "a').should == %w{ab ad}
     end
 
     test "with string method completes exact matches" do
-      Bond.complete(:method=>'cool?') {|e| [] }
-      Bond.complete(:method=>'cool') {|e| %w{ab cd ef gd} }
+      complete(:method=>'cool?') {|e| [] }
+      complete(:method=>'cool') {|e| %w{ab cd ef gd} }
       tabtab('cool c').should == %w{cd}
     end
 
     test "with regex method completes multiple methods" do
-      Bond.complete(:method=>/cool|ls/) {|e| %w{ab cd ef ad}}
+      complete(:method=>/cool|ls/) {|e| %w{ab cd ef ad}}
       tabtab("cool a").should == %w{ab ad}
       tabtab("ls c").should == %w{cd}
     end
 
     test "with regexp condition completes" do
-      Bond.complete(:on=>/\s*'([^']+)$/, :search=>false) {|e| %w{coco for puffs}.grep(/#{e.matched[1]}/) }
+      complete(:on=>/\s*'([^']+)$/, :search=>false) {|e| %w{coco for puffs}.grep(/#{e.matched[1]}/) }
       tabtab("require 'ff").should == ['puffs']
     end
 
     test "with non-string completions completes" do
-      Bond.complete(:on=>/.*/) { [:one,:two,:three] }
+      complete(:on=>/.*/) { [:one,:two,:three] }
       tabtab('ok ').should == %w{one two three}
     end
 
     test "with symbol action completes" do
       eval %[module ::Bond::Actions; def blah(input); %w{one two three}; end; end]
-      Bond.complete(:method=>'blah', :action=>:blah)
+      complete(:method=>'blah', :action=>:blah)
       tabtab('blah ').should == %w{one two three}
     end
 
     test "with invalid action prints error" do
-      Bond.complete(:on=>/bling/) {|e| raise "whoops" }
+      complete(:on=>/bling/) {|e| raise "whoops" }
       capture_stderr { tabtab('bling') }.should =~ /bling.*whoops/m
     end
   end

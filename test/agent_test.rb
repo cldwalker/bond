@@ -7,13 +7,13 @@ class Bond::AgentTest < Test::Unit::TestCase
     before(:each) {|e| Bond.agent.reset }
 
     test "chooses default mission if no missions match" do
-      Bond.complete(:on=>/bling/) {|e| [] }
+      complete(:on=>/bling/) {|e| [] }
       Bond.agent.default_mission.expects(:execute)
       tabtab 'blah'
     end
 
     test "chooses default mission if internal processing fails" do
-      Bond.complete(:on=>/bling/) {|e| [] }
+      complete(:on=>/bling/) {|e| [] }
       Bond.agent.expects(:find_mission).raises
       Bond.agent.default_mission.expects(:execute)
       tabtab('bling')
@@ -22,8 +22,8 @@ class Bond::AgentTest < Test::Unit::TestCase
 
   context "spy" do
     before(:all) {
-      Bond.reset; Bond.complete(:on=>/end$/) { [] }; Bond.complete(:method=>'the') { %w{spy who loved me} }
-      Bond.complete(:object=>"Symbol")
+      Bond.reset; complete(:on=>/end$/) { [] }; complete(:method=>'the') { %w{spy who loved me} }
+      complete(:object=>"Symbol")
     }
 
     test "detects basic mission" do

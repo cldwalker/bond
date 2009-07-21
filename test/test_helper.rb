@@ -47,6 +47,10 @@ class Test::Unit::TestCase
     Bond.agent.call(last_word)
   end
 
+  def complete(*args, &block)
+    Bond.complete(*args, &block)
+  end
+
   def valid_readline_plugin
     Module.new{ def setup; end; def line_buffer; end }
   end
