@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 
 class Bond::ObjectMissionTest < Test::Unit::TestCase
   before(:all) {|e| Bond.debrief(:readline_plugin=>valid_readline_plugin) }
-  before(:each) {|e| Bond.agent.instance_eval("@missions = []") }
+  before(:each) {|e| Bond.agent.reset }
   context "object mission" do
     test "with default action completes" do
       Bond.complete(:object=>"String")
@@ -29,18 +29,17 @@ class Bond::ObjectMissionTest < Test::Unit::TestCase
       matches.all? {|e| !e.include?('{')}.should == true
     end
 
-    test "completes nil and false values" do
-      Bond.complete(:object=>"NilClass")
-      Bond.complete(:object=>"FalseClass")
+    test "completes nil, false and range objects" do
+      Bond.complete(:object=>"Object")
       assert complete("nil.f").size > 0
       assert complete("false.f").size > 0
+      assert complete("(1..10).f").size > 0
     end
 
-    test "completes methods anywhere in the line" do
-      Bond.complete(:object=>::Symbol)
-      matches = complete("blah :man.")
-      assert matches.size > 0
-      assert matches.all? {|e| e=~ /^:man/}
+    test "completes hashes and arrays with spaces" do
+      Bond.complete(:object=>"Object")
+      assert complete("[1, 2].f").size > 0
+      assert complete("{:a =>1}.f").size > 0
     end
 
     test "ignores invalid invalid ruby" do

@@ -4,7 +4,7 @@ class Bond::AgentTest < Test::Unit::TestCase
   before(:all) {|e| Bond.debrief(:readline_plugin=>valid_readline_plugin) }
 
   context "Agent" do
-    before(:each) {|e| Bond.agent.instance_eval("@missions = []") }
+    before(:each) {|e| Bond.agent.reset }
 
     test "chooses default mission if no missions match" do
       Bond.complete(:on=>/bling/) {|e| [] }

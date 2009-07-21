@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 
 class Bond::SearchTest < Test::Unit::TestCase
   before(:all) {|e| Bond.debrief(:readline_plugin=>valid_readline_plugin) }
-  before(:each) {|e| Bond.agent.instance_eval("@missions = []") }
+  before(:each) {|e| Bond.agent.reset }
 
   context "mission with search" do
     test "false completes" do

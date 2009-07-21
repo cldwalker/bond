@@ -8,7 +8,7 @@ class Bond::Missions::ObjectMission < Bond::Mission
   def initialize(options={})
     @object_condition = options.delete(:object)
     @object_condition = /^#{Regexp.escape(@object_condition.to_s)}$/ unless @object_condition.is_a?(Regexp)
-    options[:on] = /((\.?[^\s.]+)+)\.([^.]*)$/
+    options[:on] ||= /(\S+|[^.]+)\.([^.]*)$/
     @eval_binding = options[:eval_binding]
     super
   end
@@ -22,7 +22,7 @@ class Bond::Missions::ObjectMission < Bond::Mission
       end
       if (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition })
         @list_prefix = @matched[1] + "."
-        @input = @matched[3]
+        @input = @matched[2]
         @input.instance_variable_set("@object", @evaled_object)
         @input.instance_eval("def self.object; @object ; end")
         @action ||= lambda {|e| default_action(e.object) }

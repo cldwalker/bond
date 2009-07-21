@@ -18,6 +18,10 @@ module Bond
       @missions << Mission.create(options.merge(:eval_binding=>@eval_binding))
     end
 
+    def reset #:nodoc:
+      @missions = []
+    end
+
     # This is where the action starts when a completion is initiated.
     def call(input)
       # Use line_buffer instead of input since it's more info

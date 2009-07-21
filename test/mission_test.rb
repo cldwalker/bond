@@ -4,7 +4,7 @@ class Bond::MissionTest < Test::Unit::TestCase
   before(:all) {|e| Bond.debrief(:readline_plugin=>valid_readline_plugin) }
 
   context "mission" do
-    before(:each) {|e| Bond.agent.instance_eval("@missions = []") }
+    before(:each) {|e| Bond.agent.reset }
     test "completes" do
       Bond.complete(:on=>/bling/) {|e| %w{ab cd fg hi}}
       Bond.complete(:method=>'cool') {|e| [] }
