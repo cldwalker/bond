@@ -45,7 +45,7 @@ module Bond
       #:startdoc:
     end
 
-    attr_reader :action, :condition
+    attr_reader :action, :condition, :place
     OPERATORS = ["%", "&", "*", "**", "+",  "-",  "/", "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>", "[]", "[]=", "^"]
 
     # Options are almost the same as those explained at Bond.complete. The only difference is that the action is passed
@@ -58,6 +58,7 @@ module Bond
         self.class.action_object.method(options[:action]) : options[:action]
       raise InvalidMissionActionError if @action && !@action.respond_to?(:call)
       @condition = options[:on]
+      @place = options[:place]
       @search = options.has_key?(:search) ? options[:search] : Mission.default_search
       @search = method("#{@search}_search") unless @search.is_a?(Proc) || @search == false
     end

@@ -18,7 +18,7 @@ require 'bond/missions/object_mission'
 # * Bond doesn't take over completion until an explicit Bond.complete is called.
 # * Order of completion missions matters. The order they're defined in is the order Bond searches
 #   when looking for a matching completion. This means that more specific completions like method and object completions should come
-#   before more general ones.
+#   before more general ones. You can tweak completion placement by passing :place to Bond.complete.
 # * If no completion missions match, then Bond falls back on a default mission. If using irb and irb/completion
 #   this falls back on irb's completion. Otherwise an empty completion list is returned.
 module Bond
@@ -42,11 +42,15 @@ module Bond
   #           traditional searching i.e. looking at the beginning of a string for possible matches. If false, search is turned off and
   #           assumed to be done in the action block. Possible symbols are :anywhere, :ignore_case and :underscore. See Bond::Search for
   #           more info about them. A proc is given two arguments: the input string and an array of possible completions.
+  # [:place] Given a symbol or number, controls where this completion is placed in relation to existing ones. If a number, the
+  #          completion is placed at that number. If the symbol :last, the completion is placed at the end regardless of completions
+  #          defined after it. Use this symbol as a way of anchoring completions you want to remain at the end. Multiple declarations
+  #          of :last are kept last in the order they are defined.
   #
   # ==== Examples:
   #  Bond.complete(:method=>'shoot') {|input| %w{to kill} }
   #  Bond.complete(:on=>/^((([a-z][^:.\(]*)+):)+/, :search=>false) {|input| Object.constants.grep(/#{input.matched[1]}/) }
-  #  Bond.complete(:object=>ActiveRecord::Base, :search=>:underscore)
+  #  Bond.complete(:object=>ActiveRecord::Base, :search=>:underscore, :place=>:last)
   #  Bond.complete(:object=>ActiveRecord::Base) {|input| input.object.class.instance_methods(false) }
   #  Bond.complete(:method=>'you', :search=>proc {|input, list| list.grep(/#{input}/i)} ) {|input| %w{Only Live Twice} }
   def complete(options={}, &block)
@@ -79,6 +83,9 @@ module Bond
   # [:eval_binding] Specifies a binding to be used with Bond::Missions::ObjectMission. When in irb, defaults to irb's main binding. Otherwise
   #                 defaults to TOPLEVEL_BINDING.
   # [:debug]  Boolean to print unexpected errors when autocompletion fails. Default is false.
+  #
+  # ==== Example:
+  #   Bond.debrief :default_search=>:underscore, :default_mission=>:default
   def debrief(options={})
     config.merge! options
     plugin_methods = %w{setup line_buffer}
@@ -90,6 +97,10 @@ module Bond
 
   # Reports what completion mission and possible completions would happen for a given input. Helpful for debugging
   # your completion missions.
+  # ==== Example:
+  #   >> Bond.spy "shoot oct"
+  #   Matches completion mission for method matching "shoot".
+  #   Possible completions: ["octopussy"]
   def spy(input)
     agent.spy(input)
   end

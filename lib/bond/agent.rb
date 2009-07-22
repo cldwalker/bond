@@ -16,7 +16,9 @@ module Bond
 
     def complete(options={}, &block) #:nodoc:
       options[:action] ||= block
-      @missions << Mission.create(options.merge(:eval_binding=>@eval_binding))
+      mission = Mission.create(options.merge(:eval_binding=>@eval_binding))
+      mission.place.is_a?(Integer) ? @missions.insert(mission.place - 1, mission).compact! : @missions << mission
+      @missions.replace @missions.partition {|e| e.place != :last }.flatten
     end
 
     def reset #:nodoc:

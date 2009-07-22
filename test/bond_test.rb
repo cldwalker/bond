@@ -11,7 +11,7 @@ class BondTest < Test::Unit::TestCase
       capture_stderr {Bond.debrief :readline_plugin=>Module.new{ def setup; end } }.should =~ /Invalid/
     end
 
-    test "no error if valid readline_plugin" do
+    test "prints no error if valid readline_plugin" do
       capture_stderr {Bond.debrief :readline_plugin=>valid_readline_plugin }.should == ''
     end
 

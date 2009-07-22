@@ -1,42 +1,47 @@
 module Bond
   # Namespace for mission actions.
-  module Actions  
-    def current_eval(string)
-      Missions::ObjectMission.current_eval(string)
-    rescue Exception
-      nil
-    end
-
-    def shell_commands(input)
-      ENV['PATH'].split(File::PATH_SEPARATOR).uniq.map {|e| Dir.entries(e) }.flatten.uniq - ['.', '..']
-    end
-
+  module Actions
     ReservedWords = [
       "BEGIN", "END", "alias", "and", "begin", "break", "case", "class", "def", "defined", "do", "else", "elsif", "end", "ensure",
       "false", "for", "if", "in", "module", "next", "nil", "not", "or", "redo", "rescue", "retry", "return", "self", "super",
       "then", "true", "undef", "unless", "until", "when", "while", "yield"
     ]
 
+    # Helper function for evaluating strings in the current console binding.
+    def current_eval(string)
+      Missions::ObjectMission.current_eval(string)
+    rescue Exception
+      nil
+    end
+
+    # Completes backtick and Kernel#system with shell commands available in ENV['PATH']
+    def shell_commands(input)
+      ENV['PATH'].split(File::PATH_SEPARATOR).uniq.map {|e| Dir.entries(e) }.flatten.uniq - ['.', '..']
+    end
+
+    # Default completion for non-irb console and bond/completion
     def default(input)
       current_eval("methods | private_methods | local_variables | self.class.constants") | ReservedWords
     end
 
-    def constants(input)
-      receiver = input.matched[1]
-      candidates = current_eval("#{receiver}.constants | #{receiver}.methods")
-      candidates.grep(/^#{Regexp.escape(input.matched[4])}/).map {|e| receiver + "::" + e}
-    end
-
+    # File completion
     def files(input)
       (::Readline::FILENAME_COMPLETION_PROC.call(input) || []).map {|f|
         f =~ /^~/ ?  File.expand_path(f) : f
       }
     end
 
-    def quoted_files(input)
+    def quoted_files(input) #:nodoc:
       files(input.matched[1])
     end
 
+    def constants(input) #:nodoc:
+      receiver = input.matched[1]
+      candidates = current_eval("#{receiver}.constants | #{receiver}.methods")
+      candidates.grep(/^#{Regexp.escape(input.matched[4])}/).map {|e| receiver + "::" + e}
+    end
+
+    # Completes Kernel#require
     def method_require(input)
       fs = ::File::SEPARATOR
       extensions_regex = /((\.(so|dll|rb|bundle))|#{fs})$/i

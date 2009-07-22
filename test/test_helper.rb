@@ -55,4 +55,3 @@ class Test::Unit::TestCase
     Module.new{ def setup; end; def line_buffer; end }
   end
 end
-
