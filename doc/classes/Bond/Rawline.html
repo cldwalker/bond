@@ -50,37 +50,37 @@
             <h2>Methods</h2>
             <h3>public instance</h3>
             <ol>
-              <li><a href="#M000009">line_buffer</a></li>
-              <li><a href="#M000008">setup</a></li>
+              <li><a href="#M000010">line_buffer</a></li>
+              <li><a href="#M000009">setup</a></li>
             </ol>
           </div>
           <div id='section'>
             <div id='methods'>
               <h2>Public instance methods</h2>
+              <div class='public-instance method' id='method-M000010'>
+                <a name='M000010'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>line_buffer</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000010-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000010-source'><span class="ruby-comment cmt"># File lib/bond/rawline.rb, line 12</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">line_buffer</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Rawline</span>.<span class="ruby-identifier">editor</span>.<span class="ruby-identifier">line</span>.<span class="ruby-identifier">text</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
               <div class='public-instance method' id='method-M000009'>
                 <a name='M000009'>      </a>
                 <div class='synopsis'>
-                  <span class='name'>line_buffer</span>
+                  <span class='name'>setup</span>
                   <span class='arguments'>()</span>
                 </div>
                 <div class='source'>
                   <a class='source-toggle' href='#' onclick="toggleCode('M000009-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000009-source'><span class="ruby-comment cmt"># File lib/bond/rawline.rb, line 12</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">line_buffer</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Rawline</span>.<span class="ruby-identifier">editor</span>.<span class="ruby-identifier">line</span>.<span class="ruby-identifier">text</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
-                </div>
-              </div>
-              <div class='public-instance method' id='method-M000008'>
-                <a name='M000008'>      </a>
-                <div class='synopsis'>
-                  <span class='name'>setup</span>
-                  <span class='arguments'>()</span>
-                </div>
-                <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000008-source'); return false">
-                    [show source]
-                  </a>
-                  <pre id='M000008-source'><span class="ruby-comment cmt"># File lib/bond/rawline.rb, line 5</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup</span>&#x000A;      <span class="ruby-identifier">require</span> <span class="ruby-value str">'rawline'</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Rawline</span>.<span class="ruby-identifier">completion_append_character</span> = <span class="ruby-keyword kw">nil</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Rawline</span>.<span class="ruby-identifier">basic_word_break_characters</span>= <span class="ruby-value str">&quot; \t\n\&quot;\\'`&gt;&lt;;|&amp;{(&quot;</span> &#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Rawline</span>.<span class="ruby-identifier">completion_proc</span> = <span class="ruby-keyword kw">self</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000009-source'><span class="ruby-comment cmt"># File lib/bond/rawline.rb, line 5</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup</span>&#x000A;      <span class="ruby-identifier">require</span> <span class="ruby-value str">'rawline'</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Rawline</span>.<span class="ruby-identifier">completion_append_character</span> = <span class="ruby-keyword kw">nil</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Rawline</span>.<span class="ruby-identifier">basic_word_break_characters</span>= <span class="ruby-value str">&quot; \t\n\&quot;\\'`&gt;&lt;;|&amp;{(&quot;</span> &#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Rawline</span>.<span class="ruby-identifier">completion_proc</span> = <span class="ruby-keyword kw">self</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
             </div>

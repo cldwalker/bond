@@ -47,17 +47,17 @@
             <h2>Methods</h2>
             <h3>public instance</h3>
             <ol>
-              <li><a href="#M000005">anywhere_search</a></li>
-              <li><a href="#M000004">default_search</a></li>
-              <li><a href="#M000006">ignore_case_search</a></li>
-              <li><a href="#M000007">underscore_search</a></li>
+              <li><a href="#M000006">anywhere_search</a></li>
+              <li><a href="#M000005">default_search</a></li>
+              <li><a href="#M000007">ignore_case_search</a></li>
+              <li><a href="#M000008">underscore_search</a></li>
             </ol>
           </div>
           <div id='section'>
             <div id='methods'>
               <h2>Public instance methods</h2>
-              <div class='public-instance method' id='method-M000005'>
-                <a name='M000005'>      </a>
+              <div class='public-instance method' id='method-M000006'>
+                <a name='M000006'>      </a>
                 <div class='synopsis'>
                   <span class='name'>anywhere_search</span>
                   <span class='arguments'>(input, list)</span>
@@ -68,14 +68,14 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000005-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000006-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000005-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 10</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">anywhere_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-node">/#{input}/</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000006-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 10</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">anywhere_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-node">/#{Regexp.escape(input)}/</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000004'>
-                <a name='M000004'>      </a>
+              <div class='public-instance method' id='method-M000005'>
+                <a name='M000005'>      </a>
                 <div class='synopsis'>
                   <span class='name'>default_search</span>
                   <span class='arguments'>(input, list)</span>
@@ -86,14 +86,14 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000004-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000005-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000004-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 5</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">default_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-node">/^#{input}/</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000005-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 5</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">default_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-node">/^#{Regexp.escape(input)}/</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000006'>
-                <a name='M000006'>      </a>
+              <div class='public-instance method' id='method-M000007'>
+                <a name='M000007'>      </a>
                 <div class='synopsis'>
                   <span class='name'>ignore_case_search</span>
                   <span class='arguments'>(input, list)</span>
@@ -104,14 +104,14 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000006-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000007-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000006-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 15</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ignore_case_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-node">/^#{input}/i</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000007-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 15</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">ignore_case_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">grep</span>(<span class="ruby-node">/^#{Regexp.escape(input)}/i</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000007'>
-                <a name='M000007'>      </a>
+              <div class='public-instance method' id='method-M000008'>
+                <a name='M000008'>      </a>
                 <div class='synopsis'>
                   <span class='name'>underscore_search</span>
                   <span class='arguments'>(input, list)</span>
@@ -127,10 +127,10 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000007-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000008-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000007-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 23</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">underscore_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-identifier">split_input</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot;-&quot;</span>).<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;&quot;</span>)&#x000A;      <span class="ruby-identifier">list</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">c</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-identifier">c</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">&quot;_&quot;</span>).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">g</span><span class="ruby-operator">|</span> <span class="ruby-identifier">g</span>[<span class="ruby-value">0</span>,<span class="ruby-value">1</span>] }.<span class="ruby-identifier">join</span>(<span class="ruby-value str">&quot;&quot;</span>) <span class="ruby-operator">=~</span> <span class="ruby-node">/^#{split_input}/</span> <span class="ruby-operator">||</span> <span class="ruby-identifier">c</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/^#{input}/</span>&#x000A;      }&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000008-source'><span class="ruby-comment cmt"># File lib/bond/search.rb, line 23</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">underscore_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">input</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-value str">&quot;-&quot;</span>)&#x000A;        <span class="ruby-identifier">index</span> = <span class="ruby-value">0</span>&#x000A;        <span class="ruby-identifier">input</span>.<span class="ruby-identifier">split</span>(<span class="ruby-value str">'-'</span>).<span class="ruby-identifier">inject</span>(<span class="ruby-identifier">list</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">new_list</span>,<span class="ruby-identifier">e</span><span class="ruby-operator">|</span>&#x000A;          <span class="ruby-identifier">new_list</span> = <span class="ruby-identifier">new_list</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">split</span>(<span class="ruby-regexp re">/_+/</span>)[<span class="ruby-identifier">index</span>] <span class="ruby-operator">=~</span> <span class="ruby-node">/^#{Regexp.escape(e)}/</span> };&#x000A;          <span class="ruby-identifier">index</span> <span class="ruby-operator">+=</span><span class="ruby-value">1</span>; <span class="ruby-identifier">new_list</span>&#x000A;        }&#x000A;      <span class="ruby-keyword kw">else</span>&#x000A;        <span class="ruby-identifier">default_search</span>(<span class="ruby-identifier">input</span>, <span class="ruby-identifier">list</span>)&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
             </div>

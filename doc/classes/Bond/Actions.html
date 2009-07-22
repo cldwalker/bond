@@ -1,0 +1,172 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>: Bond::Actions [RDoc Documentation]</title>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <link href='../../rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='class' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>
+          <span class='type'>Module</span>
+          Bond::Actions
+        </h1>
+        <ol class='paths'>
+          <li>
+            <a href="../../files/lib/bond/actions_rb.html">lib/bond/actions.rb</a>
+          </li>
+        </ol>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='description'>
+            <p>
+            Namespace for mission actions.
+            </p>
+          </div>
+          <div id='method-list'>
+            <h2>Methods</h2>
+            <h3>public instance</h3>
+            <ol>
+              <li><a href="#M000011">current_eval</a></li>
+              <li><a href="#M000013">default</a></li>
+              <li><a href="#M000014">files</a></li>
+              <li><a href="#M000015">method_require</a></li>
+              <li><a href="#M000012">shell_commands</a></li>
+            </ol>
+          </div>
+          <div id='section'>
+            <div id='constants-list'>
+              <h2>Constants</h2>
+              <div class='name-list'>
+                <table summary='Constants'>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>ReservedWords</td>
+                    <td>=</td>
+                    <td class='context-item-value'>[       &quot;BEGIN&quot;, &quot;END&quot;, &quot;alias&quot;, &quot;and&quot;, &quot;begin&quot;, &quot;break&quot;, &quot;case&quot;, &quot;class&quot;, &quot;def&quot;, &quot;defined&quot;, &quot;do&quot;, &quot;else&quot;, &quot;elsif&quot;, &quot;end&quot;, &quot;ensure&quot;,       &quot;false&quot;, &quot;for&quot;, &quot;if&quot;, &quot;in&quot;, &quot;module&quot;, &quot;next&quot;, &quot;nil&quot;, &quot;not&quot;, &quot;or&quot;, &quot;redo&quot;, &quot;rescue&quot;, &quot;retry&quot;, &quot;return&quot;, &quot;self&quot;, &quot;super&quot;,       &quot;then&quot;, &quot;true&quot;, &quot;undef&quot;, &quot;unless&quot;, &quot;until&quot;, &quot;when&quot;, &quot;while&quot;, &quot;yield&quot;     ]</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+            <div id='methods'>
+              <h2>Public instance methods</h2>
+              <div class='public-instance method' id='method-M000011'>
+                <a name='M000011'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>current_eval</span>
+                  <span class='arguments'>(string)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Helper function for evaluating strings in the current console binding.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000011-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000011-source'><span class="ruby-comment cmt"># File lib/bond/actions.rb, line 11</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">current_eval</span>(<span class="ruby-identifier">string</span>)&#x000A;      <span class="ruby-constant">Missions</span><span class="ruby-operator">::</span><span class="ruby-constant">ObjectMission</span>.<span class="ruby-identifier">current_eval</span>(<span class="ruby-identifier">string</span>)&#x000A;    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span>&#x000A;      <span class="ruby-keyword kw">nil</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000013'>
+                <a name='M000013'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>default</span>
+                  <span class='arguments'>(input)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Default completion for non-irb console and bond/completion
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000013-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000013-source'><span class="ruby-comment cmt"># File lib/bond/actions.rb, line 23</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">default</span>(<span class="ruby-identifier">input</span>)&#x000A;      <span class="ruby-identifier">current_eval</span>(<span class="ruby-value str">&quot;methods | private_methods | local_variables | self.class.constants&quot;</span>) <span class="ruby-operator">|</span> <span class="ruby-constant">ReservedWords</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000014'>
+                <a name='M000014'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>files</span>
+                  <span class='arguments'>(input)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  File completion
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000014-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000014-source'><span class="ruby-comment cmt"># File lib/bond/actions.rb, line 28</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">files</span>(<span class="ruby-identifier">input</span>)&#x000A;      (<span class="ruby-operator">::</span><span class="ruby-constant">Readline</span><span class="ruby-operator">::</span><span class="ruby-constant">FILENAME_COMPLETION_PROC</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">input</span>) <span class="ruby-operator">||</span> []).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-identifier">f</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^~/</span> <span class="ruby-operator">?</span>  <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">f</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">f</span>&#x000A;      }&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000015'>
+                <a name='M000015'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>method_require</span>
+                  <span class='arguments'>(input)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Completes Kernel#require
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000015-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000015-source'><span class="ruby-comment cmt"># File lib/bond/actions.rb, line 45</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">method_require</span>(<span class="ruby-identifier">input</span>)&#x000A;      <span class="ruby-identifier">fs</span> = <span class="ruby-operator">::</span><span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">SEPARATOR</span>&#x000A;      <span class="ruby-identifier">extensions_regex</span> = <span class="ruby-node">/((\.(so|dll|rb|bundle))|#{fs})$/i</span>&#x000A;      <span class="ruby-identifier">input</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/^(\.{0,2}#{fs}|~)/</span> <span class="ruby-keyword kw">and</span> <span class="ruby-keyword kw">return</span> <span class="ruby-identifier">files</span>(<span class="ruby-identifier">input</span>).<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">extensions_regex</span> <span class="ruby-keyword kw">or</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span> <span class="ruby-identifier">f</span> }&#x000A;      <span class="ruby-identifier">dir_entries</span> = <span class="ruby-identifier">proc</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">dir</span><span class="ruby-operator">|</span> <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">entries</span>(<span class="ruby-identifier">dir</span>).<span class="ruby-identifier">delete_if</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-node">%w{. ..}</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">e</span>) }.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>&#x000A;         <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>,<span class="ruby-identifier">f</span>)) <span class="ruby-operator">?</span> <span class="ruby-identifier">f</span><span class="ruby-operator">+</span><span class="ruby-identifier">fs</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">f</span> } }&#x000A;      <span class="ruby-identifier">input_regex</span> = <span class="ruby-node">/^#{Regexp.escape(input)}/</span>&#x000A;&#x000A;      <span class="ruby-identifier">$:</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-identifier">e</span>)}.<span class="ruby-identifier">inject</span>([]) <span class="ruby-keyword kw">do</span> <span class="ruby-operator">|</span><span class="ruby-identifier">t</span>,<span class="ruby-identifier">dir</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">input</span>[<span class="ruby-regexp re">/.$/</span>] <span class="ruby-operator">==</span> <span class="ruby-identifier">fs</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>,<span class="ruby-identifier">input</span>))&#x000A;          <span class="ruby-identifier">matches</span> = <span class="ruby-identifier">dir_entries</span>.<span class="ruby-identifier">call</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>,<span class="ruby-identifier">input</span>)).<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">extensions_regex</span> }.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">input</span> <span class="ruby-operator">+</span> <span class="ruby-identifier">e</span> }&#x000A;        <span class="ruby-keyword kw">else</span>&#x000A;          <span class="ruby-identifier">entries</span> = <span class="ruby-identifier">input</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">fs</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">directory?</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>,<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">input</span>))) <span class="ruby-operator">?</span>&#x000A;           <span class="ruby-identifier">dir_entries</span>.<span class="ruby-identifier">call</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-identifier">dir</span>,<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">input</span>))).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-constant">File</span>.<span class="ruby-identifier">join</span>(<span class="ruby-constant">File</span>.<span class="ruby-identifier">dirname</span>(<span class="ruby-identifier">input</span>), <span class="ruby-identifier">e</span>) } <span class="ruby-operator">:</span> <span class="ruby-identifier">dir_entries</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">dir</span>)&#x000A;          <span class="ruby-identifier">matches</span> = <span class="ruby-identifier">entries</span>.<span class="ruby-identifier">select</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span><span class="ruby-operator">=~</span> <span class="ruby-identifier">extensions_regex</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">e</span> <span class="ruby-operator">=~</span> <span class="ruby-identifier">input_regex</span> }&#x000A;        <span class="ruby-keyword kw">end</span>&#x000A;        <span class="ruby-identifier">t</span> <span class="ruby-operator">+=</span> <span class="ruby-identifier">matches</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000012'>
+                <a name='M000012'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>shell_commands</span>
+                  <span class='arguments'>(input)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Completes backtick and Kernel#system with shell commands available in
+                  ENV[&#8216;PATH&#8217;]
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000012-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000012-source'><span class="ruby-comment cmt"># File lib/bond/actions.rb, line 18</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">shell_commands</span>(<span class="ruby-identifier">input</span>)&#x000A;      <span class="ruby-constant">ENV</span>[<span class="ruby-value str">'PATH'</span>].<span class="ruby-identifier">split</span>(<span class="ruby-constant">File</span><span class="ruby-operator">::</span><span class="ruby-constant">PATH_SEPARATOR</span>).<span class="ruby-identifier">uniq</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-constant">Dir</span>.<span class="ruby-identifier">entries</span>(<span class="ruby-identifier">e</span>) }.<span class="ruby-identifier">flatten</span>.<span class="ruby-identifier">uniq</span> <span class="ruby-operator">-</span> [<span class="ruby-value str">'.'</span>, <span class="ruby-value str">'..'</span>]&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>

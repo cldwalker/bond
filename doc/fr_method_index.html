@@ -4331,23 +4331,30 @@
         
         Element.addMethods();
         var search_index = [
-          { method: 'anywhere_search', module: 'bond::search', html: '<a href="classes/Bond/Search.html#M000005"><span class="method_name">anywhere_search</span> <span class="module_name">(Bond::Search)</span></a>' },
-          { method: 'call', module: 'bond::agent', html: '<a href="classes/Bond/Agent.html#M000016"><span class="method_name">call</span> <span class="module_name">(Bond::Agent)</span></a>' },
+          { method: 'anywhere_search', module: 'bond::search', html: '<a href="classes/Bond/Search.html#M000006"><span class="method_name">anywhere_search</span> <span class="module_name">(Bond::Search)</span></a>' },
+          { method: 'call', module: 'bond::agent', html: '<a href="classes/Bond/Agent.html#M000022"><span class="method_name">call</span> <span class="module_name">(Bond::Agent)</span></a>' },
           { method: 'complete', module: 'bond', html: '<a href="classes/Bond.html#M000001"><span class="method_name">complete</span> <span class="module_name">(Bond)</span></a>' },
-          { method: 'create', module: 'bond::mission', html: '<a href="classes/Bond/Mission.html#M000012"><span class="method_name">create</span> <span class="module_name">(Bond::Mission)</span></a>' },
+          { method: 'create', module: 'bond::mission', html: '<a href="classes/Bond/Mission.html#M000018"><span class="method_name">create</span> <span class="module_name">(Bond::Mission)</span></a>' },
+          { method: 'current_eval', module: 'bond::actions', html: '<a href="classes/Bond/Actions.html#M000011"><span class="method_name">current_eval</span> <span class="module_name">(Bond::Actions)</span></a>' },
           { method: 'debrief', module: 'bond', html: '<a href="classes/Bond.html#M000003"><span class="method_name">debrief</span> <span class="module_name">(Bond)</span></a>' },
-          { method: 'default_mission', module: 'bond::agent', html: '<a href="classes/Bond/Agent.html#M000017"><span class="method_name">default_mission</span> <span class="module_name">(Bond::Agent)</span></a>' },
-          { method: 'default_search', module: 'bond::search', html: '<a href="classes/Bond/Search.html#M000004"><span class="method_name">default_search</span> <span class="module_name">(Bond::Search)</span></a>' },
-          { method: 'execute', module: 'bond::mission', html: '<a href="classes/Bond/Mission.html#M000015"><span class="method_name">execute</span> <span class="module_name">(Bond::Mission)</span></a>' },
-          { method: 'ignore_case_search', module: 'bond::search', html: '<a href="classes/Bond/Search.html#M000006"><span class="method_name">ignore_case_search</span> <span class="module_name">(Bond::Search)</span></a>' },
-          { method: 'line_buffer', module: 'bond::readline', html: '<a href="classes/Bond/Readline.html#M000011"><span class="method_name">line_buffer</span> <span class="module_name">(Bond::Readline)</span></a>' },
-          { method: 'line_buffer', module: 'bond::rawline', html: '<a href="classes/Bond/Rawline.html#M000009"><span class="method_name">line_buffer</span> <span class="module_name">(Bond::Rawline)</span></a>' },
-          { method: 'matches?', module: 'bond::mission', html: '<a href="classes/Bond/Mission.html#M000014"><span class="method_name">matches?</span> <span class="module_name">(Bond::Mission)</span></a>' },
-          { method: 'new', module: 'bond::mission', html: '<a href="classes/Bond/Mission.html#M000013"><span class="method_name">new</span> <span class="module_name">(Bond::Mission)</span></a>' },
+          { method: 'default', module: 'bond::actions', html: '<a href="classes/Bond/Actions.html#M000013"><span class="method_name">default</span> <span class="module_name">(Bond::Actions)</span></a>' },
+          { method: 'default_mission', module: 'bond::agent', html: '<a href="classes/Bond/Agent.html#M000024"><span class="method_name">default_mission</span> <span class="module_name">(Bond::Agent)</span></a>' },
+          { method: 'default_search', module: 'bond::search', html: '<a href="classes/Bond/Search.html#M000005"><span class="method_name">default_search</span> <span class="module_name">(Bond::Search)</span></a>' },
+          { method: 'execute', module: 'bond::mission', html: '<a href="classes/Bond/Mission.html#M000021"><span class="method_name">execute</span> <span class="module_name">(Bond::Mission)</span></a>' },
+          { method: 'files', module: 'bond::actions', html: '<a href="classes/Bond/Actions.html#M000014"><span class="method_name">files</span> <span class="module_name">(Bond::Actions)</span></a>' },
+          { method: 'ignore_case_search', module: 'bond::search', html: '<a href="classes/Bond/Search.html#M000007"><span class="method_name">ignore_case_search</span> <span class="module_name">(Bond::Search)</span></a>' },
+          { method: 'line_buffer', module: 'bond::readline', html: '<a href="classes/Bond/Readline.html#M000017"><span class="method_name">line_buffer</span> <span class="module_name">(Bond::Readline)</span></a>' },
+          { method: 'line_buffer', module: 'bond::rawline', html: '<a href="classes/Bond/Rawline.html#M000010"><span class="method_name">line_buffer</span> <span class="module_name">(Bond::Rawline)</span></a>' },
+          { method: 'matches?', module: 'bond::mission', html: '<a href="classes/Bond/Mission.html#M000020"><span class="method_name">matches?</span> <span class="module_name">(Bond::Mission)</span></a>' },
+          { method: 'method_require', module: 'bond::actions', html: '<a href="classes/Bond/Actions.html#M000015"><span class="method_name">method_require</span> <span class="module_name">(Bond::Actions)</span></a>' },
+          { method: 'new', module: 'bond::mission', html: '<a href="classes/Bond/Mission.html#M000019"><span class="method_name">new</span> <span class="module_name">(Bond::Mission)</span></a>' },
           { method: 'reset', module: 'bond', html: '<a href="classes/Bond.html#M000002"><span class="method_name">reset</span> <span class="module_name">(Bond)</span></a>' },
-          { method: 'setup', module: 'bond::readline', html: '<a href="classes/Bond/Readline.html#M000010"><span class="method_name">setup</span> <span class="module_name">(Bond::Readline)</span></a>' },
-          { method: 'setup', module: 'bond::rawline', html: '<a href="classes/Bond/Rawline.html#M000008"><span class="method_name">setup</span> <span class="module_name">(Bond::Rawline)</span></a>' },
-          { method: 'underscore_search', module: 'bond::search', html: '<a href="classes/Bond/Search.html#M000007"><span class="method_name">underscore_search</span> <span class="module_name">(Bond::Search)</span></a>' },
+          { method: 'setup', module: 'bond::rawline', html: '<a href="classes/Bond/Rawline.html#M000009"><span class="method_name">setup</span> <span class="module_name">(Bond::Rawline)</span></a>' },
+          { method: 'setup', module: 'bond::readline', html: '<a href="classes/Bond/Readline.html#M000016"><span class="method_name">setup</span> <span class="module_name">(Bond::Readline)</span></a>' },
+          { method: 'shell_commands', module: 'bond::actions', html: '<a href="classes/Bond/Actions.html#M000012"><span class="method_name">shell_commands</span> <span class="module_name">(Bond::Actions)</span></a>' },
+          { method: 'spy', module: 'bond', html: '<a href="classes/Bond.html#M000004"><span class="method_name">spy</span> <span class="module_name">(Bond)</span></a>' },
+          { method: 'spy', module: 'bond::agent', html: '<a href="classes/Bond/Agent.html#M000023"><span class="method_name">spy</span> <span class="module_name">(Bond::Agent)</span></a>' },
+          { method: 'underscore_search', module: 'bond::search', html: '<a href="classes/Bond/Search.html#M000008"><span class="method_name">underscore_search</span> <span class="module_name">(Bond::Search)</span></a>' },
         ]
         $(document).observe('dom:loaded', function() {
         	// Setup search-during-typing.
@@ -4410,23 +4417,30 @@
       </form>
       <ol class='methods' id='search-results' style='display: none'></ol>
       <ol class='methods' id='index-entries'>
-        <li><a href="classes/Bond/Search.html#M000005"><span class="method_name">anywhere_search</span> <span class="module_name">(Bond::Search)</span></a></li>
-        <li><a href="classes/Bond/Agent.html#M000016"><span class="method_name">call</span> <span class="module_name">(Bond::Agent)</span></a></li>
+        <li><a href="classes/Bond/Search.html#M000006"><span class="method_name">anywhere_search</span> <span class="module_name">(Bond::Search)</span></a></li>
+        <li><a href="classes/Bond/Agent.html#M000022"><span class="method_name">call</span> <span class="module_name">(Bond::Agent)</span></a></li>
         <li><a href="classes/Bond.html#M000001"><span class="method_name">complete</span> <span class="module_name">(Bond)</span></a></li>
-        <li><a href="classes/Bond/Mission.html#M000012"><span class="method_name">create</span> <span class="module_name">(Bond::Mission)</span></a></li>
+        <li><a href="classes/Bond/Mission.html#M000018"><span class="method_name">create</span> <span class="module_name">(Bond::Mission)</span></a></li>
+        <li><a href="classes/Bond/Actions.html#M000011"><span class="method_name">current_eval</span> <span class="module_name">(Bond::Actions)</span></a></li>
         <li><a href="classes/Bond.html#M000003"><span class="method_name">debrief</span> <span class="module_name">(Bond)</span></a></li>
-        <li><a href="classes/Bond/Agent.html#M000017"><span class="method_name">default_mission</span> <span class="module_name">(Bond::Agent)</span></a></li>
-        <li><a href="classes/Bond/Search.html#M000004"><span class="method_name">default_search</span> <span class="module_name">(Bond::Search)</span></a></li>
-        <li><a href="classes/Bond/Mission.html#M000015"><span class="method_name">execute</span> <span class="module_name">(Bond::Mission)</span></a></li>
-        <li><a href="classes/Bond/Search.html#M000006"><span class="method_name">ignore_case_search</span> <span class="module_name">(Bond::Search)</span></a></li>
-        <li><a href="classes/Bond/Readline.html#M000011"><span class="method_name">line_buffer</span> <span class="module_name">(Bond::Readline)</span></a></li>
-        <li><a href="classes/Bond/Rawline.html#M000009"><span class="method_name">line_buffer</span> <span class="module_name">(Bond::Rawline)</span></a></li>
-        <li><a href="classes/Bond/Mission.html#M000014"><span class="method_name">matches?</span> <span class="module_name">(Bond::Mission)</span></a></li>
-        <li><a href="classes/Bond/Mission.html#M000013"><span class="method_name">new</span> <span class="module_name">(Bond::Mission)</span></a></li>
+        <li><a href="classes/Bond/Actions.html#M000013"><span class="method_name">default</span> <span class="module_name">(Bond::Actions)</span></a></li>
+        <li><a href="classes/Bond/Agent.html#M000024"><span class="method_name">default_mission</span> <span class="module_name">(Bond::Agent)</span></a></li>
+        <li><a href="classes/Bond/Search.html#M000005"><span class="method_name">default_search</span> <span class="module_name">(Bond::Search)</span></a></li>
+        <li><a href="classes/Bond/Mission.html#M000021"><span class="method_name">execute</span> <span class="module_name">(Bond::Mission)</span></a></li>
+        <li><a href="classes/Bond/Actions.html#M000014"><span class="method_name">files</span> <span class="module_name">(Bond::Actions)</span></a></li>
+        <li><a href="classes/Bond/Search.html#M000007"><span class="method_name">ignore_case_search</span> <span class="module_name">(Bond::Search)</span></a></li>
+        <li><a href="classes/Bond/Readline.html#M000017"><span class="method_name">line_buffer</span> <span class="module_name">(Bond::Readline)</span></a></li>
+        <li><a href="classes/Bond/Rawline.html#M000010"><span class="method_name">line_buffer</span> <span class="module_name">(Bond::Rawline)</span></a></li>
+        <li><a href="classes/Bond/Mission.html#M000020"><span class="method_name">matches?</span> <span class="module_name">(Bond::Mission)</span></a></li>
+        <li><a href="classes/Bond/Actions.html#M000015"><span class="method_name">method_require</span> <span class="module_name">(Bond::Actions)</span></a></li>
+        <li><a href="classes/Bond/Mission.html#M000019"><span class="method_name">new</span> <span class="module_name">(Bond::Mission)</span></a></li>
         <li><a href="classes/Bond.html#M000002"><span class="method_name">reset</span> <span class="module_name">(Bond)</span></a></li>
-        <li><a href="classes/Bond/Readline.html#M000010"><span class="method_name">setup</span> <span class="module_name">(Bond::Readline)</span></a></li>
-        <li><a href="classes/Bond/Rawline.html#M000008"><span class="method_name">setup</span> <span class="module_name">(Bond::Rawline)</span></a></li>
-        <li><a href="classes/Bond/Search.html#M000007"><span class="method_name">underscore_search</span> <span class="module_name">(Bond::Search)</span></a></li>
+        <li><a href="classes/Bond/Rawline.html#M000009"><span class="method_name">setup</span> <span class="module_name">(Bond::Rawline)</span></a></li>
+        <li><a href="classes/Bond/Readline.html#M000016"><span class="method_name">setup</span> <span class="module_name">(Bond::Readline)</span></a></li>
+        <li><a href="classes/Bond/Actions.html#M000012"><span class="method_name">shell_commands</span> <span class="module_name">(Bond::Actions)</span></a></li>
+        <li><a href="classes/Bond.html#M000004"><span class="method_name">spy</span> <span class="module_name">(Bond)</span></a></li>
+        <li><a href="classes/Bond/Agent.html#M000023"><span class="method_name">spy</span> <span class="module_name">(Bond::Agent)</span></a></li>
+        <li><a href="classes/Bond/Search.html#M000008"><span class="method_name">underscore_search</span> <span class="module_name">(Bond::Search)</span></a></li>
       </ol>
     </div>
   </body>

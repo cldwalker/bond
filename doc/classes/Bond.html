@@ -31,6 +31,9 @@
         </h1>
         <ol class='paths'>
           <li>
+            <a href="../files/lib/bond/actions_rb.html">lib/bond/actions.rb</a>
+          </li>
+          <li class='other'>
             <a href="../files/lib/bond/agent_rb.html">lib/bond/agent.rb</a>
           </li>
           <li class='other'>
@@ -40,10 +43,10 @@
             <a href="../files/lib/bond/rawline_rb.html">lib/bond/rawline.rb</a>
           </li>
           <li class='other'>
-            <a href="../files/lib/bond/readline_rb.html">lib/bond/readline.rb</a>
+            <a href="../files/lib/bond/search_rb.html">lib/bond/search.rb</a>
           </li>
           <li class='other'>
-            <a href="../files/lib/bond/search_rb.html">lib/bond/search.rb</a>
+            <a href="../files/lib/bond/readline_rb.html">lib/bond/readline.rb</a>
           </li>
           <li class='other'>
             <a href="../files/lib/bond_rb.html">lib/bond.rb</a>
@@ -79,8 +82,10 @@
             </li>
             <li>Order of completion missions matters. The order they&#8217;re defined in is
             the order <a href="Bond.html">Bond</a> searches when looking for a matching
-            completion. This means that you should probably declare general completions
-            at the end.
+            completion. This means that more specific completions like method and
+            object completions should come before more general ones. You can tweak
+            completion placement by passing :place to <a
+            href="Bond.html#M000001">Bond.complete</a>.
             
             </li>
             <li>If no completion missions match, then <a href="Bond.html">Bond</a> falls
@@ -97,16 +102,19 @@
               <li><a href="#M000001">complete</a></li>
               <li><a href="#M000003">debrief</a></li>
               <li><a href="#M000002">reset</a></li>
+              <li><a href="#M000004">spy</a></li>
             </ol>
           </div>
           <div id='section'>
             <div id='class-list'>
               <h2>Classes and Modules</h2>
+              Module <a href="Bond/Actions.html" class="link">Bond::Actions</a><br />
               Module <a href="Bond/Rawline.html" class="link">Bond::Rawline</a><br />
               Module <a href="Bond/Readline.html" class="link">Bond::Readline</a><br />
               Module <a href="Bond/Search.html" class="link">Bond::Search</a><br />
               Class <a href="Bond/Agent.html" class="link">Bond::Agent</a><br />
               Class <a href="Bond/FailedExecutionError.html" class="link">Bond::FailedExecutionError</a><br />
+              Class <a href="Bond/InvalidMissionActionError.html" class="link">Bond::InvalidMissionActionError</a><br />
               Class <a href="Bond/InvalidMissionError.html" class="link">Bond::InvalidMissionError</a><br />
               Class <a href="Bond/Mission.html" class="link">Bond::Mission</a><br />
               Class <a href="Bond/Missions.html" class="link">Bond::Missions</a><br />
@@ -165,15 +173,23 @@
                   completions.
                   
                   </dd>
+                  <dt>:place</dt><dd>Given a symbol or number, controls where this completion is placed in
+                  relation to existing ones. If a number, the completion is placed at that
+                  number. If the symbol :last, the completion is placed at the end regardless
+                  of completions defined after it. Use this symbol as a way of anchoring
+                  completions you want to remain at the end. Multiple declarations of :last
+                  are kept last in the order they are defined.
+                  
+                  </dd>
                   </dl>
                   <h4>Examples:</h4>
-                  <pre>Bond.complete(:method=&gt;'shoot') {|input| %w{to kill} }&#x000A;Bond.complete(:on=&gt;/^((([a-z][^:.\(]*)+):)+/, :search=&gt;false) {|input| Object.constants.grep(/#{input.matched[1]}/) }&#x000A;Bond.complete(:object=&gt;ActiveRecord::Base, :search=&gt;:underscore)&#x000A;Bond.complete(:object=&gt;ActiveRecord::Base) {|input| input.object.class.instance_methods(false) }&#x000A;Bond.complete(:method=&gt;'you', :search=&gt;proc {|input, list| list.grep(/#{input}/i)} ) {|input| %w{Only Live Twice} }</pre>
+                  <pre>Bond.complete(:method=&gt;'shoot') {|input| %w{to kill} }&#x000A;Bond.complete(:on=&gt;/^((([a-z][^:.\(]*)+):)+/, :search=&gt;false) {|input| Object.constants.grep(/#{input.matched[1]}/) }&#x000A;Bond.complete(:object=&gt;ActiveRecord::Base, :search=&gt;:underscore, :place=&gt;:last)&#x000A;Bond.complete(:object=&gt;ActiveRecord::Base) {|input| input.object.class.instance_methods(false) }&#x000A;Bond.complete(:method=&gt;'you', :search=&gt;proc {|input, list| list.grep(/#{input}/i)} ) {|input| %w{Only Live Twice} }</pre>
                 </div>
                 <div class='source'>
                   <a class='source-toggle' href='#' onclick="toggleCode('M000001-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000001-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 51</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;    <span class="ruby-identifier">agent</span>.<span class="ruby-identifier">complete</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;    <span class="ruby-keyword kw">true</span>&#x000A;  <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">InvalidMissionError</span>&#x000A;    <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Invalid mission given. Mission needs an action and a condition.&quot;</span>&#x000A;    <span class="ruby-keyword kw">false</span>&#x000A;  <span class="ruby-keyword kw">rescue</span>&#x000A;    <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Mission setup failed with:&quot;</span>, <span class="ruby-identifier">$!</span>&#x000A;    <span class="ruby-keyword kw">false</span>&#x000A;  <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000001-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 56</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;    <span class="ruby-identifier">agent</span>.<span class="ruby-identifier">complete</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;    <span class="ruby-keyword kw">true</span>&#x000A;  <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">InvalidMissionError</span>&#x000A;    <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Invalid mission given. Mission needs an action and a condition.&quot;</span>&#x000A;    <span class="ruby-keyword kw">false</span>&#x000A;  <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">InvalidMissionActionError</span>&#x000A;    <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Invalid mission action given. Make sure action responds to :call or refers to a predefined action that does.&quot;</span>&#x000A;    <span class="ruby-keyword kw">false</span>&#x000A;  <span class="ruby-keyword kw">rescue</span>&#x000A;    <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Mission setup failed with:&quot;</span>, <span class="ruby-identifier">$!</span>&#x000A;    <span class="ruby-keyword kw">false</span>&#x000A;  <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
               <div class='public-instance method' id='method-M000003'>
@@ -184,7 +200,8 @@
                 </div>
                 <div class='description'>
                   <p>
-                  Debriefs <a href="Bond.html">Bond</a> to set global defaults.
+                  Debriefs <a href="Bond.html">Bond</a> to set global defaults. Call before
+                  defining completions.
                   </p>
                   <h4>Options:</h4>
                   <dl>
@@ -202,6 +219,11 @@
                   Otherwise defaults to a proc with an empty completion list.
                   
                   </dd>
+                  <dt>:default_search</dt><dd>A symbol or proc to be used as the default search in completions. See <a
+                  href="Bond.html#M000001">Bond.complete</a>&#8217;s :search option for valid
+                  symbols.
+                  
+                  </dd>
                   <dt>:eval_binding</dt><dd>Specifies a binding to be used with <a
                   href="Bond/Missions/ObjectMission.html">Bond::Missions::ObjectMission</a>.
                   When in irb, defaults to irb&#8217;s main binding. Otherwise defaults to
@@ -213,12 +235,14 @@
                   
                   </dd>
                   </dl>
+                  <h4>Example:</h4>
+                  <pre>Bond.debrief :default_search=&gt;:underscore, :default_mission=&gt;:default</pre>
                 </div>
                 <div class='source'>
                   <a class='source-toggle' href='#' onclick="toggleCode('M000003-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000003-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 77</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">debrief</span>(<span class="ruby-identifier">options</span>={})&#x000A;    <span class="ruby-identifier">config</span>.<span class="ruby-identifier">merge!</span> <span class="ruby-identifier">options</span>&#x000A;    <span class="ruby-identifier">plugin_methods</span> = <span class="ruby-node">%w{setup line_buffer}</span>&#x000A;    <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">config</span>[<span class="ruby-identifier">:readline_plugin</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Module</span>) <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">plugin_methods</span>.<span class="ruby-identifier">all?</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">config</span>[<span class="ruby-identifier">:readline_plugin</span>].<span class="ruby-identifier">instance_methods</span>.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">e</span>)}&#x000A;      <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Invalid readline plugin set. Try again.&quot;</span>&#x000A;    <span class="ruby-keyword kw">end</span>&#x000A;  <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000003-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 89</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">debrief</span>(<span class="ruby-identifier">options</span>={})&#x000A;    <span class="ruby-identifier">config</span>.<span class="ruby-identifier">merge!</span> <span class="ruby-identifier">options</span>&#x000A;    <span class="ruby-identifier">plugin_methods</span> = <span class="ruby-node">%w{setup line_buffer}</span>&#x000A;    <span class="ruby-keyword kw">unless</span> <span class="ruby-identifier">config</span>[<span class="ruby-identifier">:readline_plugin</span>].<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Module</span>) <span class="ruby-operator">&amp;&amp;</span>&#x000A;      <span class="ruby-identifier">plugin_methods</span>.<span class="ruby-identifier">all?</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">config</span>[<span class="ruby-identifier">:readline_plugin</span>].<span class="ruby-identifier">instance_methods</span>.<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span> <span class="ruby-identifier">f</span>.<span class="ruby-identifier">to_s</span>}.<span class="ruby-identifier">include?</span>(<span class="ruby-identifier">e</span>)}&#x000A;      <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Invalid readline plugin set. Try again.&quot;</span>&#x000A;    <span class="ruby-keyword kw">end</span>&#x000A;  <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
               <div class='public-instance method' id='method-M000002'>
@@ -239,7 +263,28 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('M000002-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000002-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 64</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reset</span>&#x000A;    <span class="ruby-ivar">@agent</span> = <span class="ruby-keyword kw">nil</span>&#x000A;  <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000002-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 72</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">reset</span>&#x000A;    <span class="ruby-ivar">@agent</span> = <span class="ruby-keyword kw">nil</span>&#x000A;  <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000004'>
+                <a name='M000004'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>spy</span>
+                  <span class='arguments'>(input)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Reports what completion mission and possible completions would happen for a
+                  given input. Helpful for debugging your completion missions.
+                  </p>
+                  <h4>Example:</h4>
+                  <pre>&gt;&gt; Bond.spy &quot;shoot oct&quot;&#x000A;Matches completion mission for method matching &quot;shoot&quot;.&#x000A;Possible completions: [&quot;octopussy&quot;]</pre>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000004-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000004-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 104</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">spy</span>(<span class="ruby-identifier">input</span>)&#x000A;    <span class="ruby-identifier">agent</span>.<span class="ruby-identifier">spy</span>(<span class="ruby-identifier">input</span>)&#x000A;  <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
             </div>
