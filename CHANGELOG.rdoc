@@ -1,3 +1,11 @@
+== 0.1.2
+* Added bond/completion which is a drop-in enhancement of irb/completion
+* Added ability to define predefined actions in Bond::Actions
+* Fixed underscore search bug
+* Fixed word breaking completion bug
+* Fixed irb's completion inconsistencies
+* Added ability to specify :default_search for Bond.debrief
+* Added placement of completions with :place for Bond.complete
 == 0.1.1
 * Added Bond.spy to debug completions
 * Fixed object completion failing in irbrc

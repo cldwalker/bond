@@ -15,6 +15,15 @@ Install the gem with:
 
 == Usage
 
+To start of with, you may want to replace irb's completion (irb/completion) with Bond's enhanced version
+in your irbrc :
+
+  require 'bond'
+  require 'bond/completion'
+
+This should give you more consistent method completion on any objects, file completion of strings
+and argument completion of Kernel#require, Kernel#system and the backtick (`).
+
 === Argument Completion for Methods
 
     bash> irb -rirb/completion -rubygems
@@ -183,6 +192,4 @@ this Readline enhancement to ruby.
 * http://tagaholic.me/2009/07/16/bond-from-irb-with-completion-love.html
 
 == Todo
-* Provide a set of Bond completions which can serve as a drop-in replacement for irb/completion.
-* Argument autocompletion by object class.
-* Make replacement of existing completions not require doing a Bond.reset.
+* Allow usage of prefined Bond::Actions in action procs.
