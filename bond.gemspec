@@ -2,7 +2,7 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bond}
-  s.version = "0.1.2"
+  s.version = "0.1.3"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Gabriel Horner"]
@@ -33,7 +33,6 @@ Gem::Specification.new do |s|
     "lib/bond/rawline.rb",
     "lib/bond/readline.rb",
     "lib/bond/search.rb",
-    "lib/readline_line_buffer.bundle",
     "test/agent_test.rb",
     "test/bond_test.rb",
     "test/completion_test.rb",
