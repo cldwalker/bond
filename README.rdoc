@@ -190,6 +190,7 @@ this Readline enhancement to ruby.
 
 == Links
 * http://tagaholic.me/2009/07/16/bond-from-irb-with-completion-love.html
+* http://tagaholic.me/2009/07/22/better-irb-completion-with-bond.html
 
 == Todo
 * Allow usage of prefined Bond::Actions in action procs.
