@@ -50,7 +50,7 @@ module Bond
          File.directory?(File.join(dir,f)) ? f+fs : f } }
       input_regex = /^#{Regexp.escape(input)}/
 
-      $:.select {|e| File.directory?(e)}.inject([]) do |t,dir|
+      require_paths.select {|e| File.directory?(e)}.inject([]) do |t,dir|
         if input[/.$/] == fs && File.directory?(File.join(dir,input))
           matches = dir_entries.call(File.join(dir,input)).select {|e| e =~ extensions_regex }.map {|e| input + e }
         else
@@ -60,6 +60,10 @@ module Bond
         end
         t += matches
       end
+    end
+
+    def require_paths
+      $: + Gem.path.map {|e| Dir["#{e}/gems/*/lib"] }.flatten.uniq rescue $:
     end
   end
 end
