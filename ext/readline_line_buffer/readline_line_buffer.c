@@ -2,6 +2,7 @@
    Copyright (C) 1997-2001  Shugo Maeda */
 /* body of line_buffer() from irb enhancements at http://www.creo.hu/~csaba/ruby/ */
  
+#ifdef HAVE_READLINE_READLINE_H
 #include "ruby.h"
 #include <errno.h>
 #include <stdio.h>
@@ -20,3 +21,4 @@ void Init_readline_line_buffer() {
   c = rb_const_get(c, rb_intern("Readline"));
   rb_define_singleton_method(c, "line_buffer", (VALUE(*)(ANYARGS))line_buffer, -1);
 }
+#endif
