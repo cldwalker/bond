@@ -21,7 +21,7 @@ Bond.complete(:on=>/(\$[^\s.]*)$/, :search=>false) {|e|
   global_variables.grep(/^#{Regexp.escape(e.matched[1])}/)
 }
 # Completes files
-Bond.complete(:on=>/\s+["']([^'"]*)$/, :search=>false, :action=>:quoted_files, :place=>:last)
+Bond.complete(:on=>/[\s(]["']([^'"]*)$/, :search=>false, :action=>:quoted_files, :place=>:last)
 # Completes any object's methods
 Bond.complete(:object=>"Object", :place=>:last)
 # Completes method completion anywhere in the line

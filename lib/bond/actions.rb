@@ -11,7 +11,7 @@ module Bond
     def current_eval(string)
       Missions::ObjectMission.current_eval(string)
     rescue Exception
-      nil
+      []
     end
 
     # Completes backtick and Kernel#system with shell commands available in ENV['PATH']
