@@ -2,11 +2,11 @@
 
 Gem::Specification.new do |s|
   s.name = %q{bond}
-  s.version = "0.1.3"
+  s.version = "0.1.4"
 
   s.required_rubygems_version = Gem::Requirement.new(">= 0") if s.respond_to? :required_rubygems_version=
   s.authors = ["Gabriel Horner"]
-  s.date = %q{2009-07-22}
+  s.date = %q{2009-07-30}
   s.description = %q{Bond is on a mission to make custom autocompletion easy in irb and other console/readline-like environments. Bond supports custom argument completion of methods, method completion of objects and anything else your wicked regex's can do. Bond comes armed with a Readline C extension to get the full line of input as opposed to irb's last-word based completion. Bond makes custom searching of possible completions easy which allows for nontraditional ways of autocompleting i.e. instant aliasing of multi worded methods.}
   s.email = %q{gabriel.horner@gmail.com}
   s.extensions = ["ext/readline_line_buffer/extconf.rb"]
@@ -41,12 +41,11 @@ Gem::Specification.new do |s|
     "test/search_test.rb",
     "test/test_helper.rb"
   ]
-  s.has_rdoc = true
   s.homepage = %q{http://tagaholic.me/bond/}
   s.rdoc_options = ["--charset=UTF-8"]
   s.require_paths = ["lib"]
   s.rubyforge_project = %q{tagaholic}
-  s.rubygems_version = %q{1.3.2}
+  s.rubygems_version = %q{1.3.5}
   s.summary = %q{Mission: Easy custom autocompletion for arguments, methods and beyond. Accomplished for irb and any other readline-like console environments.}
   s.test_files = [
     "test/agent_test.rb",
