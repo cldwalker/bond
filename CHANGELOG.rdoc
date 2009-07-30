@@ -1,3 +1,9 @@
+== 0.1.4
+* Added Bond.recomplete to make redefinition of completion missions easy.
+* Added flag to readline extension building so that installing bond doesn't fail for
+  users without readline.
+* bond/completion allows require to autocomplete gems and within gems.
+
 == 0.1.3
 * Fixing deployment mistake
 
@@ -9,6 +15,7 @@
 * Fixed irb's completion inconsistencies
 * Added ability to specify :default_search for Bond.debrief
 * Added placement of completions with :place for Bond.complete
+
 == 0.1.1
 * Added Bond.spy to debug completions
 * Fixed object completion failing in irbrc
