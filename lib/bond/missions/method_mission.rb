@@ -8,6 +8,10 @@ class Bond::Missions::MethodMission < Bond::Mission
     super
   end
 
+  def unique_id #:nodoc:
+    @method_condition.is_a?(Regexp) ? @method_condition : @method_condition.to_s
+  end
+
   def set_input(input, match) #:nodoc:
     @input = match[-1]
   end

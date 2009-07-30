@@ -54,17 +54,23 @@ module Bond
   #  Bond.complete(:object=>ActiveRecord::Base) {|input| input.object.class.instance_methods(false) }
   #  Bond.complete(:method=>'you', :search=>proc {|input, list| list.grep(/#{input}/i)} ) {|input| %w{Only Live Twice} }
   def complete(options={}, &block)
-    agent.complete(options, &block)
-    true
-  rescue InvalidMissionError
-    $stderr.puts "Invalid mission given. Mission needs an action and a condition."
-    false
-  rescue InvalidMissionActionError
-    $stderr.puts "Invalid mission action given. Make sure action responds to :call or refers to a predefined action that does."
-    false
-  rescue
-    $stderr.puts "Mission setup failed with:", $!
-    false
+    if (result = agent.complete(options, &block)).is_a?(String)
+      $stderr.puts result
+      false
+    else
+      true
+    end
+  end
+
+  # Redefines an existing completion mission. Takes same options as Bond.complete. This is useful when wanting to override existing
+  # completions or when wanting to toggle between multiple definitions or modes of a completion.
+  def recomplete(options={}, &block)
+    if (result = agent.recomplete(options, &block)).is_a?(String)
+      $stderr.puts result
+      false
+    else
+      true
+    end
   end
 
   # Resets Bond so that next time Bond.complete is called, a new set of completion missions are created. This does not

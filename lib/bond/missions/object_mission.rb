@@ -13,6 +13,10 @@ class Bond::Missions::ObjectMission < Bond::Mission
     super
   end
 
+  def unique_id
+    "#{@object_condition.inspect}+#{@condition.inspect}"
+  end
+
   def handle_valid_match(input)
     if (match = super)
       begin

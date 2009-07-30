@@ -42,6 +42,61 @@ class Bond::AgentTest < Test::Unit::TestCase
     end
   end
 
+  context "complete" do
+    test "prints error if no action given" do
+      capture_stderr { complete :on=>/blah/ }.should =~ /Invalid mission/
+    end
+
+    test "prints error if no condition given" do
+      capture_stderr { complete {|e| []} }.should =~ /Invalid mission/
+    end
+
+    test "prints error if invalid condition given" do
+      capture_stderr { complete(:on=>'blah') {|e| []} }.should =~ /Invalid mission/
+    end
+
+    test "prints error if invalid symbol action given" do
+      capture_stderr { complete(:on=>/blah/, :action=>:bling) }.should =~ /Invalid mission action/
+    end
+
+    test "prints error if setting mission fails unpredictably" do
+      Bond::Mission.expects(:create).raises(RuntimeError)
+      capture_stderr { complete(:on=>/blah/) {|e| [] } }.should =~ /Mission setup failed/
+    end
+  end
+
+  context "recomplete" do
+    before(:each) {|e| Bond.agent.reset }
+
+    test "recompletes a mission" do
+      Bond.complete(:on=>/man/) { %w{1 2 3}}
+      Bond.recomplete(:on=>/man/) { %w{4 5 6}}
+      tabtab('man ').should == %w{4 5 6}
+    end
+
+    test "recompletes a method mission" do
+      Bond.complete(:method=>'blah') { %w{1 2 3}}
+      Bond.recomplete(:method=>'blah') { %w{4 5 6}}
+      tabtab('blah ').should == %w{4 5 6}
+    end
+
+    test "recompletes an object mission" do
+      Bond.complete(:object=>'String') { %w{1 2 3}}
+      Bond.recomplete(:object=>'String') { %w{4 5 6}}
+      tabtab('"blah".').should == %w{.4 .5 .6}
+    end
+
+    test "prints error if no existing mission" do
+      Bond.complete(:object=>'String') { %w{1 2 3}}
+      capture_stderr { Bond.recomplete(:object=>'Array') { %w{4 5 6}}}.should =~ /No existing mission/
+      tabtab('[].').should == []
+    end
+
+    test "prints error if invalid condition given" do
+      capture_stderr { Bond.recomplete}.should =~ /Invalid mission/
+    end
+  end
+
   context "spy" do
     before(:all) {
       Bond.reset; complete(:on=>/end$/) { [] }; complete(:method=>'the') { %w{spy who loved me} }

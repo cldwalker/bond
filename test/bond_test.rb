@@ -31,29 +31,6 @@ class BondTest < Test::Unit::TestCase
     end
   end
 
-  context "complete" do
-    test "prints error if no action given" do
-      capture_stderr { complete :on=>/blah/ }.should =~ /Invalid mission/
-    end
-
-    test "prints error if no condition given" do
-      capture_stderr { complete {|e| []} }.should =~ /Invalid mission/
-    end
-
-    test "prints error if invalid condition given" do
-      capture_stderr { complete(:on=>'blah') {|e| []} }.should =~ /Invalid mission/
-    end
-
-    test "prints error if invalid symbol action given" do
-      capture_stderr { complete(:on=>/blah/, :action=>:bling) }.should =~ /Invalid mission action/
-    end
-
-    test "prints error if setting mission fails unpredictably" do
-      Bond.agent.expects(:complete).raises(ArgumentError)
-      capture_stderr { complete(:on=>/blah/) {|e| [] } }.should =~ /Mission setup failed/
-    end
-  end
-
   test "reset clears existing missions" do
     complete(:on=>/blah/) {[]}
     Bond.agent.missions.size.should_not == 0

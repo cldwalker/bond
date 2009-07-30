@@ -90,6 +90,10 @@ module Bond
     end
 
     #:stopdoc:
+    def unique_id
+      @condition
+    end
+
     def set_input(input, match)
       @input = input[/\S+$/]
     end

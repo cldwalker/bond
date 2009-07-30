@@ -14,10 +14,38 @@ module Bond
       @missions = []
     end
 
-    def complete(options={}, &block) #:nodoc:
+    def complete(options={}, &block)
+      if (mission = create_mission(options, &block)).is_a?(Mission)
+        mission.place.is_a?(Integer) ? @missions.insert(mission.place - 1, mission).compact! : @missions << mission
+        sort_last_missions
+      end
+      mission
+    end
+
+    def create_mission(options, &block) #:nodoc:
       options[:action] ||= block
-      mission = Mission.create(options.merge(:eval_binding=>@eval_binding))
-      mission.place.is_a?(Integer) ? @missions.insert(mission.place - 1, mission).compact! : @missions << mission
+      Mission.create(options.merge(:eval_binding=>@eval_binding))
+    rescue InvalidMissionError
+      "Invalid mission given. Mission needs an action and a condition."
+    rescue InvalidMissionActionError
+      "Invalid mission action given. Make sure action responds to :call or refers to a predefined action that does."
+    rescue
+      "Mission setup failed with:\n#{$!}"
+    end
+
+    def recomplete(options={}, &block)
+      if (mission = create_mission(options, &block)).is_a?(Mission)
+        if (existing_mission = @missions.find {|e| e.unique_id == mission.unique_id })
+          @missions[@missions.index(existing_mission)] = mission
+          sort_last_missions
+        else
+          return "No existing mission found to recomplete."
+        end
+      end
+      mission
+    end
+
+    def sort_last_missions #:nodoc:
       @missions.replace @missions.partition {|e| e.place != :last }.flatten
     end
 
