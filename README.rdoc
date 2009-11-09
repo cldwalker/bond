@@ -11,7 +11,7 @@ aliasing of multi worded methods.
 
 Install the gem with:
 
-    sudo gem install cldwalker-bond --source http://gems.github.com
+    sudo gem install bond
 
 == Usage
 
