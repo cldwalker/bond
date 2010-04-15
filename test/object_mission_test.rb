@@ -7,19 +7,19 @@ context "ObjectMission" do
     test "with default action completes" do
       complete(:object=>"String")
       complete(:on=>/man/) { %w{upper upster upful}}
-      tabtab("'man'.u").should == [".upcase!", ".unpack", ".untaint", ".upcase", ".upto"]
+      tabtab("'man'.up").sort.should == [".upcase", ".upcase!", ".upto"]
     end
 
     test "with regex condition completes" do
       complete(:object=>/Str/) {|e| e.object.class.superclass.instance_methods(true) }
       complete(:on=>/man/) { %w{upper upster upful}}
-      tabtab("'man'.u").should == [".untaint"]
+      tabtab("'man'.unta").should == [".untaint"]
     end
 
     test "with explicit action completes" do
       complete(:object=>"String") {|e| e.object.class.superclass.instance_methods(true) }
       complete(:on=>/man/) { %w{upper upster upful}}
-      tabtab("'man'.u").should == [".untaint"]
+      tabtab("'man'.unta").should == [".untaint"]
     end
 
     test "completes without including word break characters" do
