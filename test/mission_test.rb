@@ -55,6 +55,11 @@ context "Mission" do
       complete(:on=>/bling/) {|e| raise "whoops" }
       capture_stderr { tabtab('bling') }.should =~ /bling.*whoops/m
     end
+
+    test "should always pass string to action block" do
+      complete(:on=>/man/) {|e| e.should.be.is_a(String); [] }
+      tabtab('man ')
+    end
   end
 
   test "default_mission set to a valid mission if irb doesn't exist" do

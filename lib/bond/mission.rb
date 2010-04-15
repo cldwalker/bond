@@ -95,7 +95,7 @@ module Bond
     end
 
     def set_input(input, match)
-      @input = input[/\S+$/]
+      @input = input[/\S+$/] || ''
     end
 
     def handle_valid_match(input)
