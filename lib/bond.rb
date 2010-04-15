@@ -1,3 +1,4 @@
+require 'bond/version'
 require 'bond/readline'
 require 'bond/rawline'
 require 'bond/agent'
