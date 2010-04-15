@@ -1,6 +1,6 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-context "Completion" do
+describe "Completion" do
   before_all { Bond.reset; Bond.debrief(:readline_plugin=>valid_readline_plugin); require 'bond/completion' }
 
   it "completes object methods anywhere" do

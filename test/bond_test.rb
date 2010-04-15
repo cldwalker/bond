@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-context "Bond" do
-  context "debrief" do
+describe "Bond" do
+  describe "debrief" do
     before { Bond.instance_eval("@agent = @config = nil")}
     it "prints error if readline_plugin is not a module" do
       capture_stderr { Bond.debrief :readline_plugin=>false }.should =~ /Invalid/

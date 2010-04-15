@@ -1,9 +1,9 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-context "ObjectMission" do
+describe "ObjectMission" do
   before_all { Bond.debrief(:readline_plugin=>valid_readline_plugin) }
   before { Bond.agent.reset }
-  context "object mission" do
+  describe "object mission" do
     it "with default action completes" do
       complete(:object=>"String")
       complete(:on=>/man/) { %w{upper upster upful}}

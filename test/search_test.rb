@@ -1,10 +1,10 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-context "Search" do
+describe "Search" do
   before_all { Bond.debrief(:readline_plugin=>valid_readline_plugin) }
   before { Bond.agent.reset }
 
-  context "mission with search" do
+  describe "mission with search" do
     it "false completes" do
       complete(:on=>/cool '(.*)/, :search=>false) {|e| %w{coco for puffs}.grep(/#{e.matched[1]}/) }
       tabtab("cool 'ff").should == ['puffs']

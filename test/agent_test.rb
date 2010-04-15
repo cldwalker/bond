@@ -1,9 +1,9 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-context "Agent" do
+describe "Agent" do
   before_all { Bond.debrief(:readline_plugin=>valid_readline_plugin) }
 
-  context "Agent" do
+  describe "Agent" do
     before { Bond.agent.reset }
 
     it "chooses default mission if no missions match" do
@@ -42,7 +42,7 @@ context "Agent" do
     end
   end
 
-  context "complete" do
+  describe "complete" do
     it "prints error if no action given" do
       capture_stderr { complete :on=>/blah/ }.should =~ /Invalid mission/
     end
@@ -65,7 +65,7 @@ context "Agent" do
     end
   end
 
-  context "recomplete" do
+  describe "recomplete" do
     before {|e| Bond.agent.reset }
 
     it "recompletes a mission" do
@@ -97,7 +97,7 @@ context "Agent" do
     end
   end
 
-  context "spy" do
+  describe "spy" do
     before_all {
       Bond.reset; complete(:on=>/end$/) { [] }; complete(:method=>'the') { %w{spy who loved me} }
       complete(:object=>"Symbol")

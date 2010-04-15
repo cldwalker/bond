@@ -1,9 +1,9 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-context "Mission" do
+describe "Mission" do
   before_all { Bond.debrief(:readline_plugin=>valid_readline_plugin) }
 
-  context "mission" do
+  describe "mission" do
     before { Bond.agent.reset }
     it "completes" do
       complete(:on=>/bling/) {|e| %w{ab cd fg hi}}
