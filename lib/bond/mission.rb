@@ -68,7 +68,7 @@ module Bond
       @matched = @input = @list_prefix = nil
       if (match = handle_valid_match(input))
         @input.instance_variable_set("@matched", @matched)
-        @input.instance_eval("def self.matched; @matched ; end")
+        class<<@input; def matched; @matched; end; end
       end
       !!match
     end
