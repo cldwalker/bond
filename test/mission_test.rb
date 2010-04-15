@@ -1,10 +1,10 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-class Bond::MissionTest < Test::Unit::TestCase
-  before(:all) {|e| Bond.debrief(:readline_plugin=>valid_readline_plugin) }
+context "Mission" do
+  before_all { Bond.debrief(:readline_plugin=>valid_readline_plugin) }
 
   context "mission" do
-    before(:each) {|e| Bond.agent.reset }
+    before { Bond.agent.reset }
     test "completes" do
       complete(:on=>/bling/) {|e| %w{ab cd fg hi}}
       complete(:method=>'cool') {|e| [] }

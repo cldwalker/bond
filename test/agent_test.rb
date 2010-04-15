@@ -1,10 +1,10 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-class Bond::AgentTest < Test::Unit::TestCase
-  before(:all) {|e| Bond.debrief(:readline_plugin=>valid_readline_plugin) }
+context "Agent" do
+  before_all { Bond.debrief(:readline_plugin=>valid_readline_plugin) }
 
   context "Agent" do
-    before(:each) {|e| Bond.agent.reset }
+    before { Bond.agent.reset }
 
     test "chooses default mission if no missions match" do
       complete(:on=>/bling/) {|e| [] }
@@ -66,7 +66,7 @@ class Bond::AgentTest < Test::Unit::TestCase
   end
 
   context "recomplete" do
-    before(:each) {|e| Bond.agent.reset }
+    before {|e| Bond.agent.reset }
 
     test "recompletes a mission" do
       Bond.complete(:on=>/man/) { %w{1 2 3}}
@@ -98,7 +98,7 @@ class Bond::AgentTest < Test::Unit::TestCase
   end
 
   context "spy" do
-    before(:all) {
+    before_all {
       Bond.reset; complete(:on=>/end$/) { [] }; complete(:method=>'the') { %w{spy who loved me} }
       complete(:object=>"Symbol")
     }

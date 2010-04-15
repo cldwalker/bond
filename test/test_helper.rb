@@ -1,13 +1,12 @@
 require 'rubygems'
-require 'test/unit'
-require 'context' #gem install jeremymcanally-context -s http://gems.github.com
-require 'matchy' #gem install jeremymcanally-matchy -s http://gems.github.com
+require 'bacon'
+require File.dirname(__FILE__)+'/bacon_extensions'
 require 'mocha'
+require 'mocha-on-bacon'
 require 'bond'
 
-class Test::Unit::TestCase
-  before(:all) {
-    # Mock irb
+module TestHelpers
+  def mock_irb
     unless Object.const_defined?(:IRB)
       eval %[
         module ::IRB
@@ -17,7 +16,7 @@ class Test::Unit::TestCase
       ]
       ::IRB.CurrentContext = stub(:workspace=>stub(:binding=>binding))
     end
-  }
+  end
 
   def capture_stderr(&block)
     original_stderr = $stderr
@@ -53,4 +52,17 @@ class Test::Unit::TestCase
   def valid_readline_plugin
     Module.new{ def setup; end; def line_buffer; end }
   end
+end
+
+class Bacon::Context
+  include TestHelpers
+  include BaconExtensions
+  def xtest(*args); end
+  def xcontext(*args); end
+  alias_method :test, :it
+  alias_method :context, :describe
+end
+
+class <<self
+  alias_method :context, :describe
 end

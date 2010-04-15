@@ -1,8 +1,8 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-class BondTest < Test::Unit::TestCase
+context "Bond" do
   context "debrief" do
-    before(:each) {|e| Bond.instance_eval("@agent = @config = nil")}
+    before { Bond.instance_eval("@agent = @config = nil")}
     test "prints error if readline_plugin is not a module" do
       capture_stderr { Bond.debrief :readline_plugin=>false }.should =~ /Invalid/
     end
@@ -33,7 +33,7 @@ class BondTest < Test::Unit::TestCase
 
   test "reset clears existing missions" do
     complete(:on=>/blah/) {[]}
-    Bond.agent.missions.size.should_not == 0
+    Bond.agent.missions.size.should.not == 0
     Bond.reset
     Bond.agent.missions.size.should == 0
   end

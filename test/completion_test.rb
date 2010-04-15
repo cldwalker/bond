@@ -1,18 +1,18 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
-class Bond::CompletionTest < Test::Unit::TestCase
-  before(:all) { Bond.reset; Bond.debrief(:readline_plugin=>valid_readline_plugin); require 'bond/completion' }
+context "Completion" do
+  before_all { Bond.reset; Bond.debrief(:readline_plugin=>valid_readline_plugin); require 'bond/completion' }
 
   test "completes object methods anywhere" do
     matches = tabtab("blah :man.")
-    assert matches.size > 0
-    assert matches.all? {|e| e=~ /^:man/}
+    matches.size.should.be > 0
+    matches.should.be.all {|e| e=~ /^:man/}
   end
 
   test "completes global variables anywhere" do
     matches = tabtab("blah $-")
-    assert matches.size > 0
-    assert matches.all? {|e| e=~ /^\$-/}
+    matches.size.should.be > 0
+    matches.should.be.all {|e| e=~ /^\$-/}
   end
 
   test "completes absolute constants anywhere" do
@@ -20,6 +20,7 @@ class Bond::CompletionTest < Test::Unit::TestCase
   end
 
   test "completes nested classes anywhere" do
+    mock_irb
     tabtab("blah IRB::In").should == ["IRB::InputCompletor"]
   end
 
