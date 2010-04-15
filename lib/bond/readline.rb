@@ -1,4 +1,3 @@
-
 module Bond
   # This is the default readline plugin for Bond. A valid plugin must define methods setup() and line_buffer(). setup()
   # should load the readline-like library and set the completion_proc. line_buffer() should give access to the full line of what

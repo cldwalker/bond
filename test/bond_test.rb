@@ -16,7 +16,7 @@ context "Bond" do
     end
 
     test "sets default mission" do
-      default_mission = lambda { %w{1 2 3}}
+      default_mission = lambda {|e| %w{1 2 3}}
       Bond.reset
       Bond.debrief :default_mission=>default_mission, :readline_plugin=>valid_readline_plugin
       tabtab('1').should == ['1']
@@ -24,7 +24,7 @@ context "Bond" do
 
     test "sets default search" do
       Bond.reset
-      Bond.debrief :default_search=>:underscore
+      Bond.debrief :default_search=>:underscore, :readline_plugin=>valid_readline_plugin
       complete(:method=>'blah') { %w{all_quiet on_the western_front}}
       tabtab('blah a-q').should == ["all_quiet"]
       Bond.reset
