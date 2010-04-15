@@ -69,25 +69,25 @@ context "Agent" do
     before {|e| Bond.agent.reset }
 
     test "recompletes a mission" do
-      Bond.complete(:on=>/man/) { %w{1 2 3}}
+      complete(:on=>/man/) { %w{1 2 3}}
       Bond.recomplete(:on=>/man/) { %w{4 5 6}}
       tabtab('man ').should == %w{4 5 6}
     end
 
     test "recompletes a method mission" do
-      Bond.complete(:method=>'blah') { %w{1 2 3}}
+      complete(:method=>'blah') { %w{1 2 3}}
       Bond.recomplete(:method=>'blah') { %w{4 5 6}}
       tabtab('blah ').should == %w{4 5 6}
     end
 
     test "recompletes an object mission" do
-      Bond.complete(:object=>'String') { %w{1 2 3}}
+      complete(:object=>'String') { %w{1 2 3}}
       Bond.recomplete(:object=>'String') { %w{4 5 6}}
       tabtab('"blah".').should == %w{.4 .5 .6}
     end
 
     test "prints error if no existing mission" do
-      Bond.complete(:object=>'String') { %w{1 2 3}}
+      complete(:object=>'String') { %w{1 2 3}}
       capture_stderr { Bond.recomplete(:object=>'Array') { %w{4 5 6}}}.should =~ /No existing mission/
       tabtab('[].').should == []
     end
