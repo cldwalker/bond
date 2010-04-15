@@ -27,7 +27,7 @@ context "Agent" do
     test "places missions last when declared last" do
       complete(:object=>"Symbol", :place=>:last)
       complete(:method=>"man", :place=>:last) { }
-      complete(:on=>/man\s*(.*)/) {|e| e.matched[1] }
+      complete(:on=>/man\s*(.*)/) {|e| [e.matched[1]] }
       Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::Missions::ObjectMission, Bond::Missions::MethodMission]
       tabtab('man ok').should == ['ok']
     end
@@ -35,7 +35,7 @@ context "Agent" do
     test "places mission correctly for a place number" do
       complete(:object=>"Symbol")
       complete(:method=>"man") {}
-      complete(:on=>/man\s*(.*)/, :place=>1) {|e| e.matched[1] }
+      complete(:on=>/man\s*(.*)/, :place=>1) {|e| [e.matched[1]] }
       tabtab('man ok')
       Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::Missions::ObjectMission, Bond::Missions::MethodMission]
       tabtab('man ok').should == ['ok']

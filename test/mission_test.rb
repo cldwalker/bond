@@ -45,6 +45,11 @@ context "Mission" do
       tabtab('ok ').should == %w{one two three}
     end
 
+    test "with non-array completions completes" do
+      complete(:method=>'blah') { 'blah' }
+      tabtab('blah ').should == ['blah']
+    end
+
     test "with symbol action completes" do
       eval %[module ::Bond::Actions; def blah(input); %w{one two three}; end; end]
       complete(:method=>'blah', :action=>:blah)

@@ -75,8 +75,7 @@ module Bond
 
     # Called when a mission has been chosen to autocomplete.
     def execute(input=@input)
-      completions = @action.call(input)
-      completions = (completions || []).map {|e| e.to_s }
+      completions = Array(@action.call(input)).map {|e| e.to_s }
       completions =  @search.call(input || '', completions) if @search
       if @completion_prefix
         @completion_prefix = @completion_prefix.split(Regexp.union(*Readline::DefaultBreakCharacters.split('')))[-1]
