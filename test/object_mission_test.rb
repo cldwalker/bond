@@ -47,6 +47,15 @@ describe "ObjectMission" do
       tabtab("blah.upt").should == []
     end
 
+    it "ignores object that doesn't have a valid class" do
+      Bond.config[:debug] = true
+      complete :on=>/(.*)./, :object=>'Object'
+      capture_stdout {
+        tabtab("obj = Object.new; def obj.class; end; obj.").should == []
+      }.should == ''
+      Bond.config[:debug] = false
+    end
+
     # needed to ensure Bond works in irbrc
     it "doesn't evaluate irb binding on definition" do
       Object.expects(:const_defined?).never

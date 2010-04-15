@@ -24,7 +24,8 @@ class Bond::Missions::ObjectMission < Bond::Mission
       rescue Exception
         return false
       end
-      if (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition })
+      if @evaled_object.class.respond_to?(:ancestors) &&
+        (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition })
         @completion_prefix = @matched[1] + "."
         @input = @matched[2]
         @input.instance_variable_set("@object", @evaled_object)
