@@ -1,5 +1,4 @@
 require 'rake'
-require 'rake/rdoctask'
 begin
   require 'rcov/rcovtask'
 
@@ -32,14 +31,6 @@ begin
   end
 
 rescue LoadError
-end
-
-Rake::RDocTask.new do |rdoc|
-  rdoc.rdoc_dir = 'rdoc'
-  rdoc.title    = 'test'
-  rdoc.options << '--line-numbers' << '--inline-source'
-  rdoc.rdoc_files.include('README*')
-  rdoc.rdoc_files.include('lib/**/*.rb')
 end
 
 task :default => :test
