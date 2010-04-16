@@ -7,58 +7,58 @@ describe "ObjectMission" do
     it "with default action completes" do
       complete(:object=>"String")
       complete(:on=>/man/) { %w{upper upster upful}}
-      tabtab("'man'.up").sort.should == [".upcase", ".upcase!", ".upto"]
+      tab("'man'.up").sort.should == [".upcase", ".upcase!", ".upto"]
     end
 
     it "with regex condition completes" do
       complete(:object=>/Str/) {|e| e.object.class.superclass.instance_methods(true) }
       complete(:on=>/man/) { %w{upper upster upful}}
-      tabtab("'man'.unta").should == [".untaint"]
+      tab("'man'.unta").should == [".untaint"]
     end
 
     it "with explicit action completes" do
       complete(:object=>"String") {|e| e.object.class.superclass.instance_methods(true) }
       complete(:on=>/man/) { %w{upper upster upful}}
-      tabtab("'man'.unta").should == [".untaint"]
+      tab("'man'.unta").should == [".untaint"]
     end
 
     it "completes without including word break characters" do
       complete(:object=>"Hash")
-      matches = tabtab("{}.f")
+      matches = tab("{}.f")
       assert matches.size > 0
       matches.all? {|e| !e.include?('{')}.should == true
     end
 
     it "completes nil, false and range objects" do
       complete(:object=>"Object")
-      tabtab("nil.f").size.should.be > 0
-      tabtab("false.f").size.should.be > 0
-      tabtab("(1..10).f").size.should.be > 0
+      tab("nil.f").size.should.be > 0
+      tab("false.f").size.should.be > 0
+      tab("(1..10).f").size.should.be > 0
     end
 
     it "completes hashes and arrays with spaces" do
       complete(:object=>"Object")
-      tabtab("[1, 2].f").size.should.be > 0
-      tabtab("{:a =>1}.f").size.should.be > 0
+      tab("[1, 2].f").size.should.be > 0
+      tab("{:a =>1}.f").size.should.be > 0
     end
 
     it "ignores invalid invalid ruby" do
       complete(:object=>"String")
-      tabtab("blah.upt").should == []
+      tab("blah.upt").should == []
     end
 
     it "ignores object that doesn't have a valid class" do
       Bond.config[:debug] = true
       complete :on=>/(.*)./, :object=>'Object'
       capture_stdout {
-        tabtab("obj = Object.new; def obj.class; end; obj.").should == []
+        tab("obj = Object.new; def obj.class; end; obj.").should == []
       }.should == ''
       Bond.config[:debug] = false
     end
 
     it "always passes string to action block" do
       complete(:on=>/(.*)./, :object=>'Object') {|e| e.should.be.is_a(String); [] }
-      tabtab('"man".')
+      tab('"man".')
     end
 
     # needed to ensure Bond works in irbrc

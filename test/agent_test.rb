@@ -9,19 +9,19 @@ describe "Agent" do
     it "chooses default mission if no missions match" do
       complete(:on=>/bling/) {|e| [] }
       Bond.agent.default_mission.expects(:execute)
-      tabtab 'blah'
+      tab 'blah'
     end
 
     it "chooses default mission if internal processing fails" do
       complete(:on=>/bling/) {|e| [] }
       Bond.agent.expects(:find_mission).raises
       Bond.agent.default_mission.expects(:execute)
-      tabtab('bling')
+      tab('bling')
     end
 
     it "completes in middle of line" do
       complete(:object=>"Object")
-      tabtab(':man.f blah', ':man.f').include?(':man.freeze').should == true
+      tab(':man.f blah', ':man.f').include?(':man.freeze').should == true
     end
 
     it "places missions last when declared last" do
@@ -29,16 +29,16 @@ describe "Agent" do
       complete(:method=>"man", :place=>:last) { }
       complete(:on=>/man\s*(.*)/) {|e| [e.matched[1]] }
       Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::Missions::ObjectMission, Bond::Missions::MethodMission]
-      tabtab('man ok').should == ['ok']
+      tab('man ok').should == ['ok']
     end
 
     it "places mission correctly for a place number" do
       complete(:object=>"Symbol")
       complete(:method=>"man") {}
       complete(:on=>/man\s*(.*)/, :place=>1) {|e| [e.matched[1]] }
-      tabtab('man ok')
+      tab('man ok')
       Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::Missions::ObjectMission, Bond::Missions::MethodMission]
-      tabtab('man ok').should == ['ok']
+      tab('man ok').should == ['ok']
     end
   end
 
@@ -71,25 +71,25 @@ describe "Agent" do
     it "recompletes a mission" do
       complete(:on=>/man/) { %w{1 2 3}}
       Bond.recomplete(:on=>/man/) { %w{4 5 6}}
-      tabtab('man ').should == %w{4 5 6}
+      tab('man ').should == %w{4 5 6}
     end
 
     it "recompletes a method mission" do
       complete(:method=>'blah') { %w{1 2 3}}
       Bond.recomplete(:method=>'blah') { %w{4 5 6}}
-      tabtab('blah ').should == %w{4 5 6}
+      tab('blah ').should == %w{4 5 6}
     end
 
     it "recompletes an object mission" do
       complete(:object=>'String') { %w{1 2 3}}
       Bond.recomplete(:object=>'String') { %w{4 5 6}}
-      tabtab('"blah".').should == %w{.4 .5 .6}
+      tab('"blah".').should == %w{.4 .5 .6}
     end
 
     it "prints error if no existing mission" do
       complete(:object=>'String') { %w{1 2 3}}
       capture_stderr { Bond.recomplete(:object=>'Array') { %w{4 5 6}}}.should =~ /No existing mission/
-      tabtab('[].').should == []
+      tab('[].').should == []
     end
 
     it "prints error if invalid condition given" do

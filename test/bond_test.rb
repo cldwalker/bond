@@ -19,14 +19,14 @@ describe "Bond" do
       default_mission = lambda {|e| %w{1 2 3}}
       Bond.reset
       Bond.debrief :default_mission=>default_mission, :readline_plugin=>valid_readline_plugin
-      tabtab('1').should == ['1']
+      tab('1').should == ['1']
     end
 
     it "sets default search" do
       Bond.reset
       Bond.debrief :default_search=>:underscore, :readline_plugin=>valid_readline_plugin
       complete(:method=>'blah') { %w{all_quiet on_the western_front}}
-      tabtab('blah a-q').should == ["all_quiet"]
+      tab('blah a-q').should == ["all_quiet"]
       Bond.reset
     end
   end

@@ -39,7 +39,7 @@ module TestHelpers
     fake.string
   end
 
-  def tabtab(full_line, last_word=full_line)
+  def tab(full_line, last_word=full_line)
     Bond.agent.stubs(:line_buffer).returns(full_line)
     Bond.agent.call(last_word)
   end
