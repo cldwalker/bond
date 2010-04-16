@@ -2,7 +2,7 @@
 # unless you're also reproducing this Bond.debrief
 Bond.debrief(:default_search=>:underscore) unless Bond.config[:default_search]
 Bond.debrief(:default_mission=>:default) unless Bond.config[:default_mission]
-Bond.complete(:method=>/system|`/, :action=>:shell_commands)
+Bond.complete(:method=>'system', :action=>:shell_commands)
 Bond.complete(:method=>'require', :action=>:method_require, :search=>false)
 
 # irb/completion reproduced without the completion quirks
