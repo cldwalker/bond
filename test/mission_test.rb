@@ -75,12 +75,31 @@ describe "Mission" do
     end
   end
 
-  it "anywhere mission completes" do
-    complete(:anywhere=>/(:[^:\s.]*)$/) {|e|
-      %w{:ab :bd :ae}
-    }
-    tab("{:ab=>1}[:a").should == ["1}[:ab", "1}[:ae"]
-    tab(":a").should == %w{:ab :ae}
+  describe "anywhere mission" do
+    before { Bond.agent.reset }
+
+    it "at beginning completes" do
+      complete(:anywhere=>/(:[^:\s.]*)$/) {|e| %w{:ab :bd :ae} }
+      tab(":a").should == %w{:ab :ae}
+    end
+
+    it "in middle of string completes" do
+      complete(:anywhere=>/(:[^:\s.]*)$/) {|e| %w{:ab :bd :ae} }
+      tab("hash[:a").should == %w{hash[:ab hash[:ae}
+    end
+
+    it "after word break chars completes" do
+      complete(:anywhere=>/(:[^:\s.]*)$/) {|e| %w{:ab :bd :ae} }
+      tab("{:ab=>1}[:a").should == ["1}[:ab", "1}[:ae"]
+      tab("nil;:a").should == %w{:ab :ae}
+    end
+
+    it 'with special chars and custom search completes' do
+      complete(:anywhere=>/(\$[^\s.]*)$/, :search=>false) {|e|
+        global_variables.grep(/^#{Regexp.escape(e.matched[1])}/)
+      }
+      tab("$LO").should == ["$LOAD_PATH", "$LOADED_FEATURES"]
+    end
   end
 
   it "default_mission set to a valid mission if irb doesn't exist" do

@@ -76,10 +76,9 @@ module Bond
       completions = Array(@action.call(input)).map {|e| e.to_s }
       completions =  @search.call(input || '', completions) if @search
       if @completion_prefix
-        # Everything up to last break char stays on the line
-        # This ensures only chars after break are prefixed
-        break_chars = Readline::DefaultBreakCharacters.split('')
-        @completion_prefix = @completion_prefix.split(Regexp.union(*break_chars))[-1] || ''
+        # Everything up to last break char stays on the line.
+        # Must ensure only chars after break are prefixed
+        @completion_prefix = @completion_prefix[/([^#{Readline::DefaultBreakCharacters}]+)$/,1] || ''
         completions = completions.map {|e| @completion_prefix + e }
       end
       completions
