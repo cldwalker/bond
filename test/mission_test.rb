@@ -11,30 +11,6 @@ describe "Mission" do
       tabtab('some bling f').should == %w{fg}
     end
 
-    it "with method completes" do
-      complete(:on=>/bling/) {|e| [] }
-      complete(:method=>'cool') {|e| %w{ab cd ef gd} }
-      tabtab('cool c').should == %w{cd}
-    end
-
-    it "with method and quoted argument completes" do
-      complete(:on=>/bling/) {|e| [] }
-      complete(:method=>'cool') {|e| %w{ab cd ef ad} }
-      tabtab('cool "a').should == %w{ab ad}
-    end
-
-    it "with string method completes exact matches" do
-      complete(:method=>'cool?') {|e| [] }
-      complete(:method=>'cool') {|e| %w{ab cd ef gd} }
-      tabtab('cool c').should == %w{cd}
-    end
-
-    it "with regex method completes multiple methods" do
-      complete(:method=>/cool|ls/) {|e| %w{ab cd ef ad}}
-      tabtab("cool a").should == %w{ab ad}
-      tabtab("ls c").should == %w{cd}
-    end
-
     it "with regexp condition completes" do
       complete(:on=>/\s*'([^']+)$/, :search=>false) {|e| %w{coco for puffs}.grep(/#{e.matched[1]}/) }
       tabtab("require 'ff").should == ['puffs']
@@ -64,6 +40,34 @@ describe "Mission" do
     it "always passes string to action block" do
       complete(:on=>/man/) {|e| e.should.be.is_a(String); [] }
       tabtab('man ')
+    end
+  end
+
+  describe "method mission" do
+    before { Bond.agent.reset }
+
+    it "completes" do
+      complete(:method=>'cool?') {|e| [] }
+      complete(:method=>'cool') {|e| %w{ab cd ef gd} }
+      tabtab('cool c').should == %w{cd}
+    end
+
+    it "completes quoted argument" do
+      complete(:on=>/bling/) {|e| [] }
+      complete(:method=>'cool') {|e| %w{ab cd ef ad} }
+      tabtab('cool "a').should == %w{ab ad}
+    end
+
+    it "needs space to complete argument" do
+      complete(:method=>'cool') {|e| %w{ab cd ef ad} }
+      tabtab('coola').should == []
+      tabtab('cool a').should == %w{ab ad}
+    end
+
+    it "with regex method completes for multiple methods" do
+      complete(:method=>/cool|ls/) {|e| %w{ab cd ef ad}}
+      tabtab("cool a").should == %w{ab ad}
+      tabtab("ls c").should == %w{cd}
     end
   end
 
