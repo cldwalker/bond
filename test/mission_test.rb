@@ -61,7 +61,7 @@ describe "Mission" do
       capture_stderr { tabtab('bling') }.should =~ /bling.*whoops/m
     end
 
-    it "should always pass string to action block" do
+    it "always passes string to action block" do
       complete(:on=>/man/) {|e| e.should.be.is_a(String); [] }
       tabtab('man ')
     end

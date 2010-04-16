@@ -56,6 +56,11 @@ describe "ObjectMission" do
       Bond.config[:debug] = false
     end
 
+    it "always passes string to action block" do
+      complete(:on=>/(.*)./, :object=>'Object') {|e| e.should.be.is_a(String); [] }
+      tabtab('"man".')
+    end
+
     # needed to ensure Bond works in irbrc
     it "doesn't evaluate irb binding on definition" do
       Object.expects(:const_defined?).never
