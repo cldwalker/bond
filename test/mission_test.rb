@@ -53,9 +53,13 @@ describe "Mission" do
     end
 
     it "completes quoted argument" do
-      complete(:on=>/bling/) {|e| [] }
       complete(:method=>'cool') {|e| %w{ab cd ef ad} }
       tabtab('cool "a').should == %w{ab ad}
+    end
+
+    it "completes parenthetical argument" do
+      complete(:method=>'cool') {|e| %w{ab cd ef ad} }
+      tabtab('cool("a').should == %w{ab ad}
     end
 
     it "needs space to complete argument" do
