@@ -13,7 +13,7 @@ Bond.complete(:on=>/::([A-Z][^:\.\(]*)$/, :search=>false) {|e|
   Object.constants.grep(/^#{Regexp.escape(e.matched[1])}/).collect{|f| "::" + f}
 }
 # Completes symbols
-Bond.complete(:on=>/(:[^:\s.]*)$/) {|e|
+Bond.complete(:anywhere=>/(:[^:\s.]*)$/) {|e|
   Symbol.respond_to?(:all_symbols) ? Symbol.all_symbols.map {|f| ":#{f}" } : []
 }
 # Completes global variables

@@ -17,12 +17,10 @@ module Bond
       attr_accessor :default_search
       # Handles creation of proper Mission class depending on the options passed.
       def create(options)
-        if options[:method]
-          Missions::MethodMission.new(options)
-        elsif options[:object]
-          Missions::ObjectMission.new(options)
-        else
-          new(options)
+        if options[:method]      then Missions::MethodMission.new(options)
+        elsif options[:object]   then Missions::ObjectMission.new(options)
+        elsif options[:anywhere] then Missions::AnywhereMission.new(options)
+        else                          new(options)
         end
       end
       #:stopdoc:
@@ -77,10 +75,7 @@ module Bond
     def execute(input=@input)
       completions = Array(@action.call(input)).map {|e| e.to_s }
       completions =  @search.call(input || '', completions) if @search
-      if @completion_prefix
-        @completion_prefix = @completion_prefix.split(Regexp.union(*Readline::DefaultBreakCharacters.split('')))[-1]
-        completions = completions.map {|e| @completion_prefix + e }
-      end
+      completions = completions.map {|e| @completion_prefix + e } if @completion_prefix
       completions
     rescue
       error_message = "Mission action failed to execute properly. Check your mission action with pattern #{@condition.inspect}.\n" +

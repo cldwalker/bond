@@ -75,6 +75,13 @@ describe "Mission" do
     end
   end
 
+  it "anywhere mission completes" do
+    complete(:anywhere=>/(:[^:\s.]*)$/) {|e|
+      %w{:ab :bd :ae}
+    }
+    tab("{:ab=>1}[:a").should == ["{:ab=>1}[:ab", "{:ab=>1}[:ae"]
+  end
+
   it "default_mission set to a valid mission if irb doesn't exist" do
     Object.expects(:const_defined?).with(:IRB).returns(false)
     mission = Bond::Missions::DefaultMission.new
