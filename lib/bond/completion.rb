@@ -9,15 +9,13 @@ Bond.complete(:method=>'require', :action=>:method_require, :search=>false)
 # Completes classes and constants
 Bond.complete(:on=>/(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)$/, :action=>:constants, :search=>false)
 # Completes absolute constants
-Bond.complete(:on=>/::([A-Z][^:\.\(]*)$/, :search=>false) {|e|
-  Object.constants.grep(/^#{Regexp.escape(e.matched[1])}/).collect{|f| "::" + f}
-}
+Bond.complete(:anywhere=>/::([A-Z][^:\.\(]*)$/) {|e| Object.constants }
 # Completes symbols
 Bond.complete(:anywhere=>/(:[^:\s.]*)$/) {|e|
   Symbol.respond_to?(:all_symbols) ? Symbol.all_symbols.map {|f| ":#{f}" } : []
 }
 # Completes global variables
-Bond.complete(:on=>/(\$[^\s.]*)$/, :search=>false) {|e|
+Bond.complete(:anywhere=>/(\$[^\s.]*)$/, :search=>false) {|e|
   global_variables.grep(/^#{Regexp.escape(e.matched[1])}/)
 }
 # Completes files
