@@ -41,6 +41,7 @@ module Bond
   #           traditional searching i.e. looking at the beginning of a string for possible matches. If false, search is turned off and
   #           assumed to be done in the action block. Possible symbols are :anywhere, :ignore_case and :underscore. See Bond::Search for
   #           more info about them. A proc is given two arguments: the input string and an array of possible completions.
+  # [:action] Symbol referencing an instance method in Actions to be the action block.
   # [:place] Given a symbol or number, controls where this completion is placed in relation to existing ones. If a number, the
   #          completion is placed at that number. If the symbol :last, the completion is placed at the end regardless of completions
   #          defined after it. Use this symbol as a way of anchoring completions you want to remain at the end. Multiple declarations
@@ -52,6 +53,7 @@ module Bond
   #  Bond.complete(:object=>ActiveRecord::Base, :search=>:underscore, :place=>:last)
   #  Bond.complete(:object=>ActiveRecord::Base) {|input| input.object.class.instance_methods(false) }
   #  Bond.complete(:method=>'you', :search=>proc {|input, list| list.grep(/#{input}/i)} ) {|input| %w{Only Live Twice} }
+  #  Bond.complete(:method=>'system', :action=>:shell_commands)
   def complete(options={}, &block)
     if (result = agent.complete(options, &block)).is_a?(String)
       $stderr.puts result

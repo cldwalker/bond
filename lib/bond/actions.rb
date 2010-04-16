@@ -1,5 +1,5 @@
 module Bond
-  # Namespace for mission actions.
+  # Namespace for mission actions that can be shared and reused across completion definitions.
   module Actions
     ReservedWords = [
       "BEGIN", "END", "alias", "and", "begin", "break", "case", "class", "def", "defined", "do", "else", "elsif", "end", "ensure",
