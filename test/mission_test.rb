@@ -79,7 +79,8 @@ describe "Mission" do
     complete(:anywhere=>/(:[^:\s.]*)$/) {|e|
       %w{:ab :bd :ae}
     }
-    tab("{:ab=>1}[:a").should == ["{:ab=>1}[:ab", "{:ab=>1}[:ae"]
+    tab("{:ab=>1}[:a").should == ["1}[:ab", "1}[:ae"]
+    tab(":a").should == %w{:ab :ae}
   end
 
   it "default_mission set to a valid mission if irb doesn't exist" do

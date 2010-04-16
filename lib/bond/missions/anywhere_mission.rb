@@ -8,7 +8,7 @@ class Bond::Missions::AnywhereMission < Bond::Mission
   def handle_valid_match(input)
     if (match = super)
       @input = @matched[1]
-      @completion_prefix = input.sub(/#{@matched[1]}$/, '')
+      @completion_prefix = input.sub(/#{Regexp.escape(@matched[1])}$/, '')
     end
     match
   end

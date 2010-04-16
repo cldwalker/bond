@@ -27,9 +27,6 @@ class Bond::Missions::ObjectMission < Bond::Mission
       if @evaled_object.class.respond_to?(:ancestors) &&
         (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition })
         @completion_prefix = @matched[1] + "."
-        break_chars = Bond::Readline::DefaultBreakCharacters.split('')
-        @completion_prefix = @completion_prefix.split(Regexp.union(*break_chars))[-1]
-
         @input = @matched[2] || ''
         @input.instance_variable_set("@object", @evaled_object)
         class<<@input; def object; @object; end; end

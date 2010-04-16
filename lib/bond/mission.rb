@@ -75,7 +75,13 @@ module Bond
     def execute(input=@input)
       completions = Array(@action.call(input)).map {|e| e.to_s }
       completions =  @search.call(input || '', completions) if @search
-      completions = completions.map {|e| @completion_prefix + e } if @completion_prefix
+      if @completion_prefix
+        # Everything up to last break char stays on the line
+        # This ensures only chars after break are prefixed
+        break_chars = Readline::DefaultBreakCharacters.split('')
+        @completion_prefix = @completion_prefix.split(Regexp.union(*break_chars))[-1] || ''
+        completions = completions.map {|e| @completion_prefix + e }
+      end
       completions
     rescue
       error_message = "Mission action failed to execute properly. Check your mission action with pattern #{@condition.inspect}.\n" +
