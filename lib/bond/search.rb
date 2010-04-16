@@ -22,11 +22,8 @@ module Bond
     # type 's-lo'.
     def underscore_search(input, list)
       if input.include?("-")
-        index = 0
-        input.split('-').inject(list) {|new_list,e|
-          new_list = new_list.select {|f| f.split(/_+/)[index] =~ /^#{Regexp.escape(e)}/ };
-          index +=1; new_list
-        }
+        regex = input.split('-').map {|e| Regexp.escape(e) }.join("([^_]+)?_")
+        list.select {|e| e =~ /^#{regex}/ }
       else
         default_search(input, list)
       end
