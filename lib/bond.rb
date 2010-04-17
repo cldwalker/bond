@@ -4,6 +4,7 @@ require 'bond/rawline'
 require 'bond/agent'
 require 'bond/search'
 require 'bond/actions'
+require 'bond/rc'
 require 'bond/mission'
 require 'bond/missions/default_mission'
 require 'bond/missions/method_mission'
@@ -101,6 +102,25 @@ module Bond
       plugin_methods.all? {|e| config[:readline_plugin].instance_methods.map {|f| f.to_s}.include?(e)}
       $stderr.puts "Invalid readline plugin set. Try again."
     end
+  end
+
+  # Loads bond/completion, optional ~/.bondrc and optional block
+  def load(&block)
+    require 'bond/completion'
+    if File.exists?(File.join(home, '.bondrc'))
+      Rc.module_eval File.read(File.join(home, '.bondrc'))
+    end
+    Rc.instance_eval(&block) if block
+    true
+  end
+
+  # Find a user's home in a cross-platform way
+  def home
+    ['HOME', 'USERPROFILE'].each {|e| return ENV[e] if ENV[e] }
+    return "#{ENV['HOMEDRIVE']}#{ENV['HOMEPATH']}" if ENV['HOMEDRIVE'] && ENV['HOMEPATH']
+    File.expand_path("~")
+  rescue
+    File::ALT_SEPARATOR ? "C:/" : "/"
   end
 
   # Reports what completion mission and possible completions would happen for a given input. Helpful for debugging
