@@ -25,7 +25,7 @@ describe "ObjectMission" do
     it "completes without including word break characters" do
       complete(:object=>"Hash")
       matches = tab("{}.f")
-      assert matches.size > 0
+      matches.size.should.be > 0
       matches.all? {|e| !e.include?('{')}.should == true
     end
 

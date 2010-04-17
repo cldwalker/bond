@@ -10,13 +10,14 @@ describe "Completion" do
   end
 
   it "completes global variables anywhere" do
-    matches = tab("blah $-")
-    matches.size.should.be > 0
-    matches.should.be.all {|e| e=~ /^\$-/}
+    tab("blah $-").should.satisfy {|e|
+      e.size > 0 && e.all? {|e| e=~ /^\$-/} }
+    tab("h[$LOAD_").should == ["h[$LOAD_PATH"]
   end
 
   it "completes absolute constants anywhere" do
     tab("blah ::Arr").should == ["::Array"]
+    tab("h[::Arr").should == ["h[::Array"]
   end
 
   it "completes nested classes anywhere" do
@@ -25,12 +26,13 @@ describe "Completion" do
   end
 
   it "completes symbols anywhere" do
-    Symbol.expects(:all_symbols).returns([:mah])
-    assert tab("blah :m").size > 0
+    Symbol.expects(:all_symbols).twice.returns([:mah])
+    tab("blah :m").size.should.be > 0
+    tab("blah[:m").should == ["blah[:mah"]
   end
 
   it "completes string methods anywhere" do
-    tab("blah 'man'.f").include?('.freeze').should == true
+    tab("blah 'man'.f").should.include('.freeze')
   end
 
   it "methods don't swallow up default completion" do

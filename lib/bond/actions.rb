@@ -36,9 +36,9 @@ module Bond
     end
 
     def constants(input) #:nodoc:
-      receiver = input.matched[1]
+      receiver = input.matched[2]
       candidates = current_eval("#{receiver}.constants | #{receiver}.methods")
-      candidates.grep(/^#{Regexp.escape(input.matched[4])}/).map {|e| receiver + "::" + e}
+      candidates.grep(/^#{Regexp.escape(input.matched[5])}/).map {|e| receiver + "::" + e}
     end
 
     # Completes Kernel#require

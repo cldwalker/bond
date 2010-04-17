@@ -7,7 +7,7 @@ Bond.complete(:method=>'require', :action=>:method_require, :search=>false)
 
 # irb/completion reproduced without the completion quirks
 # Completes classes and constants
-Bond.complete(:on=>/(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)$/, :action=>:constants, :search=>false)
+Bond.complete(:anywhere=>/((((::)?[A-Z][^:.\(]*)+)::?([^:.]*))$/, :action=>:constants, :search=>false)
 # Completes absolute constants
 Bond.complete(:anywhere=>/::([A-Z][^:\.\(]*)$/) {|e| Object.constants }
 # Completes symbols
