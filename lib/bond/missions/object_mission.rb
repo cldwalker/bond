@@ -1,6 +1,6 @@
-# Represents a completion mission specified by :object in Bond.complete. Unlike other missions, this
-# one needs to both match the mission condition and have the current object being completed have
-# an ancestor specified by :object.
+# Created with :object in Bond.complete. Is able to complete methods for objects.
+# Unlike other missions, this one needs to both match the mission condition and have
+# the current object being completed have an ancestor specified by :object.
 class Bond::Missions::ObjectMission < Bond::Mission
   #:stopdoc:
   attr_reader :object_condition

@@ -1,3 +1,5 @@
+# Created with :anywhere in Bond.complete. Is able to complete anywhere i.e. even
+# after non word break characters such as '[' or '}'.
 class Bond::Missions::AnywhereMission < Bond::Mission
   attr_reader :anywhere_condition
   def initialize(options={}) #:nodoc:
@@ -5,7 +7,7 @@ class Bond::Missions::AnywhereMission < Bond::Mission
     super
   end
 
-  def handle_valid_match(input)
+  def handle_valid_match(input) #:nodoc:
     if (match = super)
       @input = @matched[1]
       @completion_prefix = input.sub(/#{Regexp.escape(@matched[1])}$/, '')
