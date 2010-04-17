@@ -43,38 +43,6 @@ describe "Mission" do
     end
   end
 
-  describe "method mission" do
-    before { Bond.agent.reset }
-
-    it "completes" do
-      complete(:method=>'cool?') {|e| [] }
-      complete(:method=>'cool') {|e| %w{ab cd ef gd} }
-      tab('cool c').should == %w{cd}
-    end
-
-    it "completes quoted argument" do
-      complete(:method=>'cool') {|e| %w{ab cd ef ad} }
-      tab('cool "a').should == %w{ab ad}
-    end
-
-    it "completes parenthetical argument" do
-      complete(:method=>'cool') {|e| %w{ab cd ef ad} }
-      tab('cool("a').should == %w{ab ad}
-    end
-
-    it "needs space to complete argument" do
-      complete(:method=>'cool') {|e| %w{ab cd ef ad} }
-      tab('coola').should == []
-      tab('cool a').should == %w{ab ad}
-    end
-
-    it "with regex method completes for multiple methods" do
-      complete(:method=>/cool|ls/) {|e| %w{ab cd ef ad}}
-      tab("cool a").should == %w{ab ad}
-      tab("ls c").should == %w{cd}
-    end
-  end
-
   describe "anywhere mission" do
     before { Bond.agent.reset }
 
