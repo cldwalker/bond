@@ -15,9 +15,7 @@ Bond.complete(:anywhere=>/(:[^:\s.]*)$/) {|e|
   Symbol.respond_to?(:all_symbols) ? Symbol.all_symbols.map {|f| ":#{f}" } : []
 }
 # Completes global variables
-Bond.complete(:anywhere=>/(\$[^\s.]*)$/, :search=>false) {|e|
-  global_variables.grep(/^#{Regexp.escape(e)}/)
-}
+Bond.complete(:anywhere=>/(\$[^\s.]*)$/) {|e| global_variables }
 # Completes files
 Bond.complete(:on=>/[\s(]["']([^'"]*)$/, :search=>false, :action=>:quoted_files, :place=>:last)
 # Completes any object's methods

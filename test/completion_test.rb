@@ -10,8 +10,8 @@ describe "Completion" do
   end
 
   it "completes global variables anywhere" do
-    tab("blah $-").should.satisfy {|e|
-      e.size > 0 && e.all? {|e| e=~ /^\$-/} }
+    tab("blah $LOA").should.satisfy {|e|
+      e.size > 0 && e.all? {|e| e=~ /^\$LOA/} }
     tab("h[$LOAD_").should == ["h[$LOAD_PATH"]
   end
 
