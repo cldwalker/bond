@@ -61,6 +61,7 @@ module Bond
   def complete(options={}, &block)
     if (result = agent.complete(options, &block)).is_a?(String)
       $stderr.puts result
+      $stderr.puts "Mission options: #{options.inspect}" if config[:debug]
       false
     else
       true
@@ -72,6 +73,7 @@ module Bond
   def recomplete(options={}, &block)
     if (result = agent.recomplete(options, &block)).is_a?(String)
       $stderr.puts result
+      $stderr.puts "Mission options: #{options.inspect}" if config[:debug]
       false
     else
       true
