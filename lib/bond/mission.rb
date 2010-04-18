@@ -17,7 +17,7 @@ module Bond
       attr_accessor :default_search
       # Handles creation of proper Mission class depending on the options passed.
       def create(options)
-        if options[:method]           then Missions::MethodMission.new(options)
+        if options[:method]           then Missions::MethodMission.create(options)
         elsif options[:object]        then Missions::ObjectMission.new(options)
         elsif options[:anywhere]      then Missions::AnywhereMission.new(options)
         elsif options[:object_method] then Missions::ObjectMethodMission.new(options)

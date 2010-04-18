@@ -110,12 +110,16 @@ module Bond
     end
   end
 
-  # Loads bond/completion, optional ~/.bondrc and optional block.
-  # See Rc for syntax in ~/.bondrc
+  # Loads bond/completion, optional ~/.bondrc, plugins in lib/bond/completions/ and
+  # ~/.bond/completions/ and optional block.
+  # See Rc for syntax to use in ~/.bondrc and plugins.
   def load(&block)
     require 'bond/completion'
-    if File.exists?(File.join(home, '.bondrc'))
-      Rc.module_eval File.read(File.join(home, '.bondrc'))
+    Rc.load(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc'))
+    [File.join(File.dirname(__FILE__),'bond'), File.join(home, '.bond')].each do |base_dir|
+      if File.exists?(dir = File.join(base_dir, 'completions'))
+        Dir[dir + '/*.rb'].each {|file| Rc.load(file) }
+      end
     end
     Rc.instance_eval(&block) if block
     true
