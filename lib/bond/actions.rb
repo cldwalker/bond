@@ -14,11 +14,6 @@ module Bond
       []
     end
 
-    # Completes backtick and Kernel#system with shell commands available in ENV['PATH']
-    def shell_commands(input)
-      ENV['PATH'].split(File::PATH_SEPARATOR).uniq.map {|e| Dir.entries(e) }.flatten.uniq - ['.', '..']
-    end
-
     # Default completion for non-irb console and bond/completion
     def default(input)
       current_eval("methods | private_methods | local_variables | self.class.constants") | ReservedWords
