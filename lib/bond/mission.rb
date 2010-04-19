@@ -62,7 +62,7 @@ module Bond
     # Returns a boolean indicating if a mission matches the given input.
     def matches?(input)
       @matched = @input = @completion_prefix = nil
-      (match = _matches?(input)) && create_input(input)
+      (match = _matches?(input)) && create_input(input[/\S+$/])
       !!match
     end
 
@@ -88,17 +88,12 @@ module Bond
       @condition
     end
 
-    def create_input(input)
-      @input = input[/\S+$/] || ''
-      @input.instance_variable_set("@matched", @matched)
-      class<<@input; def matched; @matched; end; end
+    def create_input(input, options={})
+      @input = Input.new(input, @matched, options)
     end
 
     def _matches?(input)
-      if (match = input.match(@condition))
-        @matched ||= match
-      end
-      match
+      @matched = input.match(@condition)
     end
     #:startdoc:
   end
