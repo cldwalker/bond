@@ -51,8 +51,8 @@ class Bond::MethodMission < Bond::Mission
   def handle_valid_match(input)
     meths = Regexp.union *self.class.method_actions.keys
     @condition = /(?:^|\s+)([^\s.]+)?\.?(#{meths})(?:\s+|\()(['":])?(.*)$/
-    if (match = super) && eval_object(match) &&
-      (match = self.class.method_action(@evaled_object, @meth))
+    if (match = super) && (match = eval_object(match) &&
+      self.class.method_action(@evaled_object, @meth))
       @completion_prefix = @matched[3]
       @input = @matched[-1] || ''
       @input.instance_variable_set("@object", @evaled_object)

@@ -61,7 +61,7 @@ module Bond
 
     # Returns a boolean indicating if a mission matches the given input.
     def matches?(input)
-      @matched = @input = @list_prefix = nil
+      @matched = @input = @completion_prefix = nil
       if (match = handle_valid_match(input))
         @input.instance_variable_set("@matched", @matched)
         class<<@input; def matched; @matched; end; end

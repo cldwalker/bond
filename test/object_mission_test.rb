@@ -42,7 +42,7 @@ describe "ObjectMission" do
       tab("{:a =>1}.f").size.should.be > 0
     end
 
-    it "ignores invalid invalid ruby" do
+    it "ignores invalid ruby" do
       complete(:object=>"String")
       tab("blah.upt").should == []
     end

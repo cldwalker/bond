@@ -18,22 +18,13 @@ class Bond::ObjectMission < Bond::Mission
   end
 
   def handle_valid_match(input)
-    if (match = super)
-      begin
-        eval_object(match)
-      rescue Exception
-        return false
-      end
-      if @evaled_object.class.respond_to?(:ancestors) &&
-        (match = @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition })
-        @completion_prefix = @matched[1] + "."
-        @input = @matched[2] || ''
-        @input.instance_variable_set("@object", @evaled_object)
-        class<<@input; def object; @object; end; end
-        @action ||= lambda {|e| default_action(e.object) }
-      else
-        match = false
-      end
+    if (match = super) && (match = eval_object(match) && @evaled_object.class.respond_to?(:ancestors) &&
+      @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition })
+      @completion_prefix = @matched[1] + "."
+      @input = @matched[2] || ''
+      @input.instance_variable_set("@object", @evaled_object)
+      class<<@input; def object; @object; end; end
+      @action ||= lambda {|e| default_action(e.object) }
     end
     match
   end
@@ -41,6 +32,9 @@ class Bond::ObjectMission < Bond::Mission
   def eval_object(match)
     @matched = match
     @evaled_object = self.class.current_eval(match[1], @eval_binding)
+    true
+  rescue Exception
+    false
   end
 
   def default_action(obj)
