@@ -22,5 +22,12 @@ module Bond
     def actions(&block)
       Actions.module_eval(&block)
     end
+
+    # Helper method which returns objects of a given class. Use inside of action blocks
+    def objects_of(klass)
+      object = []
+      ObjectSpace.each_object(klass) {|e| object.push(e) }
+      object
+    end
   end
 end

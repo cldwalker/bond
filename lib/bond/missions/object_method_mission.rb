@@ -34,12 +34,14 @@ class Bond::Missions::ObjectMethodMission < Bond::Mission
   def initialize(options={}) #:nodoc:
     options.delete(:object_method)
     options[:action] = lambda { }
-    options[:on] = /(?:^|\s+)(\S+|[^.]+)\.([^.\s]*)(?:\s+|\()(['":])?(.*)$/
+    options[:on] = /FILL_PER_COMPLETION/
     @eval_binding = options[:eval_binding]
     super(options)
   end
 
   def handle_valid_match(input)
+    meths = Regexp.union *self.class.method_actions.keys
+    @condition = /(?:^|\s+)([^\s.]+)?\.?(#{meths})(?:\s+|\()(['":])?(.*)$/
     if (match = super) && eval_object(match) &&
       (match = self.class.has_method_action?(@evaled_object, @meth))
       @completion_prefix = @matched[3]
@@ -53,7 +55,7 @@ class Bond::Missions::ObjectMethodMission < Bond::Mission
 
   def eval_object(match)
     @matched = match
-    @evaled_object = self.class.current_eval(match[1], @eval_binding)
+    @evaled_object = self.class.current_eval(match[1] || 'self', @eval_binding)
     @meth = @matched[2]
     true
   rescue Exception
