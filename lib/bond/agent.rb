@@ -73,7 +73,7 @@ module Bond
         if mission.is_a?(ObjectMission)
           puts "Matches completion for object with an ancestor matching #{mission.object_condition.inspect}."
         elsif mission.is_a?(MethodMission)
-          puts "Matches completion for method '#{mission.meth}' in '#{MethodMission.last_match[0]}'."
+          puts "Matches completion for method '#{mission.meth}' in '#{MethodMission.last_action[0]}'."
         else
           puts "Matches completion with condition #{mission.condition.inspect}."
         end

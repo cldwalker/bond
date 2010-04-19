@@ -1,27 +1,31 @@
 # Created with :method in Bond.complete. Is able to complete first argument for a method.
 class Bond::MethodMission < Bond::Mission
   class<<self
-    attr_accessor :method_actions, :last_match
+    attr_accessor :actions, :last_action
+
     def create(options)
       return new(options) if options[:method] == true
-      (options[:methods] || Array(options[:method])).each do |meth|
-        meth = "Kernel##{meth}" if !meth.to_s[/[.#]/]
-        if options[:action].is_a?(String)
-          options[:action] = method_action(*options[:action].split(/[.#]/,2))[1]
-        end
-        raise Bond::InvalidMissionActionError unless options[:action].respond_to?(:call)
-        add_method_action(meth, &options[:action])
+
+      if options[:action].is_a?(String)
+        klass, action_meth = split_method(options[:action])
+        options[:action] = (@actions[action_meth] || {})[klass]
       end
+      raise Bond::InvalidMissionActionError unless options[:action].respond_to?(:call)
+
+      (options[:methods] || Array(options[:method])).each {|meth|
+        klass, meth = split_method(meth)
+        (@actions[meth] ||= {})[klass] = options[:action]
+      }
       nil
     end
 
-    def method_action(obj, meth)
-      @last_match = (@method_actions[meth] || {}).find {|k,v| get_class(k) && obj.is_a?(get_class(k)) }
+    def split_method(meth)
+      meth = "Kernel##{meth}" if !meth.to_s[/[.#]/]
+      meth.split(/[.#]/,2)
     end
 
-    def add_method_action(meth_klass, &block)
-      klass, meth = meth_klass.split(/[.#]/,2)
-      (@method_actions[meth] ||= {})[klass] = block
+    def find_action(obj, meth)
+      @last_action = (@actions[meth] || {}).find {|k,v| get_class(k) && obj.is_a?(get_class(k)) }
     end
 
     def get_class(klass)
@@ -39,7 +43,7 @@ class Bond::MethodMission < Bond::Mission
        nil
     end
   end
-  self.method_actions = {}
+  self.actions = {}
 
   attr_reader :meth
   def initialize(options={}) #:nodoc:
@@ -50,10 +54,10 @@ class Bond::MethodMission < Bond::Mission
   end
 
   def handle_valid_match(input)
-    meths = Regexp.union *self.class.method_actions.keys
+    meths = Regexp.union *self.class.actions.keys
     @condition = /(?:^|\s+)([^\s.]+)?\.?(#{meths})(?:\s+|\()(['":])?(.*)$/
     if (match = super) && (match = eval_object(match) &&
-      self.class.method_action(@evaled_object, @meth))
+      self.class.find_action(@evaled_object, @meth))
       @completion_prefix = @matched[3]
       @input = @matched[-1] || ''
       @input.instance_variable_set("@object", @evaled_object)
