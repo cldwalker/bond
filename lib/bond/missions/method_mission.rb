@@ -1,7 +1,7 @@
 # Created with :method in Bond.complete. Is able to complete first argument for a method.
 class Bond::MethodMission < Bond::Mission
   class<<self
-    attr_accessor :method_actions
+    attr_accessor :method_actions, :last_match
     def create(options)
       return new(options) if options[:method] == true
       (options[:methods] || Array(options[:method])).each do |meth|
@@ -16,7 +16,7 @@ class Bond::MethodMission < Bond::Mission
     end
 
     def method_action(obj, meth)
-      (@method_actions[meth] || {}).find {|k,v| get_class(k) && obj.is_a?(get_class(k)) }
+      @last_match = (@method_actions[meth] || {}).find {|k,v| get_class(k) && obj.is_a?(get_class(k)) }
     end
 
     def add_method_action(meth_klass, &block)
@@ -41,6 +41,7 @@ class Bond::MethodMission < Bond::Mission
   end
   self.method_actions = {}
 
+  attr_reader :meth
   def initialize(options={}) #:nodoc:
     options[:action] = lambda { }
     options[:on] = /FILL_PER_COMPLETION/

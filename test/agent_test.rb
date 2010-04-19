@@ -100,7 +100,8 @@ describe "Agent" do
 
   describe "spy" do
     before_all {
-      Bond.reset; complete(:on=>/end$/) { [] }; complete(:method=>'the') { %w{spy who loved me} }
+      Bond.reset; complete(:on=>/end$/) { [] };
+      complete(:method=>true); complete(:method=>'the') { %w{spy who loved me} }
       complete(:object=>"Symbol")
     }
 
@@ -112,9 +113,9 @@ describe "Agent" do
       capture_stdout { Bond.spy(':dude.i')}.should =~ /object.*Symbol.*dude\.id/m
     end
 
-    # it "detects method mission" do
-    #   capture_stdout { Bond.spy('the ')}.should =~ /method.*the.*loved/m
-    # end
+    it "detects method mission" do
+      capture_stdout { Bond.spy('the ')}.should =~ /method.*the.*Kernel.*loved/m
+    end
 
     it "detects no mission" do
       capture_stdout { Bond.spy('blah')}.should =~ /Doesn't match/
