@@ -5,8 +5,6 @@ module Bond
   class InvalidMissionActionError < StandardError; end
   # Occurs when a mission or search action fails.
   class FailedExecutionError < StandardError; end
-  # Namespace for subclasses of Bond::Mission.
-  class Missions; end
 
   # A set of conditions and actions to take for a completion scenario or mission in Bond's mind.
   class Mission
@@ -17,9 +15,9 @@ module Bond
       attr_accessor :default_search
       # Handles creation of proper Mission class depending on the options passed.
       def create(options)
-        if options[:method] || options[:methods] then Missions::MethodMission.create(options)
-        elsif options[:object]                   then Missions::ObjectMission.new(options)
-        elsif options[:anywhere]                 then Missions::AnywhereMission.new(options)
+        if options[:method] || options[:methods] then MethodMission.create(options)
+        elsif options[:object]                   then ObjectMission.new(options)
+        elsif options[:anywhere]                 then AnywhereMission.new(options)
         else                                          new(options)
         end
       end
@@ -50,7 +48,7 @@ module Bond
     # as an :action option here.
     def initialize(options)
       raise InvalidMissionError unless (options[:action] || respond_to?(:default_action)) &&
-        (options[:on] || is_a?(Missions::DefaultMission))
+        (options[:on] || is_a?(DefaultMission))
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
       @action = options[:action].is_a?(Symbol) && self.class.action_object.respond_to?(options[:action]) ?
         self.class.action_object.method(options[:action]) : options[:action]

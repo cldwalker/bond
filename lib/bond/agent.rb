@@ -70,9 +70,9 @@ module Bond
 
     def spy(input)
       if (mission = find_mission(input))
-        if mission.is_a?(Missions::ObjectMission)
+        if mission.is_a?(ObjectMission)
           puts "Matches completion mission for object with an ancestor matching #{mission.object_condition.inspect}."
-        elsif mission.is_a?(Missions::MethodMission)
+        elsif mission.is_a?(MethodMission)
           puts "Matches completion mission for method matching #{mission.method_condition.inspect}."
         else
           puts "Matches completion mission with condition #{mission.condition.inspect}."
@@ -89,7 +89,7 @@ module Bond
 
     # Default mission used by agent.
     def default_mission
-      @default_mission ||= Missions::DefaultMission.new(:action=>@default_mission_action)
+      @default_mission ||= DefaultMission.new(:action=>@default_mission_action)
     end
   end
 end

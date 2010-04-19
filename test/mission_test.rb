@@ -72,7 +72,7 @@ describe "Mission" do
 
   it "default_mission set to a valid mission if irb doesn't exist" do
     Object.expects(:const_defined?).with(:IRB).returns(false)
-    mission = Bond::Missions::DefaultMission.new
+    mission = Bond::DefaultMission.new
     mission.action.respond_to?(:call).should == true
   end
 end

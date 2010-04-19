@@ -34,12 +34,12 @@ module Bond
   # [*:on*] Matches the given regular expression with the full line of input.  Creates a Bond::Mission object.
   #         Access to the matches in the regular expression are passed to the completion proc as the input's attribute :matched.
   # [*:method*] Matches the given string or regular expression with any methods (or any non-whitespace string) that start the beginning
-  #             of a line. Creates a Bond::Missions:MethodMission object. If given a string, the match has to be exact.
+  #             of a line. Creates a Bond::MethodMission object. If given a string, the match has to be exact.
   #             Since this is used mainly for argument completion, completions can have an optional quote in front of them.
   # [*:object*] Matches the given string or regular expression to the ancestor of the current object being completed. Creates a 
-  #             Bond::Missions::ObjectMission object. Access to the current object is passed to the completion proc as the input's
+  #             Bond::ObjectMission object. Access to the current object is passed to the completion proc as the input's
   #             attribute :object. If no action is given, this completion type defaults to all methods the object responds to.
-  # [*:anywhere*] Matches the given regular expression to create a Bond::Missions::AnywhereMission object. Regex must end in '$' and
+  # [*:anywhere*] Matches the given regular expression to create a Bond::AnywhereMission object. Regex must end in '$' and
   #               must encompass the whole regular expression in '()'.
   # [*:search*] Given a symbol, proc or false, determines how completions are searched to match what the user has typed. Defaults to
   #             traditional searching i.e. looking at the beginning of a string for possible matches. If false, search is turned off and
@@ -94,7 +94,7 @@ module Bond
   # [*:default_mission*] A proc to be used as the default completion proc when no completions match or one fails. When in irb
   #                      with completion enabled, uses irb completion. Otherwise defaults to a proc with an empty completion list.
   # [*:default_search*] A symbol or proc to be used as the default search in completions. See Bond.complete's :search option for valid symbols.
-  # [*:eval_binding*] Specifies a binding to be used with Bond::Missions::ObjectMission. When in irb, defaults to irb's main
+  # [*:eval_binding*] Specifies a binding to be used with Bond::ObjectMission. When in irb, defaults to irb's main
   #                   binding. Otherwise defaults to TOPLEVEL_BINDING.
   # [*:debug*]  Boolean to print unexpected errors when autocompletion fails. Default is false.
   #

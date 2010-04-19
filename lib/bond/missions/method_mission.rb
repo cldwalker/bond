@@ -1,5 +1,5 @@
 # Created with :method in Bond.complete. Is able to complete first argument for a method.
-class Bond::Missions::MethodMission < Bond::Mission
+class Bond::MethodMission < Bond::Mission
   class<<self
     attr_accessor :method_actions
     def create(options)

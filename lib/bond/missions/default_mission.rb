@@ -1,5 +1,5 @@
 # Represents a default mission which doesn't need an explicit action.
-class Bond::Missions::DefaultMission < Bond::Mission
+class Bond::DefaultMission < Bond::Mission
   def initialize(options={}) #:nodoc:
     options[:action] ||= default_action
     super

@@ -1,6 +1,6 @@
 # Created with :anywhere in Bond.complete. Is able to complete anywhere i.e. even
 # after non word break characters such as '[' or '}'.
-class Bond::Missions::AnywhereMission < Bond::Mission
+class Bond::AnywhereMission < Bond::Mission
   attr_reader :anywhere_condition
   def initialize(options={}) #:nodoc:
     options[:on] = @anywhere_condition = options.delete(:anywhere)

@@ -28,7 +28,7 @@ describe "Agent" do
       complete(:object=>"Symbol", :place=>:last)
       complete(:on=>/man/, :place=>:last) { }
       complete(:on=>/man\s*(.*)/) {|e| [e.matched[1]] }
-      Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::Missions::ObjectMission, Bond::Mission]
+      Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::ObjectMission, Bond::Mission]
       tab('man ok').should == ['ok']
     end
 
@@ -37,7 +37,7 @@ describe "Agent" do
       complete(:on=>/man/) {}
       complete(:on=>/man\s*(.*)/, :place=>1) {|e| [e.matched[1]] }
       tab('man ok')
-      Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::Missions::ObjectMission, Bond::Mission]
+      Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::ObjectMission, Bond::Mission]
       tab('man ok').should == ['ok']
     end
   end

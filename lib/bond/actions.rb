@@ -9,7 +9,7 @@ module Bond
 
     # Helper function for evaluating strings in the current console binding.
     def current_eval(string)
-      Missions::ObjectMission.current_eval(string)
+      ObjectMission.current_eval(string)
     rescue Exception
       []
     end
