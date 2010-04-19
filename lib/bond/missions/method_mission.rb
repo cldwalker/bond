@@ -6,22 +6,22 @@ class Bond::Missions::MethodMission < Bond::Mission
       return new(options) if options[:method] == true
       (options[:methods] || Array(options[:method])).each do |meth|
         meth = "Kernel##{meth}" if !meth.to_s[/[.#]/]
+        if options[:action].is_a?(String)
+          options[:action] = method_action(*options[:action].split(/[.#]/,2))[1]
+        end
+        raise Bond::InvalidMissionActionError unless options[:action].respond_to?(:call)
         add_method_action(meth, &options[:action])
       end
       nil
     end
 
-    def has_method_action?(obj, meth)
-      @found = (@method_actions[meth] || {}).find {|k,v| get_class(k) && obj.is_a?(get_class(k)) }
+    def method_action(obj, meth)
+      (@method_actions[meth] || {}).find {|k,v| get_class(k) && obj.is_a?(get_class(k)) }
     end
 
     def add_method_action(meth_klass, &block)
       klass, meth = meth_klass.split(/[.#]/,2)
       (@method_actions[meth] ||= {})[klass] = block
-    end
-
-    def get_method_action(obj, meth)
-      @found[1]
     end
 
     def get_class(klass)
@@ -42,7 +42,6 @@ class Bond::Missions::MethodMission < Bond::Mission
   self.method_actions = {}
 
   def initialize(options={}) #:nodoc:
-    options.delete(:object_method)
     options[:action] = lambda { }
     options[:on] = /FILL_PER_COMPLETION/
     @eval_binding = options[:eval_binding]
@@ -53,12 +52,12 @@ class Bond::Missions::MethodMission < Bond::Mission
     meths = Regexp.union *self.class.method_actions.keys
     @condition = /(?:^|\s+)([^\s.]+)?\.?(#{meths})(?:\s+|\()(['":])?(.*)$/
     if (match = super) && eval_object(match) &&
-      (match = self.class.has_method_action?(@evaled_object, @meth))
+      (match = self.class.method_action(@evaled_object, @meth))
       @completion_prefix = @matched[3]
       @input = @matched[-1] || ''
       @input.instance_variable_set("@object", @evaled_object)
       class<<@input; def object; @object; end; end
-      @action = self.class.get_method_action(@evaled_object, @matched[2])
+      @action = match[1]
     end
     match
   end
