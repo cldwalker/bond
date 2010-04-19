@@ -10,7 +10,6 @@ require 'bond/missions/default_mission'
 require 'bond/missions/method_mission'
 require 'bond/missions/object_mission'
 require 'bond/missions/anywhere_mission'
-require 'bond/missions/object_method_mission'
 
 # Bond allows easy handling and creation of completion missions/rules with Bond.complete. When Bond is asked to autocomplete, Bond looks
 # up the completion missions in the order they were defined and picks the first one that matches what the user has typed.

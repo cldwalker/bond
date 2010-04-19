@@ -20,7 +20,7 @@ module Bond
         if options[:method] || options[:methods] then Missions::MethodMission.create(options)
         elsif options[:object]                   then Missions::ObjectMission.new(options)
         elsif options[:anywhere]                 then Missions::AnywhereMission.new(options)
-        else  new(options)
+        else                                          new(options)
         end
       end
       #:stopdoc:
