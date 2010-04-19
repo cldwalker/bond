@@ -17,20 +17,20 @@ class Bond::ObjectMission < Bond::Mission
     "#{@object_condition.inspect}+#{@condition.inspect}"
   end
 
-  def handle_valid_match(input)
-    if (match = super) && (match = eval_object(match) && @evaled_object.class.respond_to?(:ancestors) &&
+  def _matches?(input)
+    (match = super) && (match = eval_object(match) && @evaled_object.class.respond_to?(:ancestors) &&
       @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition })
-      @completion_prefix = @matched[1] + "."
-      @input = @matched[2] || ''
-      @input.instance_variable_set("@object", @evaled_object)
-      class<<@input; def object; @object; end; end
-      @action ||= lambda {|e| default_action(e.object) }
-    end
-    match
+  end
+
+  def create_input(input)
+    @completion_prefix = @matched[1] + "."
+    super @matched[2] || ''
+    @input.instance_variable_set("@object", @evaled_object)
+    class<<@input; def object; @object; end; end
+    @action ||= lambda {|e| default_action(e.object) }
   end
 
   def eval_object(match)
-    @matched = match
     @evaled_object = self.class.current_eval(match[1], @eval_binding)
     true
   rescue Exception
