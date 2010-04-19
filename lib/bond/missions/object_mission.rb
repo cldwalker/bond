@@ -18,7 +18,7 @@ class Bond::ObjectMission < Bond::Mission
   end
 
   def _matches?(input)
-    (match = super) && eval_object(match) && @evaled_object.class.respond_to?(:ancestors) &&
+    super && eval_object(@matched[1]) && @evaled_object.class.respond_to?(:ancestors) &&
       @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition }
   end
 
@@ -26,13 +26,6 @@ class Bond::ObjectMission < Bond::Mission
     @completion_prefix = @matched[1] + "."
     @action ||= lambda {|e| default_action(e.object) }
     super @matched[2], :object=>@evaled_object
-  end
-
-  def eval_object(match)
-    @evaled_object = self.class.current_eval(match[1], @eval_binding)
-    true
-  rescue Exception
-    false
   end
 
   def default_action(obj)

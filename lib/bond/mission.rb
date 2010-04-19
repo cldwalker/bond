@@ -84,6 +84,13 @@ module Bond
     end
 
     #:stopdoc:
+    def eval_object(obj)
+      @evaled_object = self.class.current_eval(obj, @eval_binding)
+      true
+    rescue Exception
+      false
+    end
+
     def unique_id
       @condition
     end
