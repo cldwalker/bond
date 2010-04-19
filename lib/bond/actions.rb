@@ -35,30 +35,5 @@ module Bond
       candidates = current_eval("#{receiver}.constants | #{receiver}.methods")
       candidates.grep(/^#{Regexp.escape(input.matched[5])}/).map {|e| receiver + "::" + e}
     end
-
-    # Completes Kernel#require
-    def method_require(input)
-      fs = ::File::SEPARATOR
-      extensions_regex = /((\.(so|dll|rb|bundle))|#{fs})$/i
-      input =~ /^(\.{0,2}#{fs}|~)/ and return files(input).select {|f| f =~ extensions_regex or File.directory? f }
-      dir_entries = proc {|dir| Dir.entries(dir).delete_if {|e| %w{. ..}.include?(e) }.map {|f|
-         File.directory?(File.join(dir,f)) ? f+fs : f } }
-      input_regex = /^#{Regexp.escape(input)}/
-
-      require_paths.select {|e| File.directory?(e)}.inject([]) do |t,dir|
-        if input[/.$/] == fs && File.directory?(File.join(dir,input))
-          matches = dir_entries.call(File.join(dir,input)).select {|e| e =~ extensions_regex }.map {|e| input + e }
-        else
-          entries = input.include?(fs) && File.directory?(File.join(dir,File.dirname(input))) ?
-           dir_entries.call(File.join(dir,File.dirname(input))).map {|e| File.join(File.dirname(input), e) } : dir_entries.call(dir)
-          matches = entries.select {|e| e=~ extensions_regex && e =~ input_regex }
-        end
-        t += matches
-      end
-    end
-
-    def require_paths
-      $: + Gem.path.map {|e| Dir["#{e}/gems/*/lib"] }.flatten.uniq rescue $:
-    end
   end
 end
