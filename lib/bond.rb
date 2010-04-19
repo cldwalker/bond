@@ -116,12 +116,16 @@ module Bond
     require 'bond/completion'
     Rc.load(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc'))
     [File.join(File.dirname(__FILE__),'bond'), File.join(home, '.bond')].each do |base_dir|
-      if File.exists?(dir = File.join(base_dir, 'completions'))
-        Dir[dir + '/*.rb'].each {|file| Rc.load(file) }
-      end
+      load_completions(base_dir)
     end
     Rc.instance_eval(&block) if block
     true
+  end
+
+  def load_completions(base_dir) #:nodoc:
+    if File.exists?(dir = File.join(base_dir, 'completions'))
+      Dir[dir + '/*.rb'].each {|file| Rc.load(file) }
+    end
   end
 
   # Find a user's home in a cross-platform way

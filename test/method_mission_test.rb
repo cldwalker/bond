@@ -28,6 +28,10 @@ describe "method mission" do
       tab('[].index a').should == %w{ab ad}
     end
 
+    it "can't have space in object" do
+      tab('[1, 2].index c').should == []
+    end
+
     it "completes in middle of line" do
       tab('nil; [].index a').should == %w{ab ad}
     end
