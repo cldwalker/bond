@@ -22,13 +22,13 @@ describe "Mission" do
     end
 
     it "with non-array completions completes" do
-      complete(:method=>'blah') { 'blah' }
+      complete(:on=>/blah/) { 'blah' }
       tab('blah ').should == ['blah']
     end
 
     it "with symbol action completes" do
       eval %[module ::Bond::Actions; def blah(input); %w{one two three}; end; end]
-      complete(:method=>'blah', :action=>:blah)
+      complete(:on=>/blah/, :action=>:blah)
       tab('blah ').should == %w{one two three}
     end
 

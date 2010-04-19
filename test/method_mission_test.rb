@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "method mission" do
   before_all { Bond.debrief(:readline_plugin=>valid_readline_plugin) }
-  before { Bond.agent.reset }
+  before { Bond.agent.reset; Bond.complete(:method=>true) }
 
   it "completes" do
     complete(:method=>'cool?') {|e| [] }
@@ -31,8 +31,8 @@ describe "method mission" do
     tab('nil; cool a').should == %w{ab ad}
   end
 
-  it "with regex method completes for multiple methods" do
-    complete(:method=>/cool|ls/) {|e| %w{ab cd ef ad}}
+  it "with :methods completes for multiple methods" do
+    complete(:method=>%w{cool ls}) {|e| %w{ab cd ef ad}}
     tab("cool a").should == %w{ab ad}
     tab("ls c").should == %w{cd}
   end

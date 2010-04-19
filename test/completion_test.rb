@@ -1,7 +1,10 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "Completion" do
-  before_all { Bond.reset; Bond.debrief(:readline_plugin=>valid_readline_plugin); require 'bond/completion' }
+  before_all { Bond.reset; Bond.debrief(:readline_plugin=>valid_readline_plugin)
+    require 'bond/completion'
+    Bond::Missions::ObjectMethodMission.method_actions = {}
+  }
 
   it "completes object methods anywhere" do
     matches = tab("blah :man.")

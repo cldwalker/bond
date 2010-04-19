@@ -25,7 +25,7 @@ describe "Bond" do
     it "sets default search" do
       Bond.reset
       Bond.debrief :default_search=>:underscore, :readline_plugin=>valid_readline_plugin
-      complete(:method=>'blah') { %w{all_quiet on_the western_front}}
+      complete(:on=>/blah/) { %w{all_quiet on_the western_front}}
       tab('blah a-q').should == ["all_quiet"]
       Bond.reset
     end

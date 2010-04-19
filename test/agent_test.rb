@@ -26,18 +26,18 @@ describe "Agent" do
 
     it "places missions last when declared last" do
       complete(:object=>"Symbol", :place=>:last)
-      complete(:method=>"man", :place=>:last) { }
+      complete(:on=>/man/, :place=>:last) { }
       complete(:on=>/man\s*(.*)/) {|e| [e.matched[1]] }
-      Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::Missions::ObjectMission, Bond::Missions::MethodMission]
+      Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::Missions::ObjectMission, Bond::Mission]
       tab('man ok').should == ['ok']
     end
 
     it "places mission correctly for a place number" do
       complete(:object=>"Symbol")
-      complete(:method=>"man") {}
+      complete(:on=>/man/) {}
       complete(:on=>/man\s*(.*)/, :place=>1) {|e| [e.matched[1]] }
       tab('man ok')
-      Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::Missions::ObjectMission, Bond::Missions::MethodMission]
+      Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::Missions::ObjectMission, Bond::Mission]
       tab('man ok').should == ['ok']
     end
   end
@@ -75,6 +75,7 @@ describe "Agent" do
     end
 
     it "recompletes a method mission" do
+      complete(:method=>true)
       complete(:method=>'blah') { %w{1 2 3}}
       Bond.recomplete(:method=>'blah') { %w{4 5 6}}
       tab('blah ').should == %w{4 5 6}
@@ -111,9 +112,9 @@ describe "Agent" do
       capture_stdout { Bond.spy(':dude.i')}.should =~ /object.*Symbol.*dude\.id/m
     end
 
-    it "detects method mission" do
-      capture_stdout { Bond.spy('the ')}.should =~ /method.*the.*loved/m
-    end
+    # it "detects method mission" do
+    #   capture_stdout { Bond.spy('the ')}.should =~ /method.*the.*loved/m
+    # end
 
     it "detects no mission" do
       capture_stdout { Bond.spy('blah')}.should =~ /Doesn't match/
