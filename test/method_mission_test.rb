@@ -28,6 +28,10 @@ describe "method mission" do
       tab('[].index a').should == %w{ab ad}
     end
 
+    it "completes with a chain of objects" do
+      tab('{}.to_a.index a').should == %w{ab ad}
+    end
+
     it "can't have space in object" do
       tab('[1, 2].index c').should == []
     end
