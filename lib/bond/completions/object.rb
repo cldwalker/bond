@@ -1,5 +1,5 @@
-instance_meths = %w{Object#instance_variable_get Object#instance_variable_set Object#remove_instance_variable}
-complete(:methods=>instance_meths) {|e| e.object.instance_variables }
+instance_meths = %w{instance_variable_get instance_variable_set remove_instance_variable}
+complete(:methods=>instance_meths, :class=>"Object#") {|e| e.object.instance_variables }
 complete(:method=>"Object#instance_of?") { objects_of(Class) }
 complete(:methods=>%w{Object#is_a? Object#kind_a?}) { objects_of(Module) }
 complete(:method=>"Object#send") {|e| e.object.methods + e.object.private_methods - Kernel.methods }
