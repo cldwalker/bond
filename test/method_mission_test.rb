@@ -76,7 +76,13 @@ describe "method mission" do
       tab('[].index ab, ').should == %w{ab cd ef ad e,e}
     end
 
-    it "can't handle a completion with a comma" do
+    it "completes based on argument number" do
+      complete(:method=>'blah') {|e| e.argument == 2 ? %w{ab ad} : %w{ab ae} }
+      tab('blah a').should == %w{ab ae}
+      tab('blah zz, a').should == %w{ab ad}
+    end
+
+    it "can't handle a completion with a comma as a completion" do
       tab('[].index e,').should == %w{ab cd ef ad e,e}
     end
   end
