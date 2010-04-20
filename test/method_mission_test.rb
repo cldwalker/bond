@@ -23,6 +23,11 @@ describe "method mission" do
       tab('[].index :a').should == %w{:ab :ad}
     end
 
+    it "completes for objects of a subclass" do
+      class ::MyArray < Array; end
+      tab('MyArray.new.index a').should == %w{ab ad}
+    end
+
     it "needs space to complete argument" do
       tab('[].indexa').should == []
       tab('[].index a').should == %w{ab ad}
@@ -53,6 +58,19 @@ describe "method mission" do
       capture_stderr {
         complete(:method=>"Array#blah", :action=>'blah')
       }.should =~ /invalid mission action/i
+    end
+  end
+
+  describe "class method" do
+    before { complete(:method=>'Date.parse') {|e| %w{12/01 03/01 01/01} } }
+
+    it "completes" do
+      tab('Date.parse 0').should == ["03/01", "01/01"]
+    end
+
+    it "completes for a subclass" do
+      class ::MyDate < Date; end
+      tab('MyDate.parse 0').should == ["03/01", "01/01"]
     end
   end
 

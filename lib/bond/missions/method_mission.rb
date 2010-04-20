@@ -25,7 +25,13 @@ class Bond::MethodMission < Bond::Mission
     end
 
     def find_action(obj, meth)
-      @last_action = (@actions[meth] || {}).find {|k,v| get_class(k) && obj.is_a?(get_class(k)) }
+      last_action = find_action_with(obj, meth, :<=) if obj.is_a?(Module)
+      last_action = find_action_with(obj, meth, :is_a?) unless last_action
+      @last_action = last_action
+    end
+
+    def find_action_with(obj, meth, find_meth)
+      (@actions[meth] || {}).find {|k,v| get_class(k) && obj.send(find_meth, get_class(k)) }
     end
 
     def get_class(klass)
