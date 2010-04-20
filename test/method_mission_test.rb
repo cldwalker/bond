@@ -143,4 +143,25 @@ describe "method mission" do
     tab("'blah'.include? a").should == %w{ab ad}
     tab("String.new a").should == %w{ab ad}
   end
+
+  describe "with :class" do
+    it "completes for instance methods" do
+      complete(:method=>"blong", :class=>"Array#") { %w{ab cd ef ad} }
+      tab('[].blong a').should == %w{ab ad}
+      complete(:methods=>["bling"], :class=>"Array#") { %w{ab cd ef ad} }
+      tab('[].bling a').should == %w{ab ad}
+    end
+
+    it "that is ambiguous defaults to instance methods" do
+      complete(:method=>"blong", :class=>"Array") { %w{ab cd ef ad} }
+      tab('[].blong a').should == %w{ab ad}
+    end
+
+    it "completes for class methods" do
+      complete(:method=>"blong", :class=>"Array.") { %w{ab cd ef ad} }
+      tab('Array.blong a').should == %w{ab ad}
+      complete(:methods=>["bling"], :class=>"Array.") { %w{ab cd ef ad} }
+      tab('Array.bling a').should == %w{ab ad}
+    end
+  end
 end

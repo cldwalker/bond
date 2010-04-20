@@ -12,7 +12,13 @@ class Bond::MethodMission < Bond::Mission
       end
       raise Bond::InvalidMissionActionError unless options[:action].respond_to?(:call)
 
-      (options[:methods] || Array(options[:method])).each {|meth|
+      meths = options[:methods] || Array(options[:method])
+      if options[:class].is_a?(String)
+        options[:class] << '#' unless options[:class][/[#.]$/]
+        meths.map! {|e| options[:class] + e }
+      end
+
+      meths.each {|meth|
         klass, klass_meth = split_method(meth)
         (current_actions(meth)[klass_meth] ||= {})[klass] = options[:action]
       }
