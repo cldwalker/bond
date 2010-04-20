@@ -64,7 +64,12 @@ class Bond::MethodMission < Bond::Mission
   end
 
   def create_input(input)
-    @completion_prefix = @matched[3]
-    super @matched[-1], :object=>@evaled_object
+    @completion_prefix, typed = @matched[3], @matched[-1]
+    if typed.to_s.include?(',') && (match = typed.match(/(.*?\s*)([^,]*)$/))
+      typed = match[2]
+      typed.sub!(/^(['":])/,'')
+      @completion_prefix = typed.empty? ? '' : "#{@matched[3]}#{match[1]}#{$1}"
+    end
+    super typed, :object=>@evaled_object
   end
 end

@@ -52,6 +52,35 @@ describe "method mission" do
     end
   end
 
+  describe "multi argument method" do
+    before { complete(:method=>'Array#index') {|e| %w{ab cd ef ad e,e} } }
+
+    it "completes second argument" do
+      tab('[].index ab, a').should == %w{ab ad}
+    end
+
+    it "completes second argument as a symbol" do
+      tab('[].index ab, :a').should == %w{:ab :ad}
+    end
+
+    it "completes second argument as a string" do
+      tab('[].index \'ab\' , "a').should == %w{ab ad}
+    end
+
+    it "completes third argument" do
+      tab('[].index ab, zz, c').should == %w{cd}
+    end
+
+    it "completes all arguments after comma" do
+      tab('[].index ab,').should == %w{ab cd ef ad e,e}
+      tab('[].index ab, ').should == %w{ab cd ef ad e,e}
+    end
+
+    it "can't handle a completion with a comma" do
+      tab('[].index e,').should == %w{ab cd ef ad e,e}
+    end
+  end
+
   describe "top-level method" do
     before { complete(:method=>'cool') {|e| %w{ab cd ef ad} } }
 
