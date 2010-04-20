@@ -1,22 +1,26 @@
 # Created with :method in Bond.complete. Is able to complete first argument for a method.
 class Bond::MethodMission < Bond::Mission
   class<<self
-    attr_accessor :actions, :last_action
+    attr_accessor :actions, :last_action, :class_actions
 
     def create(options)
       return new(options) if options[:method] == true
 
       if options[:action].is_a?(String)
-        klass, action_meth = split_method(options[:action])
-        options[:action] = (@actions[action_meth] || {})[klass]
+        klass, klass_meth = split_method(options[:action])
+        options[:action] = (current_actions(options[:action])[klass_meth] || {})[klass]
       end
       raise Bond::InvalidMissionActionError unless options[:action].respond_to?(:call)
 
       (options[:methods] || Array(options[:method])).each {|meth|
-        klass, meth = split_method(meth)
-        (@actions[meth] ||= {})[klass] = options[:action]
+        klass, klass_meth = split_method(meth)
+        (current_actions(meth)[klass_meth] ||= {})[klass] = options[:action]
       }
       nil
+    end
+
+    def current_actions(meth)
+      meth.include?('.') ? @class_actions : @actions
     end
 
     def split_method(meth)
@@ -25,13 +29,13 @@ class Bond::MethodMission < Bond::Mission
     end
 
     def find_action(obj, meth)
-      last_action = find_action_with(obj, meth, :<=) if obj.is_a?(Module)
-      last_action = find_action_with(obj, meth, :is_a?) unless last_action
+      last_action = find_action_with(obj, meth, :<=, @class_actions) if obj.is_a?(Module)
+      last_action = find_action_with(obj, meth, :is_a?, @actions) unless last_action
       @last_action = last_action
     end
 
-    def find_action_with(obj, meth, find_meth)
-      (@actions[meth] || {}).find {|k,v| get_class(k) && obj.send(find_meth, get_class(k)) }
+    def find_action_with(obj, meth, find_meth, actions)
+      (actions[meth] || {}).find {|k,v| get_class(k) && obj.send(find_meth, get_class(k)) }
     end
 
     def get_class(klass)
@@ -50,6 +54,7 @@ class Bond::MethodMission < Bond::Mission
     end
   end
   self.actions = {}
+  self.class_actions = {}
 
   attr_reader :meth
   def initialize(options={}) #:nodoc:
@@ -60,7 +65,7 @@ class Bond::MethodMission < Bond::Mission
   end
 
   def _matches?(input)
-    meths = Regexp.union *self.class.actions.keys
+    meths = Regexp.union *(self.class.actions.keys + self.class.class_actions.keys).uniq
     @condition = /(?:^|\s+)(\S*\.)?(#{meths})(?:\s+|\()(['":])?(.*)$/
 
     super && (match = eval_object(@matched[1] ? @matched[1].chop : 'self') &&

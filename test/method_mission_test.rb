@@ -72,6 +72,16 @@ describe "method mission" do
       class ::MyDate < Date; end
       tab('MyDate.parse 0').should == ["03/01", "01/01"]
     end
+
+    it "with string :action copies existing action" do
+      complete(:method=>"Date.blah", :action=>"Date.parse")
+      tab('Date.blah 0').should == ["03/01", "01/01"]
+    end
+
+    it "doesn't conflict with instance method completion" do
+      complete(:method=>'Date#parse') {|e| %w{01 02 23}}
+      tab('Date.today.parse 0').should == %w{01 02}
+    end
   end
 
   describe "multi argument method" do
@@ -122,9 +132,15 @@ describe "method mission" do
     end
   end
 
-  it "with :methods completes for multiple methods" do
+  it "with :methods completes for multiple instance methods" do
     complete(:methods=>%w{cool ls}) {|e| %w{ab cd ef ad}}
     tab("cool a").should == %w{ab ad}
     tab("ls c").should == %w{cd}
+  end
+
+  it "with :methods completes for instance and class methods" do
+    complete(:methods=>%w{String#include? String.new}) {|e| %w{ab cd ef ad}}
+    tab("'blah'.include? a").should == %w{ab ad}
+    tab("String.new a").should == %w{ab ad}
   end
 end
