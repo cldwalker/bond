@@ -18,6 +18,7 @@ module Bond
         if options[:method] || options[:methods] then MethodMission.create(options)
         elsif options[:object]                   then ObjectMission.new(options)
         elsif options[:anywhere]                 then AnywhereMission.new(options)
+        elsif options[:all_methods]              then MethodMission.new(options)
         else                                          new(options)
         end
       end

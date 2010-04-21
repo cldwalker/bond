@@ -75,7 +75,7 @@ describe "Agent" do
     end
 
     it "recompletes a method mission" do
-      complete(:method=>true)
+      complete(:all_methods=>true)
       complete(:method=>'blah') { %w{1 2 3}}
       Bond.recomplete(:method=>'blah') { %w{4 5 6}}
       tab('blah ').should == %w{4 5 6}
@@ -101,7 +101,7 @@ describe "Agent" do
   describe "spy" do
     before_all {
       Bond.reset; complete(:on=>/end$/) { [] };
-      complete(:method=>true); complete(:method=>'the') { %w{spy who loved me} }
+      complete(:all_methods=>true); complete(:method=>'the') { %w{spy who loved me} }
       complete(:object=>"Symbol")
     }
 

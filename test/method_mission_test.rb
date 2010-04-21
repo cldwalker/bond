@@ -6,7 +6,7 @@ describe "method mission" do
     Bond::MethodMission.actions = {}
     Bond::MethodMission.class_actions = {}
   }
-  before { Bond.agent.reset; Bond.complete(:method=>true) }
+  before { Bond.agent.reset; Bond.complete(:all_methods=>true) }
 
   describe "instance method" do
     before { complete(:method=>'Array#index') {|e| %w{ab cd ef ad} } }

@@ -4,8 +4,6 @@ class Bond::MethodMission < Bond::Mission
     attr_accessor :actions, :last_action, :class_actions
 
     def create(options)
-      return new(options) if options[:method] == true
-
       if options[:action].is_a?(String)
         klass, klass_meth = split_method(options[:action])
         options[:action] = (current_actions(options[:action])[klass_meth] || {})[klass]
@@ -65,6 +63,7 @@ class Bond::MethodMission < Bond::Mission
   self.class_actions = {}
 
   attr_reader :meth
+  CONDITION = %q{(?:^|\s+)(\S*\.)?(%s)(?:\s+|\()(['":])?(.*)$}
   def initialize(options={}) #:nodoc:
     options[:action] = lambda { }
     options[:on] = /FILL_PER_COMPLETION/
@@ -73,13 +72,15 @@ class Bond::MethodMission < Bond::Mission
   end
 
   def _matches?(input)
-    meths = Regexp.union *(self.class.actions.keys + self.class.class_actions.keys).uniq
-    @condition = /(?:^|\s+)(\S*\.)?(#{meths})(?:\s+|\()(['":])?(.*)$/
-
+    @condition = Regexp.new CONDITION % Regexp.union(*current_methods)
     super && (match = eval_object(@matched[1] ? @matched[1].chop : 'self') &&
       self.class.find_action(@evaled_object, @meth = @matched[2]))
     @action = match[1] if match
     match
+  end
+
+  def current_methods
+    (self.class.actions.keys + self.class.class_actions.keys).uniq
   end
 
   def create_input(input)
