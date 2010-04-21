@@ -1,7 +1,11 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "method mission" do
-  before_all { Bond.debrief(:readline_plugin=>valid_readline_plugin) }
+  before_all {
+    Bond.debrief(:readline_plugin=>valid_readline_plugin)
+    Bond::MethodMission.actions = {}
+    Bond::MethodMission.class_actions = {}
+  }
   before { Bond.agent.reset; Bond.complete(:method=>true) }
 
   describe "instance method" do
@@ -26,6 +30,12 @@ describe "method mission" do
     it "completes for objects of a subclass" do
       class ::MyArray < Array; end
       tab('MyArray.new.index a').should == %w{ab ad}
+    end
+
+    it "completes for objects of a subclass using its own definition" do
+      class ::MyArray < Array; end
+      complete(:method=>'MyArray#index') {|e| %w{aa ab bc} }
+      tab('MyArray.new.index a').should == %w{aa ab}
     end
 
     it "needs space to complete argument" do
@@ -68,9 +78,15 @@ describe "method mission" do
       tab('Date.parse 0').should == ["03/01", "01/01"]
     end
 
-    it "completes for a subclass" do
+    it "completes for a subclass using inherited definition" do
       class ::MyDate < Date; end
       tab('MyDate.parse 0').should == ["03/01", "01/01"]
+    end
+
+    it "completes for a subclass using its own definition" do
+      class ::MyDate < Date; end
+      complete(:method=>'MyDate.parse') {|e| %w{12 03 01} }
+      tab('MyDate.parse 0').should == %w{03 01}
     end
 
     it "with string :action copies existing action" do

@@ -41,7 +41,9 @@ class Bond::MethodMission < Bond::Mission
     end
 
     def find_action_with(obj, meth, find_meth, actions)
-      (actions[meth] || {}).find {|k,v| get_class(k) && obj.send(find_meth, get_class(k)) }
+      (actions[meth] || {}).select {|k,v| get_class(k) }.
+        sort {|a,b| get_class(a[0]) <=> get_class(b[0]) || -1 }.
+        find {|k,v| obj.send(find_meth, get_class(k)) }
     end
 
     def get_class(klass)
