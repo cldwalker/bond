@@ -6,3 +6,4 @@ complete(:method=>"Object#send") {|e| e.object.methods + e.object.private_method
 complete(:method=>"Object#method") {|e|
   e.object.is_a?(Module) ? e.object.methods - e.object.class.methods : e.object.class.instance_methods(false)
 }
+complete(:method=>"Object#[]") {|e| e.object.keys }

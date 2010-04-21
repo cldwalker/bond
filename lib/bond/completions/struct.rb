@@ -1,0 +1,1 @@
+complete(:method=>"Struct#[]") {|e| e.object.members }
