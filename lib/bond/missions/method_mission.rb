@@ -75,11 +75,12 @@ module Bond
   attr_reader :meth
   CONDITION = %q{(?:^|\s+)(\S*?)\.?(%s)(?:\s+|\()(['":])?(.*)$}
   def initialize(options={}) #:nodoc:
-    options[:action] = lambda { }
     options[:on] = /FILL_PER_COMPLETION/
     @eval_binding = options[:eval_binding]
     super(options)
   end
+
+  def default_action; end
 
   def _matches?(input)
     @condition = Regexp.new self.class.const_get(:CONDITION) % Regexp.union(*current_methods)
