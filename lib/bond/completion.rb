@@ -8,15 +8,15 @@ Bond.complete :all_operator_methods=>true
 
 # irb/completion reproduced without the completion quirks
 # Completes classes and constants
-Bond.complete(:anywhere=>/((((::)?[A-Z][^:.\(]*)+)::?([^:.]*))$/, :action=>:constants, :search=>false)
+Bond.complete(:anywhere=>'(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)', :action=>:constants, :search=>false)
 # Completes absolute constants
-Bond.complete(:anywhere=>/::([A-Z][^:\.\(]*)$/) {|e| Object.constants }
+Bond.complete(:prefix=>'::', :anywhere=>'[A-Z][^:\.\(]*') {|e| Object.constants }
 # Completes symbols
-Bond.complete(:anywhere=>/(:[^:\s.]*)$/) {|e|
+Bond.complete(:anywhere=>':[^:\s.]*') {|e|
   Symbol.respond_to?(:all_symbols) ? Symbol.all_symbols.map {|f| ":#{f}" } : []
 }
 # Completes global variables
-Bond.complete(:anywhere=>/(\$[^\s.]*)$/) {|e| global_variables }
+Bond.complete(:anywhere=>'\$[^\s.]*') {|e| global_variables }
 # Completes files
 Bond.complete(:on=>/[\s(]["']([^'"]*)$/, :search=>false, :action=>:quoted_files, :place=>:last)
 # Completes any object's methods

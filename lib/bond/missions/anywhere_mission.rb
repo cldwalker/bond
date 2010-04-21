@@ -2,7 +2,7 @@
 # after non word break characters such as '[' or '}'.
 class Bond::AnywhereMission < Bond::Mission
   def initialize(options={}) #:nodoc:
-    options[:on] = options.delete(:anywhere)
+    options[:on] = Regexp.new(options[:prefix].to_s + '('+ options[:anywhere] + ')$')
     super
   end
 
