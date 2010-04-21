@@ -3,8 +3,6 @@
 # the current object being completed have an ancestor specified by :object.
 class Bond::ObjectMission < Bond::Mission
   #:stopdoc:
-  attr_reader :object_condition
-
   def initialize(options={})
     @object_condition = options.delete(:object)
     @object_condition = /^#{Regexp.escape(@object_condition.to_s)}$/ unless @object_condition.is_a?(Regexp)
@@ -30,6 +28,10 @@ class Bond::ObjectMission < Bond::Mission
 
   def default_action(obj)
     obj.methods.map {|e| e.to_s} - OPERATORS
+  end
+
+  def spy_message
+    "Matches completion rule for object with an ancestor matching #{@object_condition.inspect}."
   end
   #:startdoc:
 end

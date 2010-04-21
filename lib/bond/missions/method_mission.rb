@@ -111,5 +111,9 @@ module Bond
     end
     create_input typed, :object=>@evaled_object, :argument=>1+arg_count
   end
+
+  def spy_message
+    "Matches completion rule for method '#{meth}' in '#{MethodMission.last_action[0]}'."
+  end
   end
 end

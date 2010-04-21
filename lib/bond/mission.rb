@@ -85,6 +85,10 @@ module Bond
       raise FailedExecutionError, error_message
     end
 
+    def spy_message
+      "Matches completion rule with condition #{condition.inspect}."
+    end
+
     #:stopdoc:
     def eval_object(obj)
       @evaled_object = self.class.current_eval(obj, @eval_binding)

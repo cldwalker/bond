@@ -70,14 +70,7 @@ module Bond
 
     def spy(input)
       if (mission = find_mission(input))
-        if mission.is_a?(ObjectMission)
-          puts "Matches completion for object with an ancestor matching #{mission.object_condition.inspect}."
-        elsif mission.is_a?(MethodMission)
-          puts "Matches completion for method '#{mission.meth}' in '#{MethodMission.last_action[0]}'."
-        else
-          puts "Matches completion with condition #{mission.condition.inspect}."
-        end
-        puts "Possible completions: #{mission.execute.inspect}",
+        puts mission.spy_message, "Possible completions: #{mission.execute.inspect}",
           "Matches for #{mission.condition.inspect} are #{mission.matched.to_a.inspect}"
       else
         puts "Doesn't match a completion."
