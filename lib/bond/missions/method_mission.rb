@@ -72,7 +72,6 @@ module Bond
   self.actions = {}
   self.class_actions = {}
 
-  attr_reader :meth
   CONDITION = %q{(?:^|\s+)(\S*?)\.?(%s)(?:\s+|\()(['":])?(.*)$}
   def initialize(options={}) #:nodoc:
     options[:on] = /FILL_PER_COMPLETION/
@@ -82,11 +81,10 @@ module Bond
 
   def default_action; end
 
-  def _matches?(input)
+  def do_match(input)
     @condition = Regexp.new self.class.const_get(:CONDITION) % Regexp.union(*current_methods)
     super && (match = eval_object(@matched[1] ? @matched[1] : 'self') &&
       MethodMission.find_action(@evaled_object, @meth = matched_method))
-    @action = match[1] if match
     match
   end
 
@@ -103,6 +101,7 @@ module Bond
   end
 
   def after_match(input)
+    @action = MethodMission.last_action[1]
     @completion_prefix, typed = @matched[3], @matched[-1]
     arg_count = typed.count(',')
     if typed.to_s.include?(',') && (match = typed.match(/(.*?\s*)([^,]*)$/))
@@ -114,7 +113,7 @@ module Bond
   end
 
   def spy_message
-    "Matches completion rule for method '#{meth}' in '#{MethodMission.last_action[0]}'."
+    "Matches completion rule for method '#{@meth}' in '#{MethodMission.last_action[0]}'."
   end
   end
 end

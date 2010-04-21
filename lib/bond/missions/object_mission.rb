@@ -15,7 +15,7 @@ class Bond::ObjectMission < Bond::Mission
     "#{@object_condition.inspect}+#{@condition.inspect}"
   end
 
-  def _matches?(input)
+  def do_match(input)
     super && eval_object(@matched[1]) && @evaled_object.class.respond_to?(:ancestors) &&
       @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition }
   end
