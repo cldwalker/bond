@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "Completion" do
   before_all { Bond.reset; Bond.debrief(:readline_plugin=>valid_readline_plugin)
-    require 'bond/completion'
+    Bond::Rc.load File.dirname(__FILE__) + '/../lib/bond/completion.rb'
     Bond::MethodMission.actions = {}
   }
 
