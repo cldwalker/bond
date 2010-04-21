@@ -44,7 +44,7 @@ module Bond
     end
 
     attr_reader :action, :condition, :place
-    OPERATORS = ["%", "&", "*", "**", "+",  "-",  "/", "<", "<<", "<=", "<=>", "==", "===", "=~", ">", ">=", ">>", "[]", "[]=", "^"]
+    OPERATORS = %w{% & * ** + - / < << <= <=> == === =~ > >= >> [] []= ^ | ~}
 
     # Options are almost the same as those explained at Bond.complete. The only difference is that the action is passed
     # as an :action option here.
