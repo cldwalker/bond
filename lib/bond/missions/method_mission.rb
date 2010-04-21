@@ -68,7 +68,7 @@ module Bond
   self.class_actions = {}
 
   attr_reader :meth
-  CONDITION = %q{(?:^|\s+)(\S*\.)?(%s)(?:\s+|\()(['":])?(.*)$}
+  CONDITION = %q{(?:^|\s+)(\S*?)\.?(%s)(?:\s+|\()(['":])?(.*)$}
   def initialize(options={}) #:nodoc:
     options[:action] = lambda { }
     options[:on] = /FILL_PER_COMPLETION/
@@ -76,20 +76,22 @@ module Bond
     super(options)
   end
 
-  def condition; CONDITION; end
-  def object_match; @matched[1] ? @matched[1].chop : 'self' ; end
-  def matched_method; @matched[2]; end
-
   def _matches?(input)
     @condition = Regexp.new condition % Regexp.union(*current_methods)
-    super && (match = eval_object(object_match) &&
+    super && (match = eval_object(@matched[1] ? @matched[1] : 'self') &&
       MethodMission.find_action(@evaled_object, @meth = matched_method))
     @action = match[1] if match
     match
   end
 
+  def condition; CONDITION; end
+
   def current_methods
     self.class.all_actions - OPERATORS
+  end
+
+  def matched_method
+    @matched[2]
   end
 
   def create_input(input)
