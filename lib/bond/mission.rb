@@ -19,6 +19,7 @@ module Bond
         elsif options[:object]                   then ObjectMission.new(options)
         elsif options[:anywhere]                 then AnywhereMission.new(options)
         elsif options[:all_methods]              then MethodMission.new(options)
+        elsif options[:all_operator_methods]     then OperatorMethodMission.new(options)
         else                                          new(options)
         end
       end

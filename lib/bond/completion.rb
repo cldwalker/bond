@@ -3,7 +3,8 @@
 Bond.debrief(:default_search=>:underscore) unless Bond.config[:default_search]
 Bond.debrief(:default_mission=>:default) unless Bond.config[:default_mission]
 # Must come before :symbols completion
-Bond.complete(:all_methods=>true)
+Bond.complete :all_methods=>true
+Bond.complete :all_operator_methods=>true
 
 # irb/completion reproduced without the completion quirks
 # Completes classes and constants

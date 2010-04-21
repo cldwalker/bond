@@ -71,10 +71,13 @@ class Bond::MethodMission < Bond::Mission
     super(options)
   end
 
+  def condition; CONDITION; end
+  def object_match; @matched[1] ? @matched[1].chop : 'self' ; end
+
   def _matches?(input)
-    @condition = Regexp.new CONDITION % Regexp.union(*current_methods)
-    super && (match = eval_object(@matched[1] ? @matched[1].chop : 'self') &&
-      self.class.find_action(@evaled_object, @meth = @matched[2]))
+    @condition = Regexp.new condition % Regexp.union(*current_methods)
+    super && (match = eval_object(object_match) &&
+      Bond::MethodMission.find_action(@evaled_object, @meth = @matched[2]))
     @action = match[1] if match
     match
   end
