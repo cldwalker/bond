@@ -2,7 +2,9 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "completions for" do
   before_all {
-    Bond.agent.reset; complete(:all_methods=>true)
+    Bond.agent.reset;
+    complete(:all_methods=>true)
+    complete(:all_operator_methods=>true)
     Bond::MethodMission.actions = {}
     Bond.load_completions File.dirname(__FILE__) + '/../lib/bond'
   }
@@ -20,6 +22,10 @@ describe "completions for" do
 
     it "#index" do
       tab("#{@hash}.index 2").should == %w{2}
+    end
+
+    it "#[]" do
+      tab("#{@hash}['a").sort.should == %w{ab ae}
     end
   end
 
@@ -54,6 +60,11 @@ describe "completions for" do
 
     it "#method" do
       tab("Bond.method :a").should == [':agent']
+    end
+
+    it "#[]" do
+      ::ENV['ZZZ'] = ::ENV['ZZY'] = 'blah'
+      tab("ENV['ZZ").should == %w{ZZY ZZZ}
     end
   end
 

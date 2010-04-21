@@ -8,7 +8,7 @@ describe "method mission" do
   }
   before { Bond.agent.reset; Bond.complete(:all_methods=>true) }
 
-  describe "instance method" do
+  describe "method" do
     before { complete(:method=>'Array#index') {|e| %w{ab cd ef ad} } }
 
     it "completes" do
@@ -27,20 +27,13 @@ describe "method mission" do
       tab('[].index :a').should == %w{:ab :ad}
     end
 
-    it "completes for objects of a subclass" do
-      class ::MyArray < Array; end
-      tab('MyArray.new.index a').should == %w{ab ad}
-    end
-
-    it "completes for objects of a subclass using its own definition" do
-      class ::MyArray < Array; end
-      complete(:method=>'MyArray#index') {|e| %w{aa ab bc} }
-      tab('MyArray.new.index a').should == %w{aa ab}
-    end
-
     it "needs space to complete argument" do
       tab('[].indexa').should == []
       tab('[].index a').should == %w{ab ad}
+    end
+
+    it "completes all arguments with only space as argument" do
+      tab('[].index ').should == %w{ab cd ef ad}
     end
 
     it "completes with a chain of objects" do
@@ -53,6 +46,21 @@ describe "method mission" do
 
     it "completes in middle of line" do
       tab('nil; [].index a').should == %w{ab ad}
+    end
+  end
+
+  describe "any instance method" do
+    before { complete(:method=>'Array#index') {|e| %w{ab cd ef ad} } }
+
+    it "completes for objects of a subclass" do
+      class ::MyArray < Array; end
+      tab('MyArray.new.index a').should == %w{ab ad}
+    end
+
+    it "completes for objects of a subclass using its own definition" do
+      class ::MyArray < Array; end
+      complete(:method=>'MyArray#index') {|e| %w{aa ab bc} }
+      tab('MyArray.new.index a').should == %w{aa ab}
     end
 
     it "ignores invalid ruby" do
@@ -71,7 +79,7 @@ describe "method mission" do
     end
   end
 
-  describe "class method" do
+  describe "any class method" do
     before { complete(:method=>'Date.parse') {|e| %w{12/01 03/01 01/01} } }
 
     it "completes" do
