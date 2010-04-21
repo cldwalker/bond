@@ -77,7 +77,8 @@ module Bond
         else
           puts "Matches completion with condition #{mission.condition.inspect}."
         end
-        puts "Possible completions: #{mission.execute.inspect}"
+        puts "Possible completions: #{mission.execute.inspect}",
+          "Matches for #{mission.condition.inspect} are #{mission.matched.to_a.inspect}"
       else
         puts "Doesn't match a completion."
       end

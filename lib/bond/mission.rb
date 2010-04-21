@@ -43,7 +43,7 @@ module Bond
       #:startdoc:
     end
 
-    attr_reader :action, :condition, :place
+    attr_reader :action, :condition, :place, :matched
     OPERATORS = %w{% & * ** + - / < << <= <=> == === =~ > >= >> [] []= ^ | ~}
 
     # Options are almost the same as those explained at Bond.complete. The only difference is that the action is passed
