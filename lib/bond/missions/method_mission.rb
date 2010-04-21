@@ -1,5 +1,6 @@
 # Created with :method in Bond.complete. Is able to complete first argument for a method.
-class Bond::MethodMission < Bond::Mission
+module Bond
+  class MethodMission < Bond::Mission
   class<<self
     attr_accessor :actions, :last_action, :class_actions
 
@@ -8,7 +9,7 @@ class Bond::MethodMission < Bond::Mission
         klass, klass_meth = split_method(options[:action])
         options[:action] = (current_actions(options[:action])[klass_meth] || {})[klass]
       end
-      raise Bond::InvalidMissionActionError unless options[:action].respond_to?(:call)
+      raise InvalidMissionActionError unless options[:action].respond_to?(:call)
 
       meths = options[:methods] || Array(options[:method])
       if options[:class].is_a?(String)
@@ -21,6 +22,10 @@ class Bond::MethodMission < Bond::Mission
         (current_actions(meth)[klass_meth] ||= {})[klass] = options[:action]
       }
       nil
+    end
+
+    def all_actions
+      (actions.keys + class_actions.keys).uniq
     end
 
     def current_actions(meth)
@@ -73,17 +78,18 @@ class Bond::MethodMission < Bond::Mission
 
   def condition; CONDITION; end
   def object_match; @matched[1] ? @matched[1].chop : 'self' ; end
+  def matched_method; @matched[2]; end
 
   def _matches?(input)
     @condition = Regexp.new condition % Regexp.union(*current_methods)
     super && (match = eval_object(object_match) &&
-      Bond::MethodMission.find_action(@evaled_object, @meth = @matched[2]))
+      MethodMission.find_action(@evaled_object, @meth = matched_method))
     @action = match[1] if match
     match
   end
 
   def current_methods
-    (self.class.actions.keys + self.class.class_actions.keys).uniq
+    self.class.all_actions - OPERATORS
   end
 
   def create_input(input)
@@ -95,5 +101,6 @@ class Bond::MethodMission < Bond::Mission
       @completion_prefix = typed.empty? ? '' : "#{@matched[3]}#{match[1]}#{$1}"
     end
     super typed, :object=>@evaled_object, :argument=>1+arg_count
+  end
   end
 end

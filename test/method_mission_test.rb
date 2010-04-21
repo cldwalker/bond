@@ -160,13 +160,6 @@ describe "method mission" do
     tab("String.new a").should == %w{ab ad}
   end
 
-  it "operator_method completes " do
-    complete :all_operator_methods=>true
-    complete(:method=>"Hash#*") { %w{ab cd ae} }
-    tab('{:a=>1} * a').should == %w{ab ae}
-    tab('{:a=>1} *').should == %w{ab cd ae}
-  end
-
   describe "with :class" do
     it "completes for instance methods" do
       complete(:method=>"blong", :class=>"Array#") { %w{ab cd ef ad} }

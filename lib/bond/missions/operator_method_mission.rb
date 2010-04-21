@@ -5,8 +5,13 @@ module Bond
 
     def condition; CONDITION; end
     def object_match; @matched[1] || 'self'; end
+
     def current_methods
       OPERATORS
+    end
+
+    def matched_method
+      {'['=>'[]'}[@matched[2]] || @matched[2]
     end
   end
 end
