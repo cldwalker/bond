@@ -24,8 +24,13 @@ module Bond
       nil
     end
 
-    def all_actions
+    def action_methods
       (actions.keys + class_actions.keys).uniq
+    end
+
+    def all_methods
+      (class_actions.map {|m,h| h.map {|k,v| "#{k}.#{m}" } } +
+        actions.map {|m,h| h.map {|k,v| "#{k}##{m}" } }).flatten.sort
     end
 
     def current_actions(meth)
@@ -89,7 +94,7 @@ module Bond
   end
 
   def current_methods
-    self.class.all_actions - OPERATORS
+    self.class.action_methods - OPERATORS
   end
 
   def matched_method

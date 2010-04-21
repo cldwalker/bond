@@ -4,7 +4,7 @@ module Bond
     CONDITION = %q{(?:^|\s+)(\S+)\s*(%s)\s*(['":])?(.*)$}
 
     def current_methods
-      (OPERATORS & MethodMission.all_actions) + ['[']
+      (OPERATORS & MethodMission.action_methods) + ['[']
     end
 
     def matched_method
