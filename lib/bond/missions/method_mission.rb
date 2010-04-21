@@ -77,14 +77,16 @@ module Bond
   end
 
   def _matches?(input)
-    @condition = Regexp.new condition % Regexp.union(*current_methods)
+    @condition = Regexp.new self.class.const_get(:CONDITION) % Regexp.union(*current_methods)
     super && (match = eval_object(@matched[1] ? @matched[1] : 'self') &&
       MethodMission.find_action(@evaled_object, @meth = matched_method))
     @action = match[1] if match
     match
   end
 
-  def condition; CONDITION; end
+  def condition
+    Regexp.new self.class.const_get(:CONDITION) % '%s'
+  end
 
   def current_methods
     self.class.all_actions - OPERATORS

@@ -3,10 +3,8 @@ module Bond
     OPERATORS = Mission::OPERATORS - ["[]", "[]="] + ['[']
     CONDITION = %q{(?:^|\s+)(\S+)\s*(%s)\s*(['":])?(.*)$}
 
-    def condition; CONDITION; end
-
     def current_methods
-      OPERATORS
+      (OPERATORS & MethodMission.all_actions) + ['[']
     end
 
     def matched_method
