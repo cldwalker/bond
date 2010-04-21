@@ -11,11 +11,12 @@ describe "operator method mission" do
   it "completes" do
     complete(:method=>"Hash#*") { %w{ab cd ae} }
     tab('{:a=>1} * a').should == %w{ab ae}
-    tab('{:a=>1} *').should == %w{ab cd ae}
+    tab('{:a=>1} *').should == %w{*ab *cd *ae}
   end
 
   it "for :[] completes" do
     complete(:method=>"Hash#[]") { %w{ab cd ae} }
     tab('{:a=>1}["a').should == %w{ab ae}
+    tab('{:a=>1}[a').should == ["1}[ab", "1}[ae"]
   end
 end
