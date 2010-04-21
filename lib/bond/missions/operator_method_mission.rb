@@ -13,9 +13,9 @@ module Bond
       {'['=>'[]'}[@matched[2]] || @matched[2]
     end
 
-    def create_input(input)
+    def after_match(input)
       @completion_prefix, typed = input.sub(/#{@matched[-1]}$/, ''), @matched[-1]
-      @input = Input.new typed, @matched, :object=>@evaled_object, :argument=>1
+      create_input typed, :object=>@evaled_object, :argument=>1
     end
   end
 end

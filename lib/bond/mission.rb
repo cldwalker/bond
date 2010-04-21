@@ -64,7 +64,7 @@ module Bond
     # Returns a boolean indicating if a mission matches the given input.
     def matches?(input)
       @matched = @input = @completion_prefix = nil
-      (match = _matches?(input)) && create_input(input[/\S+$/])
+      (match = _matches?(input)) && after_match(input[/\S+$/])
       !!match
     end
 
@@ -100,6 +100,7 @@ module Bond
     def create_input(input, options={})
       @input = Input.new(input, @matched, options)
     end
+    alias_method :after_match, :create_input
 
     def _matches?(input)
       @matched = input.match(@condition)

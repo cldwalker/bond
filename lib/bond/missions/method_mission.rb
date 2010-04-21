@@ -94,7 +94,7 @@ module Bond
     @matched[2]
   end
 
-  def create_input(input)
+  def after_match(input)
     @completion_prefix, typed = @matched[3], @matched[-1]
     arg_count = typed.count(',')
     if typed.to_s.include?(',') && (match = typed.match(/(.*?\s*)([^,]*)$/))
@@ -102,7 +102,7 @@ module Bond
       typed.sub!(/^(['":])/,'')
       @completion_prefix = typed.empty? ? '' : "#{@matched[3]}#{match[1]}#{$1}"
     end
-    super typed, :object=>@evaled_object, :argument=>1+arg_count
+    create_input typed, :object=>@evaled_object, :argument=>1+arg_count
   end
   end
 end

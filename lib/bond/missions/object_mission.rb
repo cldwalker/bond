@@ -22,10 +22,10 @@ class Bond::ObjectMission < Bond::Mission
       @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition }
   end
 
-  def create_input(input)
+  def after_match(input)
     @completion_prefix = @matched[1] + "."
     @action ||= lambda {|e| default_action(e.object) }
-    super @matched[2], :object=>@evaled_object
+    create_input @matched[2], :object=>@evaled_object
   end
 
   def default_action(obj)
