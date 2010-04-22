@@ -13,10 +13,12 @@ describe "Agent" do
     end
 
     it "chooses default mission if internal processing fails" do
-      complete(:on=>/bling/) {|e| [] }
-      Bond.agent.expects(:find_mission).raises
-      Bond.agent.default_mission.expects(:execute)
-      tab('bling')
+      capture_stdout {
+        complete(:on=>/bling/) {|e| [] }
+        Bond.agent.expects(:find_mission).raises
+        Bond.agent.default_mission.expects(:execute)
+        tab('bling')
+      }.should.not.be.empty
     end
 
     it "completes in middle of line" do

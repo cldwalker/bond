@@ -20,11 +20,9 @@ describe "Completion" do
   end
 
   it "completes invalid constants safely" do
-    Bond.config[:debug] = true
     capture_stdout {
       tab("Bond::MethodMission ").should == []
     }.should == ''
-    Bond.config[:debug] = false
   end
 
   it "completes nested classes anywhere" do

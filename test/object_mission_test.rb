@@ -40,12 +40,10 @@ describe "ObjectMission" do
     end
 
     it "ignores object that doesn't have a valid class" do
-      Bond.config[:debug] = true
       complete :on=>/(.*)./, :object=>'Object'
       capture_stdout {
         tab("obj = Object.new; def obj.class; end; obj.").should == []
       }.should == ''
-      Bond.config[:debug] = false
     end
 
     # needed to ensure Bond works in irbrc

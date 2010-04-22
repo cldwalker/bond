@@ -4,6 +4,7 @@ require 'mocha'
 require 'mocha-on-bacon'
 require 'bond'
 
+Bond.config[:debug] = true
 module TestHelpers
   def mock_irb
     unless Object.const_defined?(:IRB)
