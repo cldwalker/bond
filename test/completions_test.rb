@@ -2,10 +2,10 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "completions for" do
   before_all {
-    Bond.agent.reset;
+    Bond.reset
     complete(:all_methods=>true)
     complete(:all_operator_methods=>true)
-    Bond::MethodMission.actions = {}
+    Bond::Rc.load File.dirname(__FILE__) + '/../lib/bond/completion.rb'
     Bond.load_completions File.dirname(__FILE__) + '/../lib/bond'
   }
 

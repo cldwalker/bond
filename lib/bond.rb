@@ -85,6 +85,7 @@ module Bond
   # Resets Bond so that next time Bond.complete is called, a new set of completion missions are created. This does not
   # change current completion behavior.
   def reset
+    MethodMission.reset
     @agent = nil
   end
 

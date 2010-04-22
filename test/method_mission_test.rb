@@ -3,8 +3,7 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 describe "method mission" do
   before_all {
     Bond.debrief(:readline_plugin=>valid_readline_plugin)
-    Bond::MethodMission.actions = {}
-    Bond::MethodMission.class_actions = {}
+    Bond::MethodMission.reset
   }
   before { Bond.agent.reset; Bond.complete(:all_methods=>true) }
 

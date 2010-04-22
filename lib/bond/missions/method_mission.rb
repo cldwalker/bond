@@ -24,6 +24,11 @@ module Bond
       nil
     end
 
+    def reset
+      @actions = {}
+      @class_actions = {}
+    end
+
     def action_methods
       (actions.keys + class_actions.keys).uniq
     end
@@ -69,8 +74,7 @@ module Bond
        nil
     end
   end
-  self.actions = {}
-  self.class_actions = {}
+  self.reset
 
   CONDITION = %q{(?:^|\s+)(\S*?)\.?(%s)(?:\s+|\()(['":])?(.*)$}
   def initialize(options={}) #:nodoc:
