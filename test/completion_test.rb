@@ -6,12 +6,6 @@ describe "Completion" do
     Bond::MethodMission.actions = {}
   }
 
-  it "completes object methods anywhere" do
-    matches = tab("blah :man.")
-    matches.size.should.be > 0
-    matches.should.be.all {|e| e=~ /^:man/}
-  end
-
   it "completes global variables anywhere" do
     tab("blah $LOA").should.satisfy {|e|
       e.size > 0 && e.all? {|e| e=~ /^\$LOA/} }
@@ -42,11 +36,63 @@ describe "Completion" do
     tab("blah[:m").should == ["blah[:mah"]
   end
 
-  it "completes string methods anywhere" do
-    tab("blah 'man'.f").should.include('.freeze')
-  end
-
   it "methods don't swallow up default completion" do
     Bond.agent.find_mission("Bond.complete(:method=>'blah') { Arr").should == nil
+  end
+
+  describe "completes object methods" do
+    def have_methods_from(klass, regex)
+      lambda {|e|
+        meths = e.map {|f| f.sub(/^#{Regexp.quote(regex)}/, '') }
+        (meths & klass.instance_methods(false).map {|g| g.to_s }).size.should.be > 0
+      }
+    end
+
+    it "anywhere" do
+      tab("blah :man.").should have_methods_from(Symbol, ':man.')
+    end
+
+    it "anywhere for string method" do
+      tab("blah 'man'.s").should have_methods_from(String, '.')
+    end
+
+    describe "for" do
+      it "hash" do
+        tab("{:a =>1}.f").should have_methods_from(Hash, '1}.')
+      end
+
+      it "array" do
+        tab("[1, 2].f").should have_methods_from(Array, '2].')
+      end
+
+      it "strings" do
+        tab("'man oh'.s").should have_methods_from(String, '.')
+        tab('"man oh".s').should have_methods_from(String, '.')
+      end
+
+      it "nil" do
+        tab("nil.t").should have_methods_from(NilClass, 'nil.')
+      end
+
+      it "false" do
+        tab("false.f").should have_methods_from(FalseClass, 'false.')
+      end
+
+      it "proc" do
+        tab('lambda { }.c').should have_methods_from(Proc, '}.')
+      end
+
+      it "range" do
+        tab("(1 .. 10).f").should have_methods_from(Range, '10).')
+      end
+
+      it "regexp" do
+        tab("/man oh/.c").should have_methods_from(Regexp, 'oh/.')
+      end
+
+      it "any expression between parenthesis" do
+        tab("(2 * 2).").should have_methods_from(Fixnum, '2).')
+      end
+    end
   end
 end

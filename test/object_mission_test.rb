@@ -29,17 +29,9 @@ describe "ObjectMission" do
       matches.all? {|e| !e.include?('{')}.should == true
     end
 
-    it "completes nil, false and range objects" do
-      complete(:object=>"Object")
-      tab("nil.f").size.should.be > 0
-      tab("false.f").size.should.be > 0
-      tab("(1..10).f").size.should.be > 0
-    end
-
-    it "completes hashes and arrays with spaces" do
-      complete(:object=>"Object")
-      tab("[1, 2].f").size.should.be > 0
-      tab("{:a =>1}.f").size.should.be > 0
+    it "doesn't evaluate anything before the completion object" do
+      complete(:object=>'Object')
+      tab('raise :man.i').size.should > 0
     end
 
     it "ignores invalid ruby" do
@@ -54,11 +46,6 @@ describe "ObjectMission" do
         tab("obj = Object.new; def obj.class; end; obj.").should == []
       }.should == ''
       Bond.config[:debug] = false
-    end
-
-    it "always passes string to action block" do
-      complete(:on=>/(.*)./, :object=>'Object') {|e| e.should.be.is_a(String); [] }
-      tab('"man".')
     end
 
     # needed to ensure Bond works in irbrc
