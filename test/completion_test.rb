@@ -1,9 +1,12 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "Completion" do
-  before_all { Bond.reset; Bond.debrief(:readline_plugin=>valid_readline_plugin)
-    Bond::Rc.load File.dirname(__FILE__) + '/../lib/bond/completion.rb'
+  before_all {
+    Bond.reset; Bond.debrief(:readline_plugin=>valid_readline_plugin)
     Bond::MethodMission.actions = {}
+    Bond::MethodMission.class_actions = {}
+    Bond::Rc.load File.dirname(__FILE__) + '/../lib/bond/completion.rb'
+    Bond.load_completions File.dirname(__FILE__) + '/../lib/bond'
   }
 
   it "completes global variables anywhere" do
@@ -41,73 +44,91 @@ describe "Completion" do
   end
 
   describe "completes object methods" do
-    def have_methods_from(klass, regex)
+    def be_methods_from(klass, regex, obj=klass.new)
       lambda {|e|
         meths = e.map {|f| f.sub(/^#{Regexp.quote(regex)}/, '') }
-        (meths & klass.instance_methods(false).map {|g| g.to_s }).size.should.be > 0
+        meths.size.should.be > 0
+        (meths - obj.methods.map {|e| e.to_s} - Bond::Mission::OPERATORS).size.should == 0
       }
     end
 
-    it "anywhere" do
-      tab("blah :man.").should have_methods_from(Symbol, ':man.')
-    end
-
-    it "anywhere for string method" do
-      tab("blah 'man'.s").should have_methods_from(String, '.')
-    end
-
-    describe "for" do
-      it "hash" do
-        tab("{:a =>1}.f").should have_methods_from(Hash, '1}.')
-      end
-
-      it "array" do
-        tab("[1, 2].f").should have_methods_from(Array, '2].')
-      end
-
-      it "strings" do
-        tab("'man oh'.s").should have_methods_from(String, '.')
-        tab('"man oh".s').should have_methods_from(String, '.')
+    shared "objects" do
+      it "non whitespace object" do
+        tab(':man.').should be_methods_from(Symbol, ':man.', :man)
       end
 
       it "nil" do
-        tab("nil.t").should have_methods_from(NilClass, 'nil.')
+        tab("nil.t").should be_methods_from(NilClass, 'nil.', nil)
       end
 
       it "false" do
-        tab("false.f").should have_methods_from(FalseClass, 'false.')
+        tab("false.f").should be_methods_from(FalseClass, 'false.', false)
       end
 
-      it "proc" do
-        tab('lambda { }.c').should have_methods_from(Proc, '}.')
+      it "strings" do
+        tab("'man oh'.s").should be_methods_from(String, '.')
+        tab('"man oh".s').should be_methods_from(String, '.')
       end
 
-      it "range" do
-        tab("(1 .. 10).f").should have_methods_from(Range, '10).')
+      it "array" do
+        tab("[1, 2].f").should be_methods_from(Array, '2].')
+      end
+
+      it "hash" do
+        tab("{:a =>1}.f").should be_methods_from(Hash, '1}.')
       end
 
       it "regexp" do
-        tab("/man oh/.c").should have_methods_from(Regexp, 'oh/.')
+        tab("/man oh/.c").should be_methods_from(Regexp, 'oh/.', /man oh/)
       end
 
-      it "anything quoted with {}" do
-        tab("%r{man oh}.c").should have_methods_from(Regexp, 'oh}.')
-        tab("%q{man oh}.s").should have_methods_from(String, 'oh}.')
-        tab("%w{man oh}.f").should have_methods_from(Array, 'oh}.')
-        tab("%s{man oh}.t").should have_methods_from(Symbol, 'oh}.')
+      it "proc" do
+        tab('lambda { }.c').should be_methods_from(Proc, '}.', lambda{})
+        tab('proc { }.c').should be_methods_from(Proc, '}.', lambda{})
       end
 
-      it "anything quoted with []" do
-        tab("%r[man oh].c").should have_methods_from(Regexp, 'oh].')
-        tab("%q[man oh].s").should have_methods_from(String, 'oh].')
-        tab("%w[man oh].f").should have_methods_from(Array, 'oh].')
-        tab("%s[man oh].t").should have_methods_from(Symbol, 'oh].')
+      it "range" do
+        tab("(1 .. 10).m").should be_methods_from(Range, '10).', (1..10))
       end
 
       it "any expression between ()" do
-        tab("(2 * 2).").should have_methods_from(Fixnum, '2).')
-        tab("String.new('man oh').s").should have_methods_from(String, ').')
+        tab("(2 * 2).").should be_methods_from(Fixnum, '2).', 2)
+        tab("String.new('man oh').s").should be_methods_from(String, ').')
       end
+
+      it "anything quoted with {}" do
+        tab("%r{man oh}.c").should be_methods_from(Regexp, 'oh}.', /man oh/)
+        tab("%q{man oh}.s").should be_methods_from(String, 'oh}.')
+        tab("%Q{man oh}.s").should be_methods_from(String, 'oh}.')
+        tab("%w{man oh}.f").should be_methods_from(Array, 'oh}.')
+        tab("%s{man oh}.t").should be_methods_from(Symbol, 'oh}.', :man)
+      end
+
+      it "anything quoted with []" do
+        tab("%r[man oh].c").should be_methods_from(Regexp, 'oh].', /man oh/)
+        tab("%q[man oh].s").should be_methods_from(String, 'oh].')
+        tab("%Q[man oh].s").should be_methods_from(String, 'oh].')
+        tab("%w[man oh].f").should be_methods_from(Array, 'oh].')
+        tab("%s[man oh].t").should be_methods_from(Symbol, 'oh].', :man)
+      end
+    end
+
+    describe "for" do
+      behaves_like "objects"
+    end
+
+    describe "after valid ruby for" do
+      def tab(str)
+        super("nil; "+str)
+      end
+      behaves_like "objects"
+    end
+
+    describe "after invalid ruby for" do
+      def tab(str)
+        super("blah "+str)
+      end
+      behaves_like "objects"
     end
   end
 end
