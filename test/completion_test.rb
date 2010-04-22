@@ -90,8 +90,23 @@ describe "Completion" do
         tab("/man oh/.c").should have_methods_from(Regexp, 'oh/.')
       end
 
-      it "any expression between parenthesis" do
+      it "anything quoted with {}" do
+        tab("%r{man oh}.c").should have_methods_from(Regexp, 'oh}.')
+        tab("%q{man oh}.s").should have_methods_from(String, 'oh}.')
+        tab("%w{man oh}.f").should have_methods_from(Array, 'oh}.')
+        tab("%s{man oh}.t").should have_methods_from(Symbol, 'oh}.')
+      end
+
+      it "anything quoted with []" do
+        tab("%r[man oh].c").should have_methods_from(Regexp, 'oh].')
+        tab("%q[man oh].s").should have_methods_from(String, 'oh].')
+        tab("%w[man oh].f").should have_methods_from(Array, 'oh].')
+        tab("%s[man oh].t").should have_methods_from(Symbol, 'oh].')
+      end
+
+      it "any expression between ()" do
         tab("(2 * 2).").should have_methods_from(Fixnum, '2).')
+        tab("String.new('man oh').s").should have_methods_from(String, ').')
       end
     end
   end

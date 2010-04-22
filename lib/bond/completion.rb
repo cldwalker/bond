@@ -17,5 +17,3 @@ complete(:anywhere=>'\$[^\s.]*') {|e| global_variables }
 complete(:on=>/[\s(]["']([^'"]*)$/, :search=>false, :action=>:quoted_files, :place=>:last)
 # Completes any object's methods
 complete(:object=>"Object", :place=>:last)
-# Completes method completion anywhere in the line
-complete(:on=>/([^.\s]+)\.([^.\s]*)$/, :object=>"Object", :place=>:last)
