@@ -79,8 +79,6 @@ module Bond
     super(options)
   end
 
-  def default_action; end
-
   def do_match(input)
     @condition = Regexp.new self.class.const_get(:CONDITION) % Regexp.union(*current_methods)
     super && (match = eval_object(@matched[1] ? @matched[1] : 'self') &&
@@ -96,12 +94,16 @@ module Bond
     self.class.action_methods - OPERATORS
   end
 
+  def default_action
+    MethodMission.last_action[1]
+  end
+
   def matched_method
     @matched[2]
   end
 
   def after_match(input)
-    @action = MethodMission.last_action[1]
+    @action = default_action
     @completion_prefix, typed = @matched[3], @matched[-1]
     arg_count = typed.count(',')
     if typed.to_s.include?(',') && (match = typed.match(/(.*?\s*)([^,]*)$/))

@@ -12,7 +12,7 @@ module Bond
     end
 
     def after_match(input)
-      @action = MethodMission.last_action[1]
+      @action = default_action
       @completion_prefix, typed = input.to_s.sub(/#{@matched[-1]}$/, ''), @matched[-1]
       create_input typed, :object=>@evaled_object, :argument=>1
     end
