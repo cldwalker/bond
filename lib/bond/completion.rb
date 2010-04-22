@@ -1,3 +1,5 @@
+# Completes any object's methods
+complete :object=>"Object"
 # Completes method arguments
 complete :all_methods=>true
 complete :all_operator_methods=>true
@@ -15,5 +17,3 @@ complete(:anywhere=>':[^:\s.]*') {|e|
 complete(:anywhere=>'\$[^\s.]*') {|e| global_variables }
 # Completes files
 complete(:on=>/[\s(]["']([^'"]*)$/, :search=>false, :action=>:quoted_files, :place=>:last)
-# Completes any object's methods
-complete(:object=>"Object", :place=>:last)
