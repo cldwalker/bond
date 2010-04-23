@@ -76,5 +76,9 @@ describe "completions for" do
     it "#instance_methods" do
       tab("Bond::Agent.instance_method :co").should == [':complete']
     end
+
+    it "#>" do
+      tab("Object > Mod").should == %w{Module}
+    end
   end
 end
