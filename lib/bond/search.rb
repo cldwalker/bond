@@ -1,5 +1,7 @@
 module Bond
   # Contains search methods used to filter possible completions given what the user has typed for that completion.
+  # For a search method to be used by Bond.complete it must end '_search' and take two arguments: the input string
+  # and an array of possible completions.
   module Search
     # Searches completions from the beginning of the string.
     def default_search(input, list)

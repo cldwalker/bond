@@ -43,10 +43,10 @@ module Bond
   #             attribute :object. If no action is given, this completion type defaults to all methods the object responds to.
   # [*:anywhere*] Matches the given regular expression to create a Bond::AnywhereMission object. Regex must end in '$' and
   #               must encompass the whole regular expression in '()'.
-  # [*:search*] Given a symbol, proc or false, determines how completions are searched to match what the user has typed. Defaults to
+  # [*:search*] Given a symbol or false, determines how completions are searched to match what the user has typed. Defaults to
   #             traditional searching i.e. looking at the beginning of a string for possible matches. If false, search is turned off and
   #             assumed to be done in the action block. Possible symbols are :anywhere, :ignore_case and :underscore. See Bond::Search for
-  #             more info about them. A proc is given two arguments: the input string and an array of possible completions.
+  #             more info about them.
   # [*:action*] Symbol referencing an instance method in Actions to be the action block.
   # [*:place*] Given a symbol or number, controls where this completion is placed in relation to existing ones. If a number, the
   #            completion is placed at that number. If the symbol :last, the completion is placed at the end regardless of completions
@@ -97,8 +97,8 @@ module Bond
   # [*:default_mission*] A proc to be used as the default completion proc when no completions match or one fails. When in irb
   #                      with completion enabled, uses irb completion. Otherwise defaults to a proc with an empty completion list.
   # [*:default_search*] A symbol or proc to be used as the default search in completions. See Bond.complete's :search option for valid symbols.
-  # [*:eval_binding*] Specifies a binding to be used with Bond::ObjectMission. When in irb, defaults to irb's main
-  #                   binding. Otherwise defaults to TOPLEVEL_BINDING.
+  # [*:eval_binding*] Specifies a binding to be used when evaluating objects in ObjectMission and MethodMission. When in irb,
+  #                   defaults to irb's main binding. Otherwise defaults to TOPLEVEL_BINDING.
   # [*:debug*]  Boolean to print unexpected errors when autocompletion fails. Default is false.
   #
   # ==== Example:
