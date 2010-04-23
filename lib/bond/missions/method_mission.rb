@@ -80,7 +80,6 @@ module Bond
   CONDITION = %q{(OBJECTS)\.?(METHODS)(?:\s+|\()(['":])?(.*)$}
   def initialize(options={}) #:nodoc:
     options[:on] = /FILL_PER_COMPLETION/
-    @eval_binding = options[:eval_binding]
     super(options)
   end
 

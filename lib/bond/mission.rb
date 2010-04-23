@@ -57,6 +57,7 @@ module Bond
       @action = options[:action].is_a?(Symbol) && self.class.action_object.respond_to?(options[:action]) ?
         self.class.action_object.method(options[:action]) : options[:action]
       raise InvalidMissionActionError if @action && !@action.respond_to?(:call)
+      @eval_binding = options[:eval_binding] if options[:eval_binding]
       @on = options[:on]
       @place = options[:place]
       @search = options.has_key?(:search) ? options[:search] : Mission.default_search

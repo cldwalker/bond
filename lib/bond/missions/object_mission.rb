@@ -8,7 +8,6 @@ class Bond::ObjectMission < Bond::Mission
   def initialize(options={})
     @object_condition = /^#{options[:object]}$/
     options[:on] ||= Regexp.new condition_with_objects
-    @eval_binding = options[:eval_binding]
     super
   end
 
