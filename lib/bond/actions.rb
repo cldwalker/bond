@@ -19,16 +19,6 @@ module Bond
       }
     end
 
-    def quoted_files(input) #:nodoc:
-      files(input.matched[1])
-    end
-
-    def constants(input) #:nodoc:
-      receiver = input.matched[2]
-      candidates = Mission.current_eval("#{receiver}.constants | #{receiver}.methods")
-      candidates.grep(/^#{Regexp.escape(input.matched[5])}/).map {|e| receiver + "::" + e}
-    end
-
     # Returns objects of a given class
     def objects_of(klass)
       object = []
