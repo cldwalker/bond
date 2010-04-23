@@ -51,7 +51,8 @@ describe "Mission" do
 
   it "sets binding to toplevel binding when not in irb" do
     Bond::Mission.eval_binding = nil
-    Object.expects(:const_defined?).with(:IRB).returns(false)
+    mock_irb
+    ::IRB.CurrentContext.expects(:workspace).raises
     Bond::Mission.eval_binding.should == ::TOPLEVEL_BINDING
   end
 end

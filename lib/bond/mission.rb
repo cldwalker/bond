@@ -33,8 +33,7 @@ module Bond
       end
 
       def eval_binding
-        @eval_binding ||= Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding :
-          ::TOPLEVEL_BINDING
+        @eval_binding || IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
       end
 
       def default_search
@@ -64,7 +63,7 @@ module Bond
 
     # Returns a boolean indicating if a mission matches the given input.
     def matches?(input)
-      @matched = @input = @completion_prefix = nil
+      @matched = @input = @completion_prefix = @eval_binding = nil
       (match = do_match(input)) && after_match(input[/\S+$/])
       !!match
     end
@@ -100,10 +99,14 @@ module Bond
 
     #:stopdoc:
     def eval_object(obj)
-      @evaled_object = self.class.current_eval(obj)
+      @evaled_object = self.class.current_eval(obj, eval_binding)
       true
     rescue Exception
       false
+    end
+
+    def eval_binding
+      @eval_binding ||= self.class.eval_binding
     end
 
     def unique_id
