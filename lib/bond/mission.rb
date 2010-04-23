@@ -8,8 +8,6 @@ module Bond
 
   # A set of conditions and actions to take for a completion scenario or mission in Bond's mind.
   class Mission
-    include Search
-
     class<<self
       # default search used across missions
       attr_accessor :default_search
@@ -61,7 +59,6 @@ module Bond
       @on = options[:on]
       @place = options[:place]
       @search = options.has_key?(:search) ? options[:search] : Mission.default_search
-      @search = method("#{@search}_search") unless @search.is_a?(Proc) || @search == false
     end
 
     # Returns a boolean indicating if a mission matches the given input.
@@ -74,7 +71,7 @@ module Bond
     # Called when a mission has been chosen to autocomplete.
     def execute(input=@input)
       completions = Array(@action.call(input)).map {|e| e.to_s }
-      completions =  @search.call(input || '', completions) if @search
+      completions = Rc.search(@search, input || '', completions) if @search
       if @completion_prefix
         # Everything up to last break char stays on the line.
         # Must ensure only chars after break are prefixed

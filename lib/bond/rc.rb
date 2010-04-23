@@ -1,7 +1,11 @@
 module Bond
   # Namespace in which ~/.bondrc is evaluated. Any methods in this class are valid top-level methods in ~/.bondrc.
   module Rc
-    extend self
+    extend self, Search
+
+    def search(*args)
+      send("#{args.shift}_search", *args)
+    end
 
     # Loads file into Rc namespace
     def load(file)

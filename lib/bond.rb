@@ -123,7 +123,7 @@ module Bond
     [File.join(File.dirname(__FILE__),'bond'), File.join(home, '.bond')].each do |base_dir|
       load_completions(base_dir)
     end
-    Rc.instance_eval(&block) if block
+    Rc.module_eval(&block) if block
     true
   end
 
