@@ -11,7 +11,7 @@ describe "ObjectMission" do
     end
 
     it "with regex condition completes" do
-      complete(:object=>/Str/) {|e| e.object.class.superclass.instance_methods(true) }
+      complete(:object=>'Str.*') {|e| e.object.class.superclass.instance_methods(true) }
       complete(:on=>/man/) { %w{upper upster upful}}
       tab("'man'.unta").should == [".untaint"]
     end
