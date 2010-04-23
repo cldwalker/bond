@@ -52,7 +52,7 @@ module Bond
     # as an :action option here.
     def initialize(options)
       raise InvalidMissionError unless (options[:action] || respond_to?(:default_action)) &&
-        (options[:on] || is_a?(DefaultMission))
+        (options[:on] || respond_to?(:default_on))
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
       @action = options[:action].is_a?(Symbol) && self.class.action_object.respond_to?(options[:action]) ?
         self.class.action_object.method(options[:action]) : options[:action]

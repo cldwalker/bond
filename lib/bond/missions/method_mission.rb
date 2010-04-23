@@ -74,20 +74,18 @@ module Bond
        nil
     end
   end
-  self.reset
 
+  self.reset
   OBJECTS = %w{\S*?} + Mission::OBJECTS
   CONDITION = %q{(OBJECTS)\.?(METHODS)(?:\s+|\()(['":])?(.*)$}
-  def initialize(options={}) #:nodoc:
-    options[:on] = /FILL_PER_COMPLETION/
-    super(options)
-  end
 
   def do_match(input)
-    @on = Regexp.new condition_with_objects.sub('METHODS',Regexp.union(*current_methods).to_s)
-    super && (match = eval_object(@matched[1] ? @matched[1] : 'self') &&
-      MethodMission.find_action(@evaled_object, @meth = matched_method))
-    match
+    (@on = default_on) && super && eval_object(@matched[1] ? @matched[1] : 'self') &&
+      MethodMission.find_action(@evaled_object, @meth = matched_method)
+  end
+
+  def default_on
+    Regexp.new condition_with_objects.sub('METHODS',Regexp.union(*current_methods).to_s)
   end
 
   def current_methods
