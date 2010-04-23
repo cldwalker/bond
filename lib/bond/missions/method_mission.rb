@@ -9,7 +9,6 @@ module Bond
         klass, klass_meth = split_method(options[:action])
         options[:action] = (current_actions(options[:action])[klass_meth] || {})[klass]
       end
-      raise InvalidMissionActionError unless options[:action].respond_to?(:call)
 
       meths = options[:methods] || Array(options[:method])
       if options[:class].is_a?(String)

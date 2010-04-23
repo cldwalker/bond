@@ -28,5 +28,12 @@ module Bond
       candidates = Mission.current_eval("#{receiver}.constants | #{receiver}.methods")
       candidates.grep(/^#{Regexp.escape(input.matched[5])}/).map {|e| receiver + "::" + e}
     end
+
+    # Returns objects of a given class
+    def objects_of(klass)
+      object = []
+      ObjectSpace.each_object(klass) {|e| object.push(e) }
+      object
+    end
   end
 end

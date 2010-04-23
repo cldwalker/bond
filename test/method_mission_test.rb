@@ -114,12 +114,6 @@ describe "method mission" do
       complete(:method=>"Array#fetch", :action=>"Array#index")
       tab('[].fetch a').should == %w{ab ad}
     end
-
-    it "with invalid :action prints error" do
-      capture_stderr {
-        complete(:method=>"Array#blah", :action=>'blah')
-      }.should =~ /invalid mission action/i
-    end
   end
 
   describe "any class method" do

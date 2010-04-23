@@ -23,12 +23,9 @@ module Bond
     end
 
     def create_mission(options, &block) #:nodoc:
-      options[:action] ||= block
-      Mission.create options
+      Mission.create options.merge!(:action=>options[:action] || block)
     rescue InvalidMissionError
       "Invalid mission given. Mission needs an action and a condition."
-    rescue InvalidMissionActionError
-      "Invalid mission action given. Make sure action responds to :call or refers to a predefined action that does."
     rescue
       "Mission setup failed with:\n#{$!}"
     end

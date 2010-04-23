@@ -1,8 +1,6 @@
 module Bond
   # Occurs when a mission is incorrectly defined.
   class InvalidMissionError < StandardError; end
-  # Occurs when a mission action is incorrectly defined.
-  class InvalidMissionActionError < StandardError; end
   # Occurs when a mission or search action fails.
   class FailedExecutionError < StandardError; end
 
@@ -24,10 +22,6 @@ module Bond
         end
       end
       #:stopdoc:
-      def action_object
-        @action_object ||= Object.new.extend(Actions)
-      end
-
       def current_eval(string, ebinding=eval_binding)
         eval(string, ebinding)
       end
@@ -53,9 +47,7 @@ module Bond
       raise InvalidMissionError unless (options[:action] || respond_to?(:default_action)) &&
         (options[:on] || respond_to?(:default_on))
       raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
-      @action = options[:action].is_a?(Symbol) && self.class.action_object.respond_to?(options[:action]) ?
-        self.class.action_object.method(options[:action]) : options[:action]
-      raise InvalidMissionActionError if @action && !@action.respond_to?(:call)
+      @action = options[:action]
       @on = options[:on]
       @place = options[:place]
       @search = options.has_key?(:search) ? options[:search] : Mission.default_search
@@ -70,7 +62,7 @@ module Bond
 
     # Called when a mission has been chosen to autocomplete.
     def execute(input=@input)
-      completions = Array(@action.call(input)).map {|e| e.to_s }
+      completions = Array(call_action(input)).map {|e| e.to_s }
       completions = Rc.search(@search, input || '', completions) if @search
       if @completion_prefix
         # Everything up to last break char stays on the line.
@@ -83,6 +75,10 @@ module Bond
       error_message = "Mission action failed to execute properly. Check your mission action with pattern #{@on.inspect}.\n" +
         "Failed with error: #{$!.message}"
       raise FailedExecutionError, error_message
+    end
+
+    def call_action(input)
+      @action.respond_to?(:call) ? @action.call(input) : Rc.send(@action, input)
     end
 
     def spy_message

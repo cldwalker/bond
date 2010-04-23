@@ -57,10 +57,6 @@ describe "Agent" do
       capture_stderr { complete(:on=>'blah') {|e| []} }.should =~ /Invalid mission/
     end
 
-    it "prints error if invalid symbol action given" do
-      capture_stderr { complete(:on=>/blah/, :action=>:bling) }.should =~ /Invalid mission action/
-    end
-
     it "prints error if setting mission fails unpredictably" do
       Bond::Mission.expects(:create).raises(RuntimeError)
       capture_stderr { complete(:on=>/blah/) {|e| [] } }.should =~ /Mission setup failed/
