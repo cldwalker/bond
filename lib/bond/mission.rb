@@ -11,6 +11,8 @@ module Bond
     class<<self
       # default search used across missions
       attr_accessor :default_search
+      # eval binding used across missions
+      attr_accessor :eval_binding
       # Handles creation of proper Mission class depending on the options passed.
       def create(options)
         if options[:method] || options[:methods] then MethodMission.create(options)
@@ -26,13 +28,13 @@ module Bond
         @action_object ||= Object.new.extend(Actions)
       end
 
-      def current_eval(string, eval_binding=nil)
-        eval_binding ||= default_eval_binding
-        eval(string, eval_binding)
+      def current_eval(string, ebinding=eval_binding)
+        eval(string, ebinding)
       end
 
-      def default_eval_binding
-        Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding : ::TOPLEVEL_BINDING
+      def eval_binding
+        @eval_binding ||= Object.const_defined?(:IRB) ? IRB.CurrentContext.workspace.binding :
+          ::TOPLEVEL_BINDING
       end
 
       def default_search
@@ -55,7 +57,6 @@ module Bond
       @action = options[:action].is_a?(Symbol) && self.class.action_object.respond_to?(options[:action]) ?
         self.class.action_object.method(options[:action]) : options[:action]
       raise InvalidMissionActionError if @action && !@action.respond_to?(:call)
-      @eval_binding = options[:eval_binding] if options[:eval_binding]
       @on = options[:on]
       @place = options[:place]
       @search = options.has_key?(:search) ? options[:search] : Mission.default_search
@@ -99,7 +100,7 @@ module Bond
 
     #:stopdoc:
     def eval_object(obj)
-      @evaled_object = self.class.current_eval(obj, @eval_binding)
+      @evaled_object = self.class.current_eval(obj)
       true
     rescue Exception
       false

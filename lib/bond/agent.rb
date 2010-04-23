@@ -8,7 +8,7 @@ module Bond
       raise ArgumentError unless options[:readline_plugin].is_a?(Module)
       extend(options[:readline_plugin])
       @default_mission_action = options[:default_mission] if options[:default_mission]
-      @eval_binding = options[:eval_binding] if options[:eval_binding]
+      Mission.eval_binding = options[:eval_binding] if options[:eval_binding]
       Mission.default_search = options[:default_search] if options[:default_search]
       setup
       @missions = []
@@ -24,7 +24,7 @@ module Bond
 
     def create_mission(options, &block) #:nodoc:
       options[:action] ||= block
-      Mission.create(options.merge(:eval_binding=>@eval_binding))
+      Mission.create options
     rescue InvalidMissionError
       "Invalid mission given. Mission needs an action and a condition."
     rescue InvalidMissionActionError

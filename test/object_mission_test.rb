@@ -51,12 +51,5 @@ describe "ObjectMission" do
       Object.expects(:const_defined?).never
       complete(:object=>"String")
     end
-
-    it "sets binding to toplevel binding when not in irb" do
-      Object.expects(:const_defined?).with(:IRB).returns(false)
-      mission = Bond::Mission.create(:object=>'Symbol')
-      mission.class.expects(:eval).with(anything, ::TOPLEVEL_BINDING)
-      mission.matches?(':ok.')
-    end
   end
 end

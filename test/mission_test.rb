@@ -48,4 +48,10 @@ describe "Mission" do
     mission = Bond::DefaultMission.new
     mission.action.respond_to?(:call).should == true
   end
+
+  it "sets binding to toplevel binding when not in irb" do
+    Bond::Mission.eval_binding = nil
+    Object.expects(:const_defined?).with(:IRB).returns(false)
+    Bond::Mission.eval_binding.should == ::TOPLEVEL_BINDING
+  end
 end

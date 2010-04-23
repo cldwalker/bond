@@ -7,16 +7,9 @@ module Bond
       "then", "true", "undef", "unless", "until", "when", "while", "yield"
     ]
 
-    # Helper function for evaluating strings in the current console binding.
-    def current_eval(string)
-      ObjectMission.current_eval(string)
-    rescue Exception
-      []
-    end
-
     # Default completion for non-irb console and bond/completion
     def default(input)
-      current_eval("methods | private_methods | local_variables | self.class.constants") | ReservedWords
+      Mission.current_eval("methods | private_methods | local_variables | self.class.constants") | ReservedWords
     end
 
     # File completion
@@ -32,7 +25,7 @@ module Bond
 
     def constants(input) #:nodoc:
       receiver = input.matched[2]
-      candidates = current_eval("#{receiver}.constants | #{receiver}.methods")
+      candidates = Mission.current_eval("#{receiver}.constants | #{receiver}.methods")
       candidates.grep(/^#{Regexp.escape(input.matched[5])}/).map {|e| receiver + "::" + e}
     end
   end
