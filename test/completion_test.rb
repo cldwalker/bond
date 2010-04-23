@@ -88,12 +88,12 @@ describe "Completion" do
         tab("(1 .. 10).m").should be_methods_from(Range, '10).', (1..10))
       end
 
-      it "any expression between ()" do
+      it "object between ()" do
         tab("(2 * 2).").should be_methods_from(Fixnum, '2).', 2)
         tab("String.new('man oh').s").should be_methods_from(String, ').')
       end
 
-      it "anything quoted with {}" do
+      it "object quoted by {}" do
         tab("%r{man oh}.c").should be_methods_from(Regexp, 'oh}.', /man oh/)
         tab("%q{man oh}.s").should be_methods_from(String, 'oh}.')
         tab("%Q{man oh}.s").should be_methods_from(String, 'oh}.')
@@ -101,7 +101,7 @@ describe "Completion" do
         tab("%s{man oh}.t").should be_methods_from(Symbol, 'oh}.', :man)
       end
 
-      it "anything quoted with []" do
+      it "object quoted by []" do
         tab("%r[man oh].c").should be_methods_from(Regexp, 'oh].', /man oh/)
         tab("%q[man oh].s").should be_methods_from(String, 'oh].')
         tab("%Q[man oh].s").should be_methods_from(String, 'oh].')

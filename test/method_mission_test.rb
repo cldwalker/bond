@@ -39,8 +39,56 @@ describe "method mission" do
       tab('{}.to_a.index a').should == %w{ab ad}
     end
 
-    it "completes in middle of line" do
+    it "completes after valid ruby" do
       tab('nil; [].index a').should == %w{ab ad}
+    end
+
+    it "completes after invalid ruby" do
+      tab('blah [].index a').should == %w{ab ad}
+    end
+
+    describe "completes for whitespaced object that is" do
+      def complete_and_tab(klass, example)
+        complete(:method=>"#{klass}#to_s") { %w{ab cd ef ad} }
+        tab(example + '.to_s a').should == %w{ab ad}
+      end
+
+      it "a string" do
+        complete_and_tab(String, "'man oh'")
+      end
+
+      it "an array" do
+        complete_and_tab(Array, "[1, 2, 3]")
+      end
+
+      it "a hash" do
+        complete_and_tab(Hash, "{:a => 1}")
+      end
+
+      it "a regexp" do
+        complete_and_tab(Regexp, "/man oh/")
+      end
+
+      it "a proc" do
+        complete_and_tab(Proc, "lambda { }")
+        complete_and_tab(Proc, "proc { }")
+      end
+
+      it "a range" do
+        complete_and_tab(Range, "(1.. 10)")
+      end
+
+      it "wrapped ()" do
+        complete_and_tab(Fixnum, "(2 * 2)")
+      end
+
+      it "quoted by {}" do
+        complete_and_tab(String, "%q{man oh}")
+      end
+
+      it "quoted by []" do
+        complete_and_tab(String, "%q[man oh]")
+      end
     end
   end
 
@@ -146,7 +194,7 @@ describe "method mission" do
       tab('cool c').should == %w{cd}
     end
 
-    it "completes in middle of line" do
+    it "completes after valid ruby" do
       tab('nil; cool a').should == %w{ab ad}
     end
   end
