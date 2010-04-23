@@ -43,7 +43,7 @@ module Bond
       #:startdoc:
     end
 
-    attr_reader :action, :condition, :place, :matched
+    attr_reader :action, :place, :matched
     OPERATORS = %w{% & * ** + - / < << <= <=> == === =~ > >= >> [] []= ^ | ~}
     OBJECTS = %w<\([^\)]*\) '[^']*' "[^"]*" \/[^\/]*\/> +
       %w<(?:%q|%r|%Q|%w|%s|%)?\[[^\]]*\] (?:proc|lambda|%q|%r|%Q|%w|%s|%)?\s*\{[^\}]*\}>
@@ -57,7 +57,7 @@ module Bond
       @action = options[:action].is_a?(Symbol) && self.class.action_object.respond_to?(options[:action]) ?
         self.class.action_object.method(options[:action]) : options[:action]
       raise InvalidMissionActionError if @action && !@action.respond_to?(:call)
-      @condition = options[:on]
+      @on = options[:on]
       @place = options[:place]
       @search = options.has_key?(:search) ? options[:search] : Mission.default_search
       @search = method("#{@search}_search") unless @search.is_a?(Proc) || @search == false
@@ -82,13 +82,21 @@ module Bond
       end
       completions
     rescue
-      error_message = "Mission action failed to execute properly. Check your mission action with pattern #{@condition.inspect}.\n" +
+      error_message = "Mission action failed to execute properly. Check your mission action with pattern #{@on.inspect}.\n" +
         "Failed with error: #{$!.message}"
       raise FailedExecutionError, error_message
     end
 
     def spy_message
       "Matches completion rule with condition #{condition.inspect}."
+    end
+
+    def condition
+      self.class.const_defined?(:CONDITION) ? Regexp.new(self.class.const_get(:CONDITION)) : @on
+    end
+
+    def condition_with_objects
+      self.class.const_get(:CONDITION).sub('OBJECTS', self.class.const_get(:OBJECTS).join('|'))
     end
 
     #:stopdoc:
@@ -100,7 +108,7 @@ module Bond
     end
 
     def unique_id
-      @condition
+      @on
     end
 
     def create_input(input, options={})
@@ -109,7 +117,7 @@ module Bond
     alias_method :after_match, :create_input
 
     def do_match(input)
-      @matched = input.match(@condition)
+      @matched = input.match(@on)
     end
     #:startdoc:
   end

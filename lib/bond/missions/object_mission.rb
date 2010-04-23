@@ -4,15 +4,16 @@
 class Bond::ObjectMission < Bond::Mission
   #:stopdoc:
   OBJECTS = %w<\S+> + Bond::Mission::OBJECTS
+  CONDITION = '(OBJECTS)\.([^.\s]*)$'
   def initialize(options={})
     @object_condition = /^#{options[:object]}$/
-    options[:on] ||= /(#{OBJECTS.join('|')})\.([^.\s]*)$/
+    options[:on] ||= Regexp.new condition_with_objects
     @eval_binding = options[:eval_binding]
     super
   end
 
   def unique_id
-    "#{@object_condition.inspect}+#{@condition.inspect}"
+    "#{@object_condition.inspect}+#{@on.inspect}"
   end
 
   def do_match(input)
