@@ -46,7 +46,7 @@ module Bond
     attr_reader :action, :condition, :place, :matched
     OPERATORS = %w{% & * ** + - / < << <= <=> == === =~ > >= >> [] []= ^ | ~}
     OBJECTS = %w<\([^\)]*\) '[^']*' "[^"]*" \/[^\/]*\/> +
-      %w<(?:%q|%r|%Q|%w|%s)?\[[^\]]*\] (?:proc|lambda|%q|%r|%Q|%w|%s)?\s*\{[^\}]*\}>
+      %w<(?:%q|%r|%Q|%w|%s|%)?\[[^\]]*\] (?:proc|lambda|%q|%r|%Q|%w|%s|%)?\s*\{[^\}]*\}>
 
     # Options are almost the same as those explained at Bond.complete. The only difference is that the action is passed
     # as an :action option here.

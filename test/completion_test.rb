@@ -99,6 +99,7 @@ describe "Completion" do
         tab("%Q{man oh}.s").should be_methods_from(String, 'oh}.')
         tab("%w{man oh}.f").should be_methods_from(Array, 'oh}.')
         tab("%s{man oh}.t").should be_methods_from(Symbol, 'oh}.', :man)
+        tab("%{man oh}.t").should be_methods_from(String, 'oh}.')
       end
 
       it "object quoted by []" do
@@ -107,6 +108,7 @@ describe "Completion" do
         tab("%Q[man oh].s").should be_methods_from(String, 'oh].')
         tab("%w[man oh].f").should be_methods_from(Array, 'oh].')
         tab("%s[man oh].t").should be_methods_from(Symbol, 'oh].', :man)
+        tab("%[man oh].t").should be_methods_from(String, 'oh].')
       end
     end
 
