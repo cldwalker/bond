@@ -21,8 +21,8 @@ module Bond
     # at the beginning of an underscored word. For example, to choose the first completion between 'so_long' and 'so_larger',
     # type 's-lo'.
     def underscore_search(input, list)
-      if input.include?("-")
-        regex = input.split('-').map {|e| Regexp.escape(e) }.join("([^_]+)?_")
+      if input[/_(.+)$/]
+        regex = input.split('_').map {|e| Regexp.escape(e) }.join("([^_]+)?_")
         list.select {|e| e =~ /^#{regex}/ }
       else
         default_search(input, list)

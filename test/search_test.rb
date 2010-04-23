@@ -28,7 +28,7 @@ describe "Search" do
     it ":underscore completes" do
       complete(:on=>/blah/, :search=>:underscore) {|e| %w{and_one big_two can_three} }
       tab("blah and").should == ['and_one']
-      tab("blah b-t").should == ['big_two']
+      tab("blah b_t").should == ['big_two']
     end
   end
 
@@ -41,8 +41,13 @@ describe "Search" do
   it "underscore search can match first unique strings of each underscored word" do
     completions = %w{so_long so_larger so_louder}
     complete(:on=>/blah/, :search=>:underscore) { completions }
-    tab("blah s-lo").should == %w{so_long so_louder}
-    tab("blah s-lou").should == %w{so_louder}
+    tab("blah s_lo").should == %w{so_long so_louder}
+    tab("blah s_lou").should == %w{so_louder}
+  end
+
+  it "underscore search acts normal if ending in underscore" do
+    complete(:on=>/blah/, :search=>:underscore) {|e| %w{and_one big_two can_three ander_one} }
+    tab("blah and_").should == %w{and_one}
   end
 
   it "search handles completions with regex characters" do

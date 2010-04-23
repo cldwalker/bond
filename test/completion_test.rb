@@ -11,7 +11,7 @@ describe "Completion" do
   it "completes global variables anywhere" do
     tab("blah $LOA").should.satisfy {|e|
       e.size > 0 && e.all? {|e| e=~ /^\$LOA/} }
-    tab("h[$LOAD_").should == ["h[$LOAD_PATH"]
+    tab("h[$LOADED").should == ["h[$LOADED_FEATURES"]
   end
 
   it "completes absolute constants anywhere" do
