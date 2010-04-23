@@ -116,8 +116,8 @@ module Bond
   # ~/.bond/completions/ and optional block.
   # See Rc for syntax to use in ~/.bondrc and plugins.
   def load(&block)
-    debrief(:default_search=>:underscore) unless Bond.config[:default_search]
-    debrief(:default_mission=>:default) unless Bond.config[:default_mission]
+    debrief(:default_search=>:underscore) unless config[:default_search]
+    debrief(:default_mission=>:default) unless config[:default_mission]
     Rc.load File.dirname(__FILE__) + '/../lib/bond/completion.rb'
     Rc.load(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc'))
     [File.join(File.dirname(__FILE__),'bond'), File.join(home, '.bond')].each do |base_dir|
