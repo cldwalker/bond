@@ -1,7 +1,9 @@
 module Bond
   class OperatorMethodMission < MethodMission
     OPERATORS = Mission::OPERATORS - ["[]", "[]="]
-    CONDITION = %q{(?:^|\s+)(\S+)\s*(%s)\s*(['":])?(.*)$}
+    OBJECTS = %w{\S+} + Mission::OBJECTS
+    CONDITION_TEMPLATE = %q{(OBJECTS)\s*(METHODS)\s*(['":])?(.*)$}
+    CONDITION = CONDITION_TEMPLATE.sub('OBJECTS', OBJECTS.join('|'))
 
     def current_methods
       (OPERATORS & MethodMission.action_methods) + ['[']

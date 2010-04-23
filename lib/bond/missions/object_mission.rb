@@ -3,12 +3,11 @@
 # the current object being completed have an ancestor specified by :object.
 class Bond::ObjectMission < Bond::Mission
   #:stopdoc:
+  OBJECTS = %w<\S+> + Bond::Mission::OBJECTS
   def initialize(options={})
     @object_condition = options.delete(:object)
     @object_condition = /^#{Regexp.escape(@object_condition.to_s)}$/ unless @object_condition.is_a?(Regexp)
-    objects = %w<\S+ \([^\)]*\) '[^']*' "[^"]*" \/[^\/]*\/> +
-      %w<(?:%q|%r|%Q|%w|%s)?\[[^\]]*\] (?:proc|lambda|%q|%r|%Q|%w|%s)?\s*\{[^\}]*\}>
-    options[:on] ||= /(#{objects.join('|')})\.([^.\s]*)$/
+    options[:on] ||= /(#{OBJECTS.join('|')})\.([^.\s]*)$/
     @eval_binding = options[:eval_binding]
     super
   end

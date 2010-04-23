@@ -76,7 +76,9 @@ module Bond
   end
   self.reset
 
-  CONDITION = %q{(?:^|\s+)(\S*?)\.?(%s)(?:\s+|\()(['":])?(.*)$}
+  OBJECTS = %w{\S*?} + Mission::OBJECTS
+  CONDITION_TEMPLATE = %q{(OBJECTS)\.?(METHODS)(?:\s+|\()(['":])?(.*)$}
+  CONDITION = CONDITION_TEMPLATE.sub('OBJECTS', OBJECTS.join('|'))
   def initialize(options={}) #:nodoc:
     options[:on] = /FILL_PER_COMPLETION/
     @eval_binding = options[:eval_binding]
@@ -84,14 +86,14 @@ module Bond
   end
 
   def do_match(input)
-    @condition = Regexp.new self.class.const_get(:CONDITION) % Regexp.union(*current_methods)
+    @condition = Regexp.new self.class.const_get(:CONDITION).sub('METHODS',Regexp.union(*current_methods).to_s)
     super && (match = eval_object(@matched[1] ? @matched[1] : 'self') &&
       MethodMission.find_action(@evaled_object, @meth = matched_method))
     match
   end
 
   def condition
-    Regexp.new self.class.const_get(:CONDITION) % '%s'
+    Regexp.new self.class.const_get(:CONDITION_TEMPLATE)
   end
 
   def current_methods
