@@ -7,7 +7,8 @@ module Bond
     end
 
     def config #:nodoc:
-      @config ||= {:readline_plugin=>Bond::Readline, :debug=>false}
+      @config ||= {:readline_plugin=>Bond::Readline, :debug=>false, :default_mission=>:default,
+        :default_search=>:underscore}
     end
 
     # Resets Bond so that next time Bond.complete is called, a new set of completion missions are created. This does not
@@ -54,8 +55,7 @@ module Bond
     # ~/.bond/completions/ and optional block.
     # See Rc for syntax to use in ~/.bondrc and plugins.
     def load(&block)
-      debrief(:default_search=>:underscore) unless config[:default_search]
-      debrief(:default_mission=>:default) unless config[:default_mission]
+      debrief
       load_file File.join(File.dirname(__FILE__), 'completion.rb')
       load_file(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc'))
       [File.dirname(__FILE__), File.join(home, '.bond')].each do |base_dir|

@@ -29,6 +29,7 @@ describe "Bond" do
       tab('blah a_q').should == ["all_quiet"]
       Bond.reset
     end
+    after_all { Bond::M.debrief :readline_plugin=>valid_readline_plugin }
   end
 
   it "reset clears existing missions" do

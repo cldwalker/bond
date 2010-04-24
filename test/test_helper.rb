@@ -4,8 +4,8 @@ require 'mocha'
 require 'mocha-on-bacon'
 require 'bond'
 
-Bond.config[:debug] = true
 module TestHelpers
+  extend self
   def mock_irb
     unless Object.const_defined?(:IRB)
       eval %[
@@ -58,3 +58,6 @@ class Bacon::Context
   include TestHelpers
   include BaconExtensions
 end
+
+# Default settings
+Bond::M.debrief(:readline_plugin=>TestHelpers.valid_readline_plugin, :debug=>true)

@@ -59,7 +59,7 @@ describe "completions for" do
     end
 
     it "#instance_variable_get" do
-      tab("Bond.instance_variable_get '@a").should == ['@agent']
+      tab("Bond::M.instance_variable_get '@a").should == ['@agent']
     end
 
     it "#method" do

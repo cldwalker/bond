@@ -1,8 +1,6 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "Mission" do
-  before_all { Bond::M.debrief(:readline_plugin=>valid_readline_plugin) }
-
   describe "mission" do
     before { Bond.agent.reset }
     it "completes" do
