@@ -54,6 +54,10 @@ describe "completions for" do
       tab("Object.send :super").should == [':superclass']
     end
 
+    it "#send and additional arguments" do
+      tab('Bond.send :const_get, Ac').should == ['Actions']
+    end
+
     it "#instance_variable_get" do
       tab("Bond.instance_variable_get '@a").should == ['@agent']
     end
