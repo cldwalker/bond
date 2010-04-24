@@ -18,7 +18,7 @@ require 'bond/missions/operator_method_mission'
 # up the completion missions in the order they were defined and picks the first one that matches what the user has typed.
 # Bond::Agent handles finding and executing the correct completion mission. 
 # Some pointers on using/understanding Bond:
-# * Bond can work outside of irb and readline when debriefed with Bond.debrief. This should be called before any Bond.complete calls.
+# * Bond can be configured to work outside of irb and readline. See Bond::M.config
 # * Bond doesn't take over completion until an explicit Bond.complete is called.
 # * Order of completion missions matters. The order they're defined in is the order Bond searches
 #   when looking for a matching completion. This means that more specific completions like method and object completions should come

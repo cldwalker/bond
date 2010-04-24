@@ -6,7 +6,19 @@ module Bond
       @agent ||= Agent.new(config)
     end
 
-    def config #:nodoc:
+    # Global config with the following keys
+    # ==== Keys:
+    # [*:readline_plugin*] Specifies a Bond plugin to interface with a Readline-like library. Available plugins are Bond::Readline
+    #                      and Bond::Rawline. Defaults to Bond::Readline. Note that a plugin doesn't imply use with irb. Irb is
+    #                      joined to the hip with Readline.
+    # [*:default_mission*] A proc to be used as the default completion proc when no completions match or one fails. When in irb
+    #                      with completion enabled, uses irb completion. Otherwise defaults to a proc with an empty completion list.
+    # [*:default_search*] A symbol or proc to be used as the default search in completions. See Bond.complete's :search option for valid symbols.
+    # [*:eval_binding*] Specifies a binding to be used when evaluating objects in ObjectMission and MethodMission. When in irb,
+    #                   defaults to irb's main binding. Otherwise defaults to TOPLEVEL_BINDING.
+    # [*:debug*]  Boolean to print unexpected errors when autocompletion fails. Default is false.
+    #
+    def config
       @config ||= {:readline_plugin=>Bond::Readline, :debug=>false, :default_mission=>:default,
         :default_search=>:underscore}
     end
@@ -28,20 +40,7 @@ module Bond
       agent.spy(input)
     end
 
-    # Debriefs Bond to set global defaults. Call before defining completions.
-    # ==== Options:
-    # [*:readline_plugin*] Specifies a Bond plugin to interface with a Readline-like library. Available plugins are Bond::Readline
-    #                      and Bond::Rawline. Defaults to Bond::Readline. Note that a plugin doesn't imply use with irb. Irb is
-    #                      joined to the hip with Readline.
-    # [*:default_mission*] A proc to be used as the default completion proc when no completions match or one fails. When in irb
-    #                      with completion enabled, uses irb completion. Otherwise defaults to a proc with an empty completion list.
-    # [*:default_search*] A symbol or proc to be used as the default search in completions. See Bond.complete's :search option for valid symbols.
-    # [*:eval_binding*] Specifies a binding to be used when evaluating objects in ObjectMission and MethodMission. When in irb,
-    #                   defaults to irb's main binding. Otherwise defaults to TOPLEVEL_BINDING.
-    # [*:debug*]  Boolean to print unexpected errors when autocompletion fails. Default is false.
-    #
-    # ==== Example:
-    #   Bond.debrief :default_search=>:underscore, :default_mission=>:default
+    # Validates and sets values in M.config
     def debrief(options={})
       config.merge! options
       plugin_methods = %w{setup line_buffer}
@@ -54,15 +53,20 @@ module Bond
     # Loads bond/completion, optional ~/.bondrc, plugins in lib/bond/completions/ and
     # ~/.bond/completions/ and optional block.
     # See Rc for syntax to use in ~/.bondrc and plugins.
-    def load(&block)
-      debrief
+    # See M.config for valid options.
+    def load(options={}, &block)
+      debrief options
+      load_completions
+      Rc.module_eval(&block) if block
+      true
+    end
+
+    def load_completions
       load_file File.join(File.dirname(__FILE__), 'completion.rb')
       load_file(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc'))
       [File.dirname(__FILE__), File.join(home, '.bond')].each do |base_dir|
-        load_completions(base_dir)
+        load_dir(base_dir)
       end
-      Rc.module_eval(&block) if block
-      true
     end
 
     # Loads file into Rc namespace
@@ -72,7 +76,7 @@ module Bond
       puts "Error: Plugin '#{file}' failed to load:", e.message
     end
 
-    def load_completions(base_dir) #:nodoc:
+    def load_dir(base_dir) #:nodoc:
       if File.exists?(dir = File.join(base_dir, 'completions'))
         Dir[dir + '/*.rb'].each {|file| load_file(file) }
       end

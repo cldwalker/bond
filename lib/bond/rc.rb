@@ -7,8 +7,5 @@ module Bond
     def complete(*args, &block); Bond.complete(*args, &block); end
     # See Bond.recomplete for usage
     def recomplete(*args, &block); Bond.recomplete(*args, &block); end
-    # See Bond.debrief for usage
-    def debrief(*args, &block); Bond.debrief(*args, &block); end
-    alias_method :set, :debrief
   end
 end

@@ -6,7 +6,7 @@ describe "completions for" do
     complete(:all_methods=>true)
     complete(:all_operator_methods=>true)
     Bond::M.load_file File.dirname(__FILE__) + '/../lib/bond/completion.rb'
-    Bond::M.load_completions File.dirname(__FILE__) + '/../lib/bond'
+    Bond::M.load_dir File.dirname(__FILE__) + '/../lib/bond'
   }
 
   it "Array#delete" do

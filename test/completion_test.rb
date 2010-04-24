@@ -4,7 +4,7 @@ describe "Completion" do
   before_all {
     Bond.reset
     Bond::M.load_file File.dirname(__FILE__) + '/../lib/bond/completion.rb'
-    Bond::M.load_completions File.dirname(__FILE__) + '/../lib/bond'
+    Bond::M.load_dir File.dirname(__FILE__) + '/../lib/bond'
   }
 
   it "completes global variables anywhere" do
