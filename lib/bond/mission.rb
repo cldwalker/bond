@@ -63,7 +63,7 @@ module Bond
     # Called when a mission has been chosen to autocomplete.
     def execute(input=@input)
       completions = Array(call_action(input)).map {|e| e.to_s }
-      completions = Rc.search(@search, input || '', completions) if @search
+      completions = call_search(@search, input, completions) if @search
       if @completion_prefix
         # Everything up to last break char stays on the line.
         # Must ensure only chars after break are prefixed
@@ -75,6 +75,10 @@ module Bond
       error_message = "Mission action failed to execute properly. Check your mission action with pattern #{@on.inspect}.\n" +
         "Failed with error: #{$!.message}"
       raise FailedExecutionError, error_message
+    end
+
+    def call_search(search, input, list)
+      Rc.send("#{search}_search", input || '', list)
     end
 
     def call_action(input)

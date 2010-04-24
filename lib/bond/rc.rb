@@ -3,10 +3,6 @@ module Bond
   module Rc
     extend self, Actions, Search
 
-    def search(*args)
-      send("#{args.shift}_search", *args)
-    end
-
     # Loads file into Rc namespace
     def load(file)
       module_eval File.read(file)
