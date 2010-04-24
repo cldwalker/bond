@@ -56,8 +56,8 @@ module Bond
     def load(&block)
       debrief(:default_search=>:underscore) unless config[:default_search]
       debrief(:default_mission=>:default) unless config[:default_mission]
-      Rc.load File.join(File.dirname(__FILE__), 'completion.rb')
-      Rc.load(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc'))
+      load_file File.join(File.dirname(__FILE__), 'completion.rb')
+      load_file(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc'))
       [File.dirname(__FILE__), File.join(home, '.bond')].each do |base_dir|
         load_completions(base_dir)
       end
@@ -65,9 +65,16 @@ module Bond
       true
     end
 
+    # Loads file into Rc namespace
+    def load_file(file)
+      Rc.module_eval File.read(file)
+    rescue Exception => e
+      puts "Error: Plugin '#{file}' failed to load:", e.message
+    end
+
     def load_completions(base_dir) #:nodoc:
       if File.exists?(dir = File.join(base_dir, 'completions'))
-        Dir[dir + '/*.rb'].each {|file| Rc.load(file) }
+        Dir[dir + '/*.rb'].each {|file| load_file(file) }
       end
     end
 

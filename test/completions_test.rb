@@ -5,7 +5,7 @@ describe "completions for" do
     Bond.reset
     complete(:all_methods=>true)
     complete(:all_operator_methods=>true)
-    Bond::Rc.load File.dirname(__FILE__) + '/../lib/bond/completion.rb'
+    Bond::M.load_file File.dirname(__FILE__) + '/../lib/bond/completion.rb'
     Bond::M.load_completions File.dirname(__FILE__) + '/../lib/bond'
   }
 

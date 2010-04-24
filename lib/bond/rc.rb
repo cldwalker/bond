@@ -3,13 +3,6 @@ module Bond
   module Rc
     extend self, Actions, Search
 
-    # Loads file into Rc namespace
-    def load(file)
-      module_eval File.read(file)
-    rescue Exception => e
-      puts "Error: Plugin '#{file}' failed to load:", e.message
-    end
-
     # See Bond.complete for usage
     def complete(*args, &block); Bond.complete(*args, &block); end
     # See Bond.recomplete for usage
