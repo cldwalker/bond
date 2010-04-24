@@ -103,12 +103,14 @@ module Bond
     @action = default_action
     @completion_prefix, typed = @matched[3], @matched[-1]
     arg_count = typed.count(',')
+    input_options = {:object=>@evaled_object, :argument=>1+arg_count,
+      :arguments=>(@completion_prefix.to_s+typed).split(/\s*,\s*/) }
     if typed.to_s.include?(',') && (match = typed.match(/(.*?\s*)([^,]*)$/))
       typed = match[2]
       typed.sub!(/^(['":])/,'')
       @completion_prefix = typed.empty? ? '' : "#{@matched[3]}#{match[1]}#{$1}"
     end
-    create_input typed, :object=>@evaled_object, :argument=>1+arg_count
+    create_input typed, input_options
   end
 
   def spy_message
