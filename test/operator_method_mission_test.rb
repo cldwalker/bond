@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "operator method mission" do
   before_all {
-    Bond.debrief(:readline_plugin=>valid_readline_plugin)
+    Bond::M.debrief(:readline_plugin=>valid_readline_plugin)
     Bond::MethodMission.reset
   }
   before { Bond.agent.reset; Bond.complete(:all_operator_methods=>true) }

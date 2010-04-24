@@ -6,7 +6,7 @@ describe "completions for" do
     complete(:all_methods=>true)
     complete(:all_operator_methods=>true)
     Bond::Rc.load File.dirname(__FILE__) + '/../lib/bond/completion.rb'
-    Bond.load_completions File.dirname(__FILE__) + '/../lib/bond'
+    Bond::M.load_completions File.dirname(__FILE__) + '/../lib/bond'
   }
 
   it "Array#delete" do
@@ -74,7 +74,7 @@ describe "completions for" do
 
   describe "Module" do
     it "#const_get" do
-      tab("Bond.const_get M").sort.should == ['MethodMission', 'Mission']
+      tab("Bond.const_get M").sort.should == ['M', 'MethodMission', 'Mission']
     end
 
     it "#instance_methods" do

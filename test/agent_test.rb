@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "Agent" do
-  before_all { Bond.debrief(:readline_plugin=>valid_readline_plugin) }
+  before_all { Bond::M.debrief(:readline_plugin=>valid_readline_plugin) }
 
   describe "Agent" do
     before { Bond.agent.reset }
