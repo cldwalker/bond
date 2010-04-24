@@ -3,8 +3,8 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 describe "Completion" do
   before_all {
     Bond.reset
-    Bond::M.load_file File.dirname(__FILE__) + '/../lib/bond/completion.rb'
-    Bond::M.load_dir File.dirname(__FILE__) + '/../lib/bond'
+    M.load_file File.dirname(__FILE__) + '/../lib/bond/completion.rb'
+    M.load_dir File.dirname(__FILE__) + '/../lib/bond'
   }
 
   it "completes global variables anywhere" do
@@ -44,7 +44,7 @@ describe "Completion" do
       lambda {|e|
         meths = e.map {|f| f.sub(/^#{Regexp.quote(regex)}/, '') }
         meths.size.should.be > 0
-        (meths - obj.methods.map {|e| e.to_s} - Bond::Mission::OPERATORS).size.should == 0
+        (meths - obj.methods.map {|e| e.to_s} - Mission::OPERATORS).size.should == 0
       }
     end
 

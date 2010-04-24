@@ -1,7 +1,7 @@
 require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "operator method mission" do
-  before_all { Bond::MethodMission.reset }
+  before_all { MethodMission.reset }
   before { Bond.agent.reset; Bond.complete(:all_operator_methods=>true) }
 
   describe "operator" do

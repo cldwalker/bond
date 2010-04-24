@@ -87,5 +87,5 @@ module Bond
   def agent(*args); M.agent(*args);end
   def config; M.config; end
   def reset; M.reset; end
-  def load(*args, &block); M.load(*args, &block); end
+  def start(*args, &block); M.start(*args, &block); end
 end

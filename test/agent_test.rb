@@ -28,7 +28,7 @@ describe "Agent" do
       complete(:object=>"Symbol", :place=>:last)
       complete(:on=>/man/, :place=>:last) { }
       complete(:on=>/man\s*(.*)/) {|e| [e.matched[1]] }
-      Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::ObjectMission, Bond::Mission]
+      Bond.agent.missions.map {|e| e.class}.should == [Mission, ObjectMission, Mission]
       tab('man ok').should == ['ok']
     end
 
@@ -37,7 +37,7 @@ describe "Agent" do
       complete(:on=>/man/) {}
       complete(:on=>/man\s*(.*)/, :place=>1) {|e| [e.matched[1]] }
       tab('man ok')
-      Bond.agent.missions.map {|e| e.class}.should == [Bond::Mission, Bond::ObjectMission, Bond::Mission]
+      Bond.agent.missions.map {|e| e.class}.should == [Mission, ObjectMission, Mission]
       tab('man ok').should == ['ok']
     end
   end
@@ -56,7 +56,7 @@ describe "Agent" do
     end
 
     it "prints error if setting mission fails unpredictably" do
-      Bond::Mission.expects(:create).raises(RuntimeError)
+      Mission.expects(:create).raises(RuntimeError)
       capture_stderr { complete(:on=>/blah/) {|e| [] } }.should =~ /Mission setup failed/
     end
   end

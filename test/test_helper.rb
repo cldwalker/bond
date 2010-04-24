@@ -61,3 +61,4 @@ end
 
 # Default settings
 Bond::M.debrief(:readline_plugin=>TestHelpers.valid_readline_plugin, :debug=>true)
+include Bond

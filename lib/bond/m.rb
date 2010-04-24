@@ -54,7 +54,7 @@ module Bond
     # ~/.bond/completions/ and optional block.
     # See Rc for syntax to use in ~/.bondrc and plugins.
     # See M.config for valid options.
-    def load(options={}, &block)
+    def start(options={}, &block)
       debrief options
       load_completions
       Rc.module_eval(&block) if block

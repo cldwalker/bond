@@ -10,7 +10,7 @@ describe "Search" do
     end
     
     it "defined in Rc completes" do
-      Bond::Rc.module_eval %q{def coco_search(input, list); list.grep(/#{input}/); end }
+      Rc.module_eval %q{def coco_search(input, list); list.grep(/#{input}/); end }
       complete(:on=>/blah/, :search=>:coco) {|e| %w{coco for puffs} }
       tab("blah ff").should == ['puffs']
     end

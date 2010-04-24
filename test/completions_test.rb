@@ -5,8 +5,8 @@ describe "completions for" do
     Bond.reset
     complete(:all_methods=>true)
     complete(:all_operator_methods=>true)
-    Bond::M.load_file File.dirname(__FILE__) + '/../lib/bond/completion.rb'
-    Bond::M.load_dir File.dirname(__FILE__) + '/../lib/bond'
+    M.load_file File.dirname(__FILE__) + '/../lib/bond/completion.rb'
+    M.load_dir File.dirname(__FILE__) + '/../lib/bond'
   }
 
   it "Array#delete" do
@@ -63,7 +63,7 @@ describe "completions for" do
     end
 
     it "#method" do
-      tab("Bond.method :a").should == [':agent']
+      tab("Bond::M.method :h").should == [':home']
     end
 
     it "#[]" do
