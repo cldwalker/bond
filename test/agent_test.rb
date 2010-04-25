@@ -6,7 +6,7 @@ describe "Agent" do
 
     it "chooses default mission if no missions match" do
       complete(:on=>/bling/) {|e| [] }
-      Bond.agent.default_mission.expects(:execute)
+      Bond.agent.default_mission.expects(:execute).with {|e| e.is_a?(Bond::Input) }
       tab 'blah'
     end
 

@@ -55,7 +55,7 @@ module Bond
     # Returns a boolean indicating if a mission matches the given input.
     def matches?(input)
       @matched = @input = @completion_prefix = @eval_binding = nil
-      (match = do_match(input)) && after_match(input[/\S+$/])
+      (match = do_match(input)) && after_match(@line = input)
       !!match
     end
 
@@ -119,9 +119,12 @@ module Bond
     end
 
     def create_input(input, options={})
-      @input = Input.new(input, @matched, options)
+      @input = Input.new(input, options.merge(:line=>@line, :matched=>@matched))
     end
-    alias_method :after_match, :create_input
+
+    def after_match(input)
+      create_input(input[/\S+$/])
+    end
 
     def do_match(input)
       @matched = input.match(@on)

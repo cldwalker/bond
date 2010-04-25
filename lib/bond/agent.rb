@@ -54,7 +54,7 @@ module Bond
     def call(input)
       mission_input = line_buffer
       mission_input = $1 if mission_input !~ /#{Regexp.escape(input)}$/ && mission_input =~ /^(.*#{Regexp.escape(input)})/
-      (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(input)
+      (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(Input.new(input))
     rescue FailedMissionError
       completion_error($!.message[0], "Completion Info: #{$!.message[1]}")
     rescue
