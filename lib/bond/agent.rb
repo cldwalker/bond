@@ -55,8 +55,8 @@ module Bond
       mission_input = line_buffer
       mission_input = $1 if mission_input !~ /#{Regexp.escape(input)}$/ && mission_input =~ /^(.*#{Regexp.escape(input)})/
       (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(input)
-    rescue FailedExecutionError
-      completion_error($!.message, "TODO")
+    rescue FailedMissionError
+      completion_error($!.message[0], "Completion Info: #{$!.message[1]}")
     rescue
       completion_error "Failed internally with '#{$!.message}'.",
         "Please report this issue with debug on: Bond.config[:debug] = true."
@@ -64,7 +64,7 @@ module Bond
 
     def completion_error(desc, message)
       arr = ["Bond Error: #{desc}", message]
-      arr << "Debug Info: #{$!.backtrace.inspect}" if Bond.config[:debug]
+      arr << "Stack Trace: #{$!.backtrace.inspect}" if Bond.config[:debug]
       arr
     end
 

@@ -2,7 +2,7 @@ module Bond
   # Occurs when a mission is incorrectly defined.
   class InvalidMissionError < StandardError; end
   # Occurs when a mission or search action fails.
-  class FailedExecutionError < StandardError; end
+  class FailedMissionError < StandardError; end
 
   # A set of conditions and actions to take for a completion scenario or mission in Bond's mind.
   class Mission
@@ -79,7 +79,7 @@ module Bond
       message = $!.is_a?(NoMethodError) && !Rc.respond_to?("#{search}_search") ?
         "Completion search '#{search}' doesn't exist." :
         "Failed during completion search with '#{$!.message}'."
-      raise FailedExecutionError, message
+      raise FailedMissionError, [message, spy_message]
     end
 
     def call_action(input)
@@ -88,7 +88,7 @@ module Bond
       message = $!.is_a?(NoMethodError) && !Rc.respond_to?(@action) ?
         "Completion action '#{@action}' doesn't exist." :
         "Failed during completion action with '#{$!.message}'."
-      raise FailedExecutionError, message
+      raise FailedMissionError, [message, spy_message]
     end
 
     def spy_message

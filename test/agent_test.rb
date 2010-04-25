@@ -18,11 +18,19 @@ describe "Agent" do
       errors[1].should =~ /Please/
     end
 
+    def complete_error(msg)
+      lambda {|e|
+        e[0].should =~ msg
+        e[1].should =~ /Completion Info: Matches.*blah/
+      }
+    end
+
     it "for completion action raising error completes error" do
       Bond.config[:debug] = false
       complete(:on=>/blah/) { raise 'blah' }
       errors = tab('blah')
       errors.size.should == 2
+      errors.should complete_error(/Bond Error: Failed.*action.*'blah'/)
       Bond.config[:debug] = true
     end
 
@@ -30,33 +38,29 @@ describe "Agent" do
       complete(:on=>/blah/) { raise 'blah' }
       errors = tab('blah')
       errors.size.should == 3
-      errors[0].should =~ /Bond Error: Failed.*action.*'blah'/
-      errors[2].should =~ /Debug Info/
+      errors.should complete_error(/Bond Error: Failed.*action.*'blah'/)
+      errors[2].should =~ /Stack Trace:/
     end
 
     it "for completion action raising SyntaxError in eval completes error" do
       complete(:on=>/blah/) { eval '{[}'}
-      errors = tab('blah')
-      errors[0].should =~ /Bond Error: Failed.*action.*(eval)/
+      tab('blah').should complete_error(/Bond Error: Failed.*action.*(eval)/)
     end
 
     it "for completion action that doesn't exist completes error" do
       complete(:on=>/blah/, :action=>:huh)
-      errors = tab('blah')
-      errors[0].should =~ /Bond Error:.*action 'huh' doesn't exist/
+      tab('blah').should complete_error(/Bond Error:.*action 'huh' doesn't exist/)
     end
 
     it "for completion search raising error completes error" do
       Rc.module_eval "def blah_search(*args); raise 'blah'; end"
       complete(:on=>/blah/, :search=>:blah) { [1] }
-      errors = tab('blah')
-      errors[0].should =~ /Bond Error: Failed.*search.*'blah'/
+      tab('blah').should complete_error(/Bond Error: Failed.*search.*'blah'/)
     end
 
     it "for completion search that doesn't exist completes error" do
       complete(:on=>/blah/, :search=>:huh) { [] }
-      errors = tab('blah')
-      errors[0].should =~ /Bond Error:.*search 'huh' doesn't exist/
+      tab('blah').should complete_error(/Bond Error:.*search 'huh' doesn't exist/)
     end
   end
 
