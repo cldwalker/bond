@@ -32,7 +32,7 @@ module Bond
 
     def recomplete(options={}, &block)
       if (mission = create_mission(options, &block)).is_a?(Mission)
-        if (existing_mission = @missions.find {|e| e.unique_id == mission.unique_id })
+        if (existing_mission = @missions.find {|e| e.name == mission.name })
           @missions[@missions.index(existing_mission)] = mission
           sort_last_missions
         else

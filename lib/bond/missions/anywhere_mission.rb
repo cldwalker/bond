@@ -10,8 +10,4 @@ class Bond::AnywhereMission < Bond::Mission
     @completion_prefix = input.to_s.sub(/#{Regexp.escape(@matched[1])}$/, '')
     create_input @matched[1]
   end
-
-  def unique_id #:nodoc:
-    @anywhere_condition
-  end
 end

@@ -130,6 +130,12 @@ describe "Agent" do
       tab('man ').should == %w{4 5 6}
     end
 
+    it "recompletes a mission with :name" do
+      complete(:on=>/man/, :name=>:count) { %w{1 2 3}}
+      Bond.recomplete(:on=>/man/, :name=>:count) { %w{4 5 6}}
+      tab('man ').should == %w{4 5 6}
+    end
+
     it "recompletes a method mission" do
       complete(:all_methods=>true)
       complete(:method=>'blah') { %w{1 2 3}}
@@ -141,6 +147,12 @@ describe "Agent" do
       complete(:object=>'String') { %w{1 2 3}}
       Bond.recomplete(:object=>'String') { %w{4 5 6}}
       tab('"blah".').should == %w{.4 .5 .6}
+    end
+
+    it "recompletes anywhere mission" do
+      complete(:anywhere=>'dude.*') { %w{duder dudest} }
+      Bond.recomplete(:anywhere=>'dude.*') { %w{duderific dudeacious} }
+      tab('dude').should == %w{duderific dudeacious}
     end
 
     it "prints error if no existing mission" do

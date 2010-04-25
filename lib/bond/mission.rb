@@ -46,9 +46,8 @@ module Bond
     def initialize(options)
       raise InvalidMissionError, ":action" unless (options[:action] || respond_to?(:default_action))
       raise InvalidMissionError, ":on" unless (options[:on] && options[:on].is_a?(Regexp)) || respond_to?(:default_on)
-      @action = options[:action]
-      @on = options[:on]
-      @place = options[:place]
+      @action, @on = options[:action], options[:on]
+      @place, @name = options[:place], options[:name]
       @search = options.has_key?(:search) ? options[:search] : Mission.default_search
     end
 
@@ -114,8 +113,12 @@ module Bond
       @eval_binding ||= self.class.eval_binding
     end
 
+    def name
+      @name ? @name.to_s : unique_id
+    end
+
     def unique_id
-      @on
+      @on.inspect
     end
 
     def create_input(input, options={})
