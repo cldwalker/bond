@@ -67,20 +67,20 @@ describe "Agent" do
   describe "complete" do
     before {|e| Bond.agent.reset }
     it "prints error if no action given" do
-      capture_stderr { complete :on=>/blah/ }.should =~ /Invalid mission/
+      capture_stderr { complete :on=>/blah/ }.should =~ /Invalid :action/
     end
 
     it "prints error if no condition given" do
-      capture_stderr { complete {|e| []} }.should =~ /Invalid mission/
+      capture_stderr { complete {|e| []} }.should =~ /Invalid :on/
     end
 
     it "prints error if invalid condition given" do
-      capture_stderr { complete(:on=>'blah') {|e| []} }.should =~ /Invalid mission/
+      capture_stderr { complete(:on=>'blah') {|e| []} }.should =~ /Invalid :on/
     end
 
     it "prints error if setting mission fails unpredictably" do
-      Mission.expects(:create).raises(RuntimeError)
-      capture_stderr { complete(:on=>/blah/) {|e| [] } }.should =~ /Mission setup failed/
+      Mission.expects(:create).raises(RuntimeError, 'blah')
+      capture_stderr { complete(:on=>/blah/) {|e| [] } }.should =~ /Unexpected error.*blah/
     end
 
     it "places missions last when declared last" do
@@ -130,7 +130,7 @@ describe "Agent" do
     end
 
     it "prints error if invalid condition given" do
-      capture_stderr { Bond.recomplete}.should =~ /Invalid mission/
+      capture_stderr { Bond.recomplete}.should =~ /Invalid :action/
     end
   end
 

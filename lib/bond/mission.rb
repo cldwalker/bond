@@ -44,9 +44,8 @@ module Bond
     # Options are almost the same as those explained at Bond.complete. The only difference is that the action is passed
     # as an :action option here.
     def initialize(options)
-      raise InvalidMissionError unless (options[:action] || respond_to?(:default_action)) &&
-        (options[:on] || respond_to?(:default_on))
-      raise InvalidMissionError if options[:on] && !options[:on].is_a?(Regexp)
+      raise InvalidMissionError, ":action" unless (options[:action] || respond_to?(:default_action))
+      raise InvalidMissionError, ":on" unless (options[:on] && options[:on].is_a?(Regexp)) || respond_to?(:default_on)
       @action = options[:action]
       @on = options[:on]
       @place = options[:place]

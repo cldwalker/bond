@@ -25,9 +25,9 @@ module Bond
     def create_mission(options, &block) #:nodoc:
       Mission.create options.merge!(:action=>options[:action] || block)
     rescue InvalidMissionError
-      "Invalid mission given. Mission needs an action and a condition."
+      "Invalid #{$!.message} for completion with options: #{options.inspect}"
     rescue
-      "Mission setup failed with:\n#{$!}"
+      "Unexpected error while creating completion with options #{options.inspect}:\n#{$!}"
     end
 
     def recomplete(options={}, &block)
