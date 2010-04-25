@@ -11,6 +11,7 @@ module Bond
       end
 
       meths = options[:methods] || Array(options[:method])
+      raise InvalidMissionError, ":method(s)" unless meths.all? {|e| e.is_a?(String) }
       if options[:class].is_a?(String)
         options[:class] << '#' unless options[:class][/[#.]$/]
         meths.map! {|e| options[:class] + e }

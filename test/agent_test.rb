@@ -66,21 +66,41 @@ describe "Agent" do
 
   describe "complete" do
     before {|e| Bond.agent.reset }
-    it "prints error if no action given" do
+    it "with no :action prints error" do
       capture_stderr { complete :on=>/blah/ }.should =~ /Invalid :action/
     end
 
-    it "prints error if no condition given" do
+    it "with no :on prints error" do
       capture_stderr { complete {|e| []} }.should =~ /Invalid :on/
     end
 
-    it "prints error if invalid condition given" do
+    it "with invalid :on prints error" do
       capture_stderr { complete(:on=>'blah') {|e| []} }.should =~ /Invalid :on/
     end
 
-    it "prints error if setting mission fails unpredictably" do
+    it "with internal failure prints error" do
       Mission.expects(:create).raises(RuntimeError, 'blah')
       capture_stderr { complete(:on=>/blah/) {|e| [] } }.should =~ /Unexpected error.*blah/
+    end
+
+    it "with invalid :anywhere and :prefix prints no error" do
+      capture_stderr { complete(:prefix=>nil, :anywhere=>:blah) {} }.should == ''
+    end
+
+    it "with invalid :object prints no error" do
+      capture_stderr { complete(:object=>:Mod) {} }.should == ''
+    end
+
+    it "with invalid :method prints error" do
+      capture_stderr { complete(:method=>true) {} }.should =~ /Invalid :method\(s\)/
+    end
+
+    it "with invalid :methods prints error" do
+      capture_stderr { complete(:methods=>[:blah]) {} }.should =~ /Invalid :method\(s\)/
+    end
+
+    it "with invalid :class prints no error" do
+      capture_stderr { complete(:method=>'ok', :class=>/wtf/) {} }.should == ''
     end
 
     it "places missions last when declared last" do
