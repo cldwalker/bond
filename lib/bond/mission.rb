@@ -78,7 +78,7 @@ module Bond
       message = $!.is_a?(NoMethodError) && !Rc.respond_to?("#{search}_search") ?
         "Completion search '#{search}' doesn't exist." :
         "Failed during completion search with '#{$!.message}'."
-      raise FailedMissionError, [message, spy_message]
+      raise FailedMissionError, [message, match_message]
     end
 
     def call_action(input)
@@ -87,11 +87,11 @@ module Bond
       message = $!.is_a?(NoMethodError) && !Rc.respond_to?(@action) ?
         "Completion action '#{@action}' doesn't exist." :
         "Failed during completion action with '#{$!.message}'."
-      raise FailedMissionError, [message, spy_message]
+      raise FailedMissionError, [message, match_message]
     end
 
-    def spy_message
-      "Matches completion rule with condition #{condition.inspect}."
+    def match_message
+      "Matches completion with condition #{condition.inspect}."
     end
 
     def condition

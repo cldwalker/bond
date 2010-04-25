@@ -30,8 +30,8 @@ class Bond::ObjectMission < Bond::Mission
     obj.methods.map {|e| e.to_s} - OPERATORS
   end
 
-  def spy_message
-    "Matches completion rule for object with an ancestor matching #{@object_condition.inspect}."
+  def match_message
+    "Matches completion for object with ancestor matching #{@object_condition.inspect}."
   end
   #:startdoc:
 end

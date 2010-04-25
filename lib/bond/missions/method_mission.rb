@@ -115,8 +115,8 @@ module Bond
     create_input typed, input_options
   end
 
-  def spy_message
-    "Matches completion rule for method '#{@meth}' in '#{MethodMission.last_class}'."
+  def match_message
+    "Matches completion for method '#{@meth}' in '#{MethodMission.last_class}'."
   end
   end
 end
