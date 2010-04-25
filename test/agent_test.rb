@@ -10,24 +10,15 @@ describe "Agent" do
       tab 'blah'
     end
 
-    it "chooses default mission if internal processing fails" do
-      capture_stdout {
-        complete(:on=>/bling/) {|e| [] }
-        Bond.agent.expects(:find_mission).raises
-        Bond.agent.default_mission.expects(:execute)
-        tab('bling')
-      }.should.not.be.empty
+    it "for internal Bond error completes error" do
+      complete(:on=>/bling/) {|e| [] }
+      Bond.agent.expects(:find_mission).raises('wtf')
+      errors = tab('bling')
+      errors[0].should =~ /Bond Error: Failed internally.*'wtf'/
+      errors[1].should =~ /Please/
     end
 
-    it "prints error and stacktrace if completion action raises error and debug" do
-      complete(:on=>/blah/) { raise 'blah' }
-      errors = tab('blah')
-      errors.size.should == 3
-      errors[0].should =~ /Bond Error:.*action.*'blah'/
-      errors[2].should =~ /Debug Info/
-    end
-
-    it "prints error if completion action raises error" do
+    it "for completion action raising error completes error" do
       Bond.config[:debug] = false
       complete(:on=>/blah/) { raise 'blah' }
       errors = tab('blah')
@@ -35,12 +26,37 @@ describe "Agent" do
       Bond.config[:debug] = true
     end
 
-    it "prints error if completion search raises error" do
+    it "for completion action raising error with debug completes error and stacktrace" do
+      complete(:on=>/blah/) { raise 'blah' }
+      errors = tab('blah')
+      errors.size.should == 3
+      errors[0].should =~ /Bond Error: Failed.*action.*'blah'/
+      errors[2].should =~ /Debug Info/
+    end
+
+    it "for completion action raising SyntaxError in eval completes error" do
+      complete(:on=>/blah/) { eval '{[}'}
+      errors = tab('blah')
+      errors[0].should =~ /Bond Error: Failed.*action.*(eval)/
+    end
+
+    it "for completion action that doesn't exist completes error" do
+      complete(:on=>/blah/, :action=>:huh)
+      errors = tab('blah')
+      errors[0].should =~ /Bond Error:.*action 'huh' doesn't exist/
+    end
+
+    it "for completion search raising error completes error" do
       Rc.module_eval "def blah_search(*args); raise 'blah'; end"
       complete(:on=>/blah/, :search=>:blah) { [1] }
       errors = tab('blah')
-      errors.size.should == 3
-      errors[0].should =~ /Bond Error:.*search.*'blah'/
+      errors[0].should =~ /Bond Error: Failed.*search.*'blah'/
+    end
+
+    it "for completion search that doesn't exist completes error" do
+      complete(:on=>/blah/, :search=>:huh) { [] }
+      errors = tab('blah')
+      errors[0].should =~ /Bond Error:.*search 'huh' doesn't exist/
     end
   end
 

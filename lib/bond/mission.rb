@@ -76,13 +76,19 @@ module Bond
     def call_search(search, input, list)
       Rc.send("#{search}_search", input || '', list)
     rescue
-      raise FailedExecutionError, "Failed during completion search with '#{$!.message}'."
+      message = $!.is_a?(NoMethodError) && !Rc.respond_to?("#{search}_search") ?
+        "Completion search '#{search}' doesn't exist." :
+        "Failed during completion search with '#{$!.message}'."
+      raise FailedExecutionError, message
     end
 
     def call_action(input)
       @action.respond_to?(:call) ? @action.call(input) : Rc.send(@action, input)
-    rescue
-      raise FailedExecutionError, "Failed during completion action with '#{$!.message}'."
+    rescue StandardError, SyntaxError
+      message = $!.is_a?(NoMethodError) && !Rc.respond_to?(@action) ?
+        "Completion action '#{@action}' doesn't exist." :
+        "Failed during completion action with '#{$!.message}'."
+      raise FailedExecutionError, message
     end
 
     def spy_message

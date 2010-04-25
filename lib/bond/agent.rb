@@ -58,11 +58,8 @@ module Bond
     rescue FailedExecutionError
       completion_error($!.message, "TODO")
     rescue
-      if Bond.config[:debug]
-        p $!
-        p $!.backtrace.slice(0,5)
-      end
-      default_mission.execute(input)
+      completion_error "Failed internally with '#{$!.message}'.",
+        "Please report this issue with debug on: Bond.config[:debug] = true."
     end
 
     def completion_error(desc, message)
