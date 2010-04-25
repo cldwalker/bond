@@ -56,13 +56,19 @@ module Bond
       mission_input = $1 if mission_input !~ /#{Regexp.escape(input)}$/ && mission_input =~ /^(.*#{Regexp.escape(input)})/
       (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(input)
     rescue FailedExecutionError
-      $stderr.puts "", $!.message
+      completion_error($!.message, "TODO")
     rescue
       if Bond.config[:debug]
         p $!
         p $!.backtrace.slice(0,5)
       end
       default_mission.execute(input)
+    end
+
+    def completion_error(desc, message)
+      arr = ["Bond Error: #{desc}", message]
+      arr << "Debug Info: #{$!.backtrace.inspect}" if Bond.config[:debug]
+      arr
     end
 
     def spy(input)

@@ -78,7 +78,7 @@ describe "completions for" do
     end
 
     it "#instance_methods" do
-      tab("Bond::Agent.instance_method :co").should == [':complete']
+      tab("Bond::Agent.instance_method :ca").should == [':call']
     end
 
     it "#>" do

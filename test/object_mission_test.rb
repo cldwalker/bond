@@ -28,6 +28,11 @@ describe "ObjectMission" do
       matches.all? {|e| !e.include?('{')}.should == true
     end
 
+    it "completes with additional text after completion point" do
+      complete(:object=>"Object")
+      tab(':man.f blah', ':man.f').include?(':man.freeze').should == true
+    end
+
     it "doesn't evaluate anything before the completion object" do
       complete(:object=>'Object')
       tab('raise :man.i').size.should > 0

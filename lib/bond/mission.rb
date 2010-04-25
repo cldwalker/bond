@@ -71,18 +71,18 @@ module Bond
         completions = completions.map {|e| @completion_prefix + e }
       end
       completions
-    rescue
-      error_message = "Mission action failed to execute properly. Check your mission action with pattern #{@on.inspect}.\n" +
-        "Failed with error: #{$!.message}"
-      raise FailedExecutionError, error_message
     end
 
     def call_search(search, input, list)
       Rc.send("#{search}_search", input || '', list)
+    rescue
+      raise FailedExecutionError, "Failed during completion search with '#{$!.message}'."
     end
 
     def call_action(input)
       @action.respond_to?(:call) ? @action.call(input) : Rc.send(@action, input)
+    rescue
+      raise FailedExecutionError, "Failed during completion action with '#{$!.message}'."
     end
 
     def spy_message

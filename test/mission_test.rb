@@ -30,11 +30,6 @@ describe "Mission" do
       tab('blah ').should == %w{one two three}
     end
 
-    it "with invalid action prints error" do
-      complete(:on=>/bling/) {|e| raise "whoops" }
-      capture_stderr { tab('bling') }.should =~ /bling.*whoops/m
-    end
-
     it "always passes string to action block" do
       complete(:on=>/man/) {|e| e.should.be.is_a(String); [] }
       tab('man ')
