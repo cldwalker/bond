@@ -2,7 +2,7 @@
 module Bond
   class MethodMission < Bond::Mission
   class<<self
-    attr_accessor :actions, :last_action, :class_actions
+    attr_accessor :actions, :last_action, :class_actions, :last_class
 
     def create(options)
       if options[:action].is_a?(String)
@@ -50,7 +50,8 @@ module Bond
     def find_action(obj, meth)
       last_action = find_action_with(obj, meth, :<=, @class_actions) if obj.is_a?(Module)
       last_action = find_action_with(obj, meth, :is_a?, @actions) unless last_action
-      @last_action = last_action
+      @last_class = last_action[0] if last_action.is_a?(Array)
+      @last_action = last_action ? last_action[1] : last_action
     end
 
     def find_action_with(obj, meth, find_meth, actions)
@@ -93,7 +94,7 @@ module Bond
   end
 
   def default_action
-    MethodMission.last_action[1]
+    MethodMission.last_action
   end
 
   def matched_method
@@ -115,7 +116,7 @@ module Bond
   end
 
   def spy_message
-    "Matches completion rule for method '#{@meth}' in '#{MethodMission.last_action[0]}'."
+    "Matches completion rule for method '#{@meth}' in '#{MethodMission.last_class}'."
   end
   end
 end
