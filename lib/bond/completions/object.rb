@@ -18,5 +18,5 @@ complete(:method=>"Object#send") {|e|
   end
 }
 def send_methods(obj)
-  obj.methods + obj.private_methods(false) - Mission::OPERATORS
+  (obj.methods + obj.private_methods(false)).map {|e| e.to_s } - Mission::OPERATORS
 end
