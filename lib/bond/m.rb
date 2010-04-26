@@ -29,8 +29,7 @@ module Bond
 
     # See Bond.config
     def config
-      @config ||= {:readline_plugin=>Bond::Readline, :debug=>false, :default_mission=>:default,
-        :default_search=>:underscore}
+      @config ||= {:readline_plugin=>Bond::Readline, :debug=>false, :default_search=>:underscore}
     end
 
     # Resets M by deleting all missions.

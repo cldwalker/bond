@@ -55,7 +55,7 @@ describe "completions for" do
     end
 
     it "#send and additional arguments" do
-      tab('Bond.send :const_get, Ac').should == ['Actions']
+      tab('Bond.send :const_get, Ag').should == ['Agent']
     end
 
     it "#instance_variable_get" do

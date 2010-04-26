@@ -25,7 +25,7 @@ describe "Mission" do
     end
 
     it "with symbol action completes" do
-      eval %[module ::Bond::Actions; def blah(input); %w{one two three}; end; end]
+      Bond::Rc.module_eval %[def blah(input); %w{one two three}; end]
       complete(:on=>/blah/, :action=>:blah)
       tab('blah ').should == %w{one two three}
     end

@@ -5,7 +5,6 @@ require 'bond/rawline'
 require 'bond/agent'
 require 'bond/search'
 require 'bond/input'
-require 'bond/actions'
 require 'bond/rc'
 require 'bond/mission'
 require 'bond/missions/default_mission'
@@ -47,7 +46,7 @@ module Bond
   #             traditional searching i.e. looking at the beginning of a string for possible matches. If false, search is turned off and
   #             assumed to be done in the action block. Possible symbols are :anywhere, :ignore_case and :underscore. See Bond::Search for
   #             more info about them.
-  # [*:action*] Symbol referencing an instance method in Actions to be the action block.
+  # [*:action*] Symbol referencing an instance method in Rc to be the action block.
   # [*:place*] Given a symbol or number, controls where this completion is placed in relation to existing ones. If a number, the
   #            completion is placed at that number. If the symbol :last, the completion is placed at the end regardless of completions
   #            defined after it. Use this symbol as a way of anchoring completions you want to remain at the end. Multiple declarations
