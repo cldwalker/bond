@@ -1,4 +1,5 @@
 module Bond
+  # Takes demands from the real world (user) and translates them to missions to be given to an Agent.
   module M
     extend self
 

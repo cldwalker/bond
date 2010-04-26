@@ -1,10 +1,9 @@
 module Bond
-  # This is the default readline plugin for Bond. A valid plugin must define methods setup() and line_buffer(). setup()
-  # should load the readline-like library and set the completion_proc. line_buffer() should give access to the full line of what
-  # the user has typed.
+  # This is the default readline plugin for Bond. A valid plugin must define methods setup and line_buffer as described below.
   module Readline
     DefaultBreakCharacters = " \t\n\"\\'`><=;|&{("
 
+    # Loads the readline-like library and sets the completion_proc to itself.
     def setup
       require 'readline'
       begin
@@ -39,6 +38,7 @@ module Bond
       ::Readline.completion_proc = self
     end
 
+    # Returns full line of what the user has typed.
     def line_buffer
       ::Readline.line_buffer
     end

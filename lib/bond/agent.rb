@@ -1,5 +1,6 @@
 module Bond
-  # Handles finding and executing the first mission that matches the input line. Once found, it calls the mission's action.
+  # Every time a completion is attempted, the Agent searches its missions for the first one that matches the user input.
+  # Using either the found mission or Agent.default_mission, the Agent executes the mission's action.
   class Agent
     # The array of missions that will be searched when a completion occurs.
     attr_reader :missions
@@ -14,6 +15,7 @@ module Bond
       @missions = []
     end
 
+    # Creates a mission.
     def complete(options={}, &block)
       if (mission = create_mission(options, &block)).is_a?(Mission)
         mission.place.is_a?(Integer) ? @missions.insert(mission.place - 1, mission).compact! : @missions << mission
@@ -30,6 +32,7 @@ module Bond
       "Unexpected error while creating completion with options #{options.inspect}:\n#{$!}"
     end
 
+    # Creates a mission and replaces the mission it matches if possible.
     def recomplete(options={}, &block)
       if (mission = create_mission(options, &block)).is_a?(Mission)
         if (existing_mission = @missions.find {|e| e.name == mission.name })
@@ -62,12 +65,13 @@ module Bond
         "Please report this issue with debug on: Bond.config[:debug] = true."
     end
 
-    def completion_error(desc, message)
+    def completion_error(desc, message) #:nodoc:
       arr = ["Bond Error: #{desc}", message]
       arr << "Stack Trace: #{$!.backtrace.inspect}" if Bond.config[:debug]
       arr
     end
 
+    # Given a hypothetical user input, reports back what mission it would have found and executed.
     def spy(input)
       if (mission = find_mission(input))
         puts mission.match_message, "Possible completions: #{mission.execute.inspect}",
@@ -81,7 +85,7 @@ module Bond
       @missions.find {|mission| mission.matches?(input) }
     end
 
-    # Default mission used by agent.
+    # Default mission used by agent. An instance of DefaultMission.
     def default_mission
       @default_mission ||= DefaultMission.new(:action=>@default_mission_action)
     end
