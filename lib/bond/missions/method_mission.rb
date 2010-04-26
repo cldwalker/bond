@@ -1,5 +1,13 @@
 module Bond
-  # Created with :method in Bond.complete. Is able to complete first argument for a method.
+  # A mission which completes arguments for any module/class method. Provides the following
+  # options to Bond.complete:
+  # ====Options:
+  # [*:method*] String representing an instance (Class#method) or class method (Class.method). Creates a
+  #             MethodMission or OperatorMethodMission object and uses it to complete a method's arguments.
+  #             Gets its class from :class or within string delimited by '#' or '.'. If no class is given,
+  #             'Kernel#' is assumed.
+  # [*:methods*] Array of instance/class methods in the format of :method.
+  # [*:class*] String representing module/class of :method(s). Must end in '#' or '.' to indicate instance/class method.
   class MethodMission < Bond::Mission
   class<<self
     attr_accessor :actions, :last_action, :class_actions, :last_class
