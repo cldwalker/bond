@@ -1,5 +1,5 @@
-# Created with :method in Bond.complete. Is able to complete first argument for a method.
 module Bond
+  # Created with :method in Bond.complete. Is able to complete first argument for a method.
   class MethodMission < Bond::Mission
   class<<self
     attr_accessor :actions, :last_action, :class_actions, :last_class

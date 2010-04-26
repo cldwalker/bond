@@ -2,22 +2,28 @@ module Bond
   module M
     extend self
 
+    def complete(options={}, &block)
+      if (result = agent.complete(options, &block)).is_a?(String)
+        $stderr.puts result
+        false
+      else
+        true
+      end
+    end
+
+    def recomplete(options={}, &block)
+      if (result = agent.recomplete(options, &block)).is_a?(String)
+        $stderr.puts result
+        false
+      else
+        true
+      end
+    end
+
     def agent #:nodoc:
       @agent ||= Agent.new(config)
     end
 
-    # Global config with the following keys
-    # ==== Keys:
-    # [*:readline_plugin*] Specifies a Bond plugin to interface with a Readline-like library. Available plugins are Bond::Readline
-    #                      and Bond::Rawline. Defaults to Bond::Readline. Note that a plugin doesn't imply use with irb. Irb is
-    #                      joined to the hip with Readline.
-    # [*:default_mission*] A proc to be used as the default completion proc when no completions match or one fails. When in irb
-    #                      with completion enabled, uses irb completion. Otherwise defaults to a proc with an empty completion list.
-    # [*:default_search*] A symbol or proc to be used as the default search in completions. See Bond.complete's :search option for valid symbols.
-    # [*:eval_binding*] Specifies a binding to be used when evaluating objects in ObjectMission and MethodMission. When in irb,
-    #                   defaults to irb's main binding. Otherwise defaults to TOPLEVEL_BINDING.
-    # [*:debug*]  Boolean to print unexpected errors when autocompletion fails. Default is false.
-    #
     def config
       @config ||= {:readline_plugin=>Bond::Readline, :debug=>false, :default_mission=>:default,
         :default_search=>:underscore}
@@ -30,12 +36,6 @@ module Bond
       @agent = nil
     end
 
-    # Reports what completion mission and possible completions would happen for a given input. Helpful for debugging
-    # your completion missions.
-    # ==== Example:
-    #   >> Bond.spy "shoot oct"
-    #   Matches completion mission for method matching "shoot".
-    #   Possible completions: ["octopussy"]
     def spy(input)
       agent.spy(input)
     end
@@ -50,10 +50,6 @@ module Bond
       end
     end
 
-    # Loads bond/completion, optional ~/.bondrc, plugins in lib/bond/completions/ and
-    # ~/.bond/completions/ and optional block.
-    # See Rc for syntax to use in ~/.bondrc and plugins.
-    # See M.config for valid options.
     def start(options={}, &block)
       debrief options
       load_completions

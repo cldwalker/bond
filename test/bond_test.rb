@@ -24,7 +24,7 @@ describe "Bond" do
       Bond.start :default_search=>:underscore, :readline_plugin=>valid_readline_plugin
       complete(:on=>/blah/) { %w{all_quiet on_the western_front}}
       tab('blah a_q').should == ["all_quiet"]
-      Bond.reset
+      M.reset
     end
     after_all { M.debrief :readline_plugin=>valid_readline_plugin }
   end
@@ -32,7 +32,7 @@ describe "Bond" do
   it "reset clears existing missions" do
     complete(:on=>/blah/) {[]}
     Bond.agent.missions.size.should.not == 0
-    Bond.reset
+    M.reset
     Bond.agent.missions.size.should == 0
   end
 end

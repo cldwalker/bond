@@ -181,7 +181,7 @@ describe "Agent" do
 
   describe "spy" do
     before_all {
-      Bond.reset; complete(:on=>/end$/) { [] };
+      M.reset; complete(:on=>/end$/) { [] };
       complete(:all_methods=>true); complete(:method=>'the') { %w{spy who loved me} }
       complete(:object=>"Symbol")
     }
