@@ -1,11 +1,11 @@
 == Description
 
-Bond is on a mission to make custom autocompletion easy in irb and other console/readline-like
-environments. Bond supports custom argument completion of methods, method completion of objects and
-anything else your wicked regex's can do. Bond comes armed with a Readline C extension to get the
-full line of input as opposed to irb's last-word based completion. Bond makes custom searching of
-possible completions easy which allows for nontraditional ways of autocompleting i.e. instant
-aliasing of multi worded methods.
+Bond is on a mission to improve irb's autocompletion. Aside from doing everything irb's can do and fixing its quirks,
+Bond can autocomplete argument(s) to methods, uniquely completing per module and per method. Bond brings irb's completion
+closer to bash/zsh as it provides a configuration system and a DSL for creating custom completions and completion rules. With
+this configuration system, users can customize their irb autocompletion experience and share it with others. Bond is able
+to offer more than irb's completion since it uses a Readline C extension to get the full line of input when completing
+as opposed to irb's last-word approach.
 
 == Install
 
@@ -15,14 +15,13 @@ Install the gem with:
 
 == Usage
 
-To start of with, you may want to replace irb's completion (irb/completion) with Bond's enhanced version
-in your irbrc :
+To start off, replace irb's completion (irb/completion) with Bond's enhanced version in your irbrc :
 
   require 'bond'
-  require 'bond/completion'
+  Bond.start
 
-This should give you more consistent method completion on any objects, file completion of strings
-and argument completion of Kernel#require, Kernel#system and the backtick (`).
+This gives you more consistent method completion on any objects, file completion of strings
+and argument completion of some 60+ methods including Kernel#system, Kernel#require and some Rails methods.
 
 === Argument Completion for Methods
 
@@ -139,8 +138,8 @@ and argument completion of Kernel#require, Kernel#system and the backtick (`).
     >> Url.tag_add_and_save
 
     # But this search goes the extra mile with textmate-like searching.
-    # Type just the first letter of each underscored word separated by '-'
-    >> Url.first.t-a-a-s[TAB]
+    # Type just the first letter of each underscored word separated by '_'
+    >> Url.first.t_a_a_s[TAB]
     >> Url.first.tag_add_and_save
 
     # With this search, most multi-worded methods are just a few keystrokes away.
@@ -150,7 +149,7 @@ and argument completion of Kernel#require, Kernel#system and the backtick (`).
     Url.first.partial_updates?                 Url.first.pretty_print                     Url.first.primary_key_prefix_type          
     Url.first.pluralize_table_names            Url.first.pretty_print_cycle               Url.first.private_methods                  
     Url.first.present?                         Url.first.pretty_print_inspect             Url.first.protected_methods
-    >> Url.first.p-p[TAB]
+    >> Url.first.p_p[TAB]
     >> Url.first.pretty_print
     >> Url.first.pretty_print_c[TAB]
     >> Url.first.pretty_print_cycle
@@ -194,4 +193,7 @@ this Readline enhancement to ruby.
 * http://tagaholic.me/2009/07/23/mini-irb-and-mini-script-console.html
 
 == Todo
-* Allow usage of prefined Bond::Actions in action procs.
+* Load completions that come with a gem easily.
+* Make completion actions more synonymous with argument types.
+* Cache expensive completion actions.
+* Ensure completions work when there is additional, unrelated text to the right of a completion.
