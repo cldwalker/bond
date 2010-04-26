@@ -83,8 +83,8 @@ module Bond
     def call_action(input)
       @action.respond_to?(:call) ? @action.call(input) : Rc.send(@action, input)
     rescue StandardError, SyntaxError
-      message = $!.is_a?(NoMethodError) && !Rc.respond_to?(@action) ?
-        "Completion action '#{@action}' doesn't exist." :
+      message = $!.is_a?(NoMethodError) && !@action.respond_to?(:call) &&
+        !Rc.respond_to?(@action) ? "Completion action '#{@action}' doesn't exist." :
         "Failed during completion action with '#{$!.message}'."
       raise FailedMissionError, [message, match_message]
     end

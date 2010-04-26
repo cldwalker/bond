@@ -42,6 +42,11 @@ describe "Agent" do
       errors[2].should =~ /Stack Trace:/
     end
 
+    it "for completion action raising NoMethodError completes error" do
+      complete(:on=>/blah/) { raise NoMethodError }
+      tab('blah').should complete_error(/Bond Error: Failed.*action.*'NoMethodError'/)
+    end
+
     it "for completion action raising SyntaxError in eval completes error" do
       complete(:on=>/blah/) { eval '{[}'}
       tab('blah').should complete_error(/Bond Error: Failed.*action.*(eval)/)
@@ -138,7 +143,15 @@ describe "Agent" do
 
     it "recompletes a method mission" do
       complete(:all_methods=>true)
+      MethodMission.reset
       complete(:method=>'blah') { %w{1 2 3}}
+      Bond.recomplete(:method=>'blah') { %w{4 5 6}}
+      tab('blah ').should == %w{4 5 6}
+    end
+
+    it "completes a method mission if mission not found" do
+      complete(:all_methods=>true)
+      MethodMission.reset
       Bond.recomplete(:method=>'blah') { %w{4 5 6}}
       tab('blah ').should == %w{4 5 6}
     end
