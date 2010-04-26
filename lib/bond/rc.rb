@@ -9,7 +9,7 @@ module Bond
     # See Bond.recomplete
     def recomplete(*args, &block); Bond.recomplete(*args, &block); end
 
-    # Action method which returns array of files that match current input.
+    # Action method with search which returns array of files that match current input.
     def files(input)
       (::Readline::FILENAME_COMPLETION_PROC.call(input) || []).map {|f|
         f =~ /^~/ ?  File.expand_path(f) : f

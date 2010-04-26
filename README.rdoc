@@ -13,108 +13,21 @@ Install the gem with:
 
     sudo gem install bond
 
-== Usage
+== Setup
 
 To start off, replace irb's completion (irb/completion) with Bond's enhanced version in your irbrc :
 
   require 'bond'
   Bond.start
 
-This gives you more consistent method completion on any objects, file completion of strings
+This gives you more consistent method completion on any object, file completion of strings
 and argument completion of some 60+ methods including Kernel#system, Kernel#require and some Rails methods.
 
-=== Argument Completion for Methods
+== Method Argument Completion
 
-    bash> irb -rirb/completion -rubygems
-    # This loads Bond but it doesn't take over completion yet.
-    >> require 'bond'
+== Irb's Inconsistencies
 
-    # For Bond to handle completions, we must explicitly define a completion mission.
-    # Order matters since the order they're declared in is the order they're searched.
-    >> Bond.complete(:method=>'method1') {|input|  %w{some args to autocomplete} }
-    => true
-    >> Bond.complete(:method=>'method2') {|input|  %w{more args to autocomplete} }
-    => true
-
-    # Works as above
-    >> method1 [TAB]
-    args   autocomplete   some   to
-    >> method1 'a[TAB]
-    args   autocomplete
-    >> method1 'au[TAB]
-    >> method1 'autocomplete'
-
-    # Anything not matched by the above completion missions defaults to irb completion
-    >> $std[TAB]
-    $stderr  $stdin   $stdout
-    
-=== File Argument Completion for Methods
-
-    # Pass :search=>false to turn off Bond searching since FILENAME_COMPLETION_PROC does it for us.
-    >> Bond.complete(:method=>"File.read", :search=>false) {|input| 
-        Readline::FILENAME_COMPLETION_PROC.call(input) || [] }
-    => true
-
-    # Test drive it
-    >> File.read '[TAB]
-    .git/   LICENSE.txt   README.rdoc   Rakefile      VERSION.yml   bond.gemspec  ext/    lib/     test/
-    >> File.read 'l[TAB]
-    >> File.read 'lib/
-    >> File.read 'lib/bond.[TAB]
-    >> File.read 'lib/bond.rb'
-
-    # Since File.read doesn't understand ~, let's improve the above completion proc
-    >> file_completion = proc {|input| (Readline::FILENAME_COMPLETION_PROC.call(input) ||
-        []).map {|f| f =~ /^~/ ?  File.expand_path(f) : f } }
-    => #< Proc:0x0100f1d0@(irb):20>
-    >> Bond.reset; Bond.complete :method=>"File.read", :search=>false, &file_completion
-    => true
-
-    # Tilda test driving
-    >> File.read "~/[TAB]
-    >> File.read "/Users/bozo/
-    >> File.read "/Users/bozo/.alias.[TAB]
-    >> File.read "/Users/bozo/.alias.yml"
-    
-    # Let's add this to *all* our File methods:
-    >> Bond.reset; Bond.complete :method=>/File\.(#{Regexp.union(*File.methods(false))})/,
-        :search=>false, &file_completion
-    => true
-
-=== Method Autocompletion on Specified Objects
-    # Let's explore Bond::Agent's functionality
-     >> ba = Bond.agent; nil
-     => nil
-     # Irb let's you autocomplete everything that an object responds to for better or worse.
-     >> ba.[TAB]
-     ba.__id__                      ba.eql?                        ba.instance_eval               ba.method                      ba.send                        ba.to_yaml
-     ba.__send__                    ba.equal?                      ba.instance_of?                ba.methods                     ba.setup                       ba.to_yaml_properties
-     ba.call                        ba.extend                      ba.instance_variable_defined?  ba.missions                    ba.singleton_methods           ba.to_yaml_style
-     ba.class                       ba.find_mission                ba.instance_variable_get       ba.nil?                        ba.taguri                      ba.type
-     ba.clone                       ba.freeze                      ba.instance_variable_set       ba.object_id                   ba.taguri=                     ba.untaint
-     ba.complete                    ba.frozen?                     ba.instance_variables          ba.private_methods             ba.taint                       
-     ba.default_mission             ba.hash                        ba.is_a?                       ba.protected_methods           ba.tainted?                    
-     ba.display                     ba.id                          ba.kind_of?                    ba.public_methods              ba.to_a                        
-     ba.dup                         ba.inspect                     ba.line_buffer                 ba.respond_to?                 ba.to_s                        
-
-
-     # Since it's hard to see Bond::Agent's functionality amidst all the Object and Kernel methods, 
-     # let's autocomplete just it's instance methods.
-     >> Bond.complete(:object=>Bond::Agent) {|input| input.object.class.instance_methods(false) }
-     => true
-
-     # A less cluttered display of Bond::Agent's functionality.
-     >> ba.[TAB]
-     ba.call             ba.complete         ba.default_mission  ba.find_mission     ba.missions
-
-     # Let's have all Bond::* objects do this.
-     >> Bond.reset; Bond.complete(:object=>/^Bond::/) {|input| input.object.class.instance_methods(false) }
-     => true
-
-    # Let's revert method autocompletion back to irb's defaults for Bond::* objects.
-    >> Bond.reset; Bond.complete :object=>/^Bond::/
-    
-=== Underscore Search
+== Underscore Search
 
     # Firing up a rails console
     bash> script/console
@@ -153,33 +66,6 @@ and argument completion of some 60+ methods including Kernel#system, Kernel#requ
     >> Url.first.pretty_print
     >> Url.first.pretty_print_c[TAB]
     >> Url.first.pretty_print_cycle
-
-
-=== Custom AutoCompletion
-
-    bash> irb -rirb/completion -rubygems -rbond
-    # Let's reuse the file completion from above
-    >> file_completion = proc {|input| (Readline::FILENAME_COMPLETION_PROC.call(input) ||
-        []).map {|f| f =~ /^~/ ?  File.expand_path(f) : f } }
-    => #< Proc:0x0100f1d0@(irb):1>
-
-    # But this time let's trigger it whenever the last word in the line is quoted
-    # fyi this is default behavior if you use irb without requiring irb/completion
-    >> Bond.complete(:on=>/\S+\s*["']([^'".]*)$/, :search=>false) {|input| file_completion.call(input.matched[1]) }
-    => true
-
-    # Now it doesn't matter what methods come before. If the last word is quoted we get file completion:
-    >> Dir.entries '[TAB]
-    .git/   LICENSE.txt   README.rdoc   Rakefile      VERSION.yml   bond.gemspec  ext/    lib/     test/
-    >> Dir.entries 'l[TAB]
-    >> Dir.entries 'lib/
-    >> `ls 't[TAB]
-    >> `ls 'test/
-    >> `ls 'test/'`
-
-    # String method completion still works
-    >> '007'.[TAB]
-    Display all 137 possibilities? (y or n)
 
 == Credits
 Thanks to Csaba Hank for {providing the C extension}[http://www.creo.hu/~csaba/ruby/irb-enhancements/doc/files/README.html]
