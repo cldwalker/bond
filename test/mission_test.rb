@@ -36,12 +36,6 @@ describe "Mission" do
     end
   end
 
-  it "default_mission set to a valid mission if irb doesn't exist" do
-    Object.expects(:const_defined?).with(:IRB).returns(false)
-    mission = DefaultMission.new
-    mission.action.should == :default
-  end
-
   it "sets binding to toplevel binding when not in irb" do
     Mission.eval_binding = nil
     mock_irb

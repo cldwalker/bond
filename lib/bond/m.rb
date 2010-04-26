@@ -2,6 +2,7 @@ module Bond
   module M
     extend self
 
+    # See Bond.complete
     def complete(options={}, &block)
       if (result = agent.complete(options, &block)).is_a?(String)
         $stderr.puts result
@@ -11,6 +12,7 @@ module Bond
       end
     end
 
+    # See Bond.recomplete
     def recomplete(options={}, &block)
       if (result = agent.recomplete(options, &block)).is_a?(String)
         $stderr.puts result
@@ -20,27 +22,29 @@ module Bond
       end
     end
 
-    def agent #:nodoc:
+    # See Bond.agent
+    def agent
       @agent ||= Agent.new(config)
     end
 
+    # See Bond.config
     def config
       @config ||= {:readline_plugin=>Bond::Readline, :debug=>false, :default_mission=>:default,
         :default_search=>:underscore}
     end
 
-    # Resets Bond so that next time Bond.complete is called, a new set of completion missions are created. This does not
-    # change current completion behavior.
+    # Resets M by deleting all missions.
     def reset
       MethodMission.reset
       @agent = nil
     end
 
+    # See Bond.spy
     def spy(input)
       agent.spy(input)
     end
 
-    # Validates and sets values in M.config
+    # Validates and sets values in M.config.
     def debrief(options={})
       config.merge! options
       plugin_methods = %w{setup line_buffer}
@@ -50,6 +54,7 @@ module Bond
       end
     end
 
+    # See Bond.start
     def start(options={}, &block)
       debrief options
       load_completions
@@ -57,7 +62,7 @@ module Bond
       true
     end
 
-    def load_completions
+    def load_completions #:nodoc:
       load_file File.join(File.dirname(__FILE__), 'completion.rb')
       load_file(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc'))
       [File.dirname(__FILE__), File.join(home, '.bond')].each do |base_dir|
@@ -65,11 +70,11 @@ module Bond
       end
     end
 
-    # Loads file into Rc namespace
+    # Loads a completion file in Rc namespace.
     def load_file(file)
       Rc.module_eval File.read(file)
     rescue Exception => e
-      puts "Error: Plugin '#{file}' failed to load:", e.message
+      puts "Error: File '#{file}' failed to load:", e.message
     end
 
     def load_dir(base_dir) #:nodoc:
