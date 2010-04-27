@@ -2,6 +2,15 @@ module Bond
   # Contains search methods used to filter possible completions given what the user has typed for that completion.
   # For a search method to be used by Bond.complete it must end in '_search' and take two arguments: the Input
   # string and an array of possible completions.
+  #
+  # ==== Creating a search method
+  # Say you want to create a custom search which ignores completions containing '-'.
+  # In a completion file under Rc namespace, define this method:
+  #   def ignore_hyphen_search(input, list)
+  #     default_search(input, list.select {|e| e !~ /-/ })
+  #   end
+  #
+  # Now you can pass this custom search to any complete() as :search=>:ignore_hyphen
   module Search
     # Searches completions from the beginning of the string.
     def default_search(input, list)
