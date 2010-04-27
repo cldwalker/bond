@@ -25,11 +25,8 @@ module Bond
   # ====Options:
   # [*:on*] Regular expression which matches the full line of input to create a Mission object.
   # [*:method*, *:methods*, *:class*] See MethodMission.
-  # [*:object*] String representing a module/class which is an ancestor of an object whose methods are
-  #             being completed. ObjectMission object. Access to the current object is passed to the
-  #             completion proc as the input's attribute :object. If no action is given, this completion
-  #             type defaults to all methods the object responds to.
   # [*:anywhere*, *:prefix*] See AnywhereMission.
+  # [*:object*] See ObjectMission.
   # [*:search*] A symbol or false which determines how completions are searched. Defaults to :default_search
   #             value in Bond.config. If false, search is turned off and assumed to be done in the action.
   #             Possible symbols are :anywhere, :ignore_case, :underscore, :default. See Search for more.
@@ -44,7 +41,6 @@ module Bond
   #  Bond.complete(:method=>'shoot') {|input| %w{to kill} }
   #  Bond.complete(:on=>/^((([a-z][^:.\(]*)+):)+/, :search=>false) {|input| Object.constants.grep(/#{input.matched[1]}/) }
   #  Bond.complete(:object=>ActiveRecord::Base, :search=>:underscore, :place=>:last)
-  #  Bond.complete(:object=>ActiveRecord::Base) {|input| input.object.class.instance_methods(false) }
   #  Bond.complete(:method=>'you', :search=>proc {|input, list| list.grep(/#{input}/i)} ) {|input| %w{Only Live Twice} }
   #  Bond.complete(:method=>'system', :action=>:shell_commands)
   def complete(*args, &block); M.complete(*args, &block); end

@@ -1,6 +1,15 @@
-# Created with :object in Bond.complete. Is able to complete methods for objects.
-# Unlike other missions, this one needs to both match the mission condition and have
-# the current object being completed have an ancestor specified by :object.
+# A mission which completes an object's methods. For this mission to match,
+# the condition must match and the current object must have an ancestor that matches :object.
+# Note: To access to the current object being completed on within an action, use the input's
+# object attribute.
+#
+# ==== Bond.complete Options:
+# [*:object*] String representing a module/class of object whose methods are completed.
+# [*:action*] If an action is not specified, the default action is to complete an object's
+#             non-operator methods.
+#
+# ===== Example:
+#   Bond.complete(:object=>ActiveRecord::Base) {|input| input.object.class.instance_methods(false) }
 class Bond::ObjectMission < Bond::Mission
   #:stopdoc:
   OBJECTS = %w<\S+> + Bond::Mission::OBJECTS
