@@ -25,13 +25,19 @@ describe "Mission" do
     end
 
     it "with symbol action completes" do
-      Bond::Rc.module_eval %[def blah(input); %w{one two three}; end]
+      Rc.module_eval %[def blah(input); %w{one two three}; end]
       complete(:on=>/blah/, :action=>:blah)
       tab('blah ').should == %w{one two three}
     end
 
-    it "always passes string to action block" do
-      complete(:on=>/man/) {|e| e.should.be.is_a(String); [] }
+    it "with string action completes" do
+      Rc.module_eval %[def blah(input); %w{one two three}; end]
+      complete(:on=>/blah/, :action=>'blah')
+      tab('blah ').should == %w{one two three}
+    end
+
+    it "always passes Input to action block" do
+      complete(:on=>/man/) {|e| e.should.be.is_a(Input); [] }
       tab('man ')
     end
   end
