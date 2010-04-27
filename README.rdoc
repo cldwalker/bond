@@ -15,12 +15,12 @@ Install the gem with:
 
 == Setup
 
-To start off, replace irb's completion (irb/completion) with Bond's enhanced version in your irbrc :
+To start off, replace irb's completion (require 'irb/completion') with Bond's enhanced version in your irbrc :
 
   require 'bond'
   Bond.start
 
-This gives you more consistent method completion on any object, file completion of strings
+This gives you more consistent method completion on any object, customizable completions
 and argument completion of some 60+ methods including Kernel#system, Kernel#require and some Rails methods.
 
 == Method Argument Completion
