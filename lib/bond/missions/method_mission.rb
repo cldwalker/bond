@@ -1,17 +1,33 @@
 module Bond
-  # A mission which completes arguments for any module/class method. Provides the following
-  # options to Bond.complete:
-  # ====Options:
-  # [*:method*] String representing an instance (Class#method) or class method (Class.method). Creates a
-  #             MethodMission or OperatorMethodMission object and uses it to complete a method's arguments.
-  #             Gets its class from :class or within string delimited by '#' or '.'. If no class is given,
+  # A mission which completes arguments for any module/class method that isn't an operator method.
+  # To create this mission or OperatorMethodMission, :method or :methods must be passed to Bond.complete.
+  #
+  # ==== Bond.complete Options:
+  # [*:method*] String representing an instance (Class#method) or class method (Class.method). Gets
+  #             its class from :class or from substring prefixing '#' or '.'. If no class is given,
   #             'Kernel#' is assumed.
-  # [*:methods*] Array of instance/class methods in the format of :method.
-  # [*:class*] String representing module/class of :method(s). Must end in '#' or '.' to indicate instance/class method.
+  # [*:methods*] Array of instance and/or class methods in the format of :method.
+  # [*:class*] Optional string representing module/class of :method(s). Must end in '#' or '.' to
+  #            indicate instance/class method. Suggested for use with :methods.
+  # [*:action*] If a string, it refers to another :method's action. This is useful in reusing another
+  #             method's action. Otherwise defaults to normal :action behavior.
+  # [*:search*] This option is not supported by a MethodMission/OperatorMethodMission completion.
+  # ==== Examples:
+  #   Bond.complete(:methods=>%w{delete index rindex}, :class=>"Array#") {|e| e.object }
+  #   Bond.complete(:method=>"Hash#index") {|e| e.object.values }
+  #
+  # ==== Notes
+  # Unlike other missions, creating these missions with Bond.complete doesn't add more completion rules
+  # for an Agent to look through. Instead, all :method(s) completions are handled by one MethodMission
+  # object which looks them up with its own hashes. In the same way, all operator methods are
+  # handled by one OperatorMethodMission object.
+  #
+  # Arguments to methods can be symbols, quoted strings and optionally come after '('.
   class MethodMission < Bond::Mission
   class<<self
     attr_accessor :actions, :last_action, :class_actions, :last_class
 
+    # Creates a method action given the same options as Bond.complete
     def create(options)
       if options[:action].is_a?(String)
         klass, klass_meth = split_method(options[:action])
@@ -32,29 +48,33 @@ module Bond
       nil
     end
 
+    # Resets all instance and class method actions.
     def reset
       @actions = {}
       @class_actions = {}
     end
 
-    def action_methods
+    def action_methods #:nodoc:
       (actions.keys + class_actions.keys).uniq
     end
 
+    # Lists all methods that have argument completions.
     def all_methods
       (class_actions.map {|m,h| h.map {|k,v| "#{k}.#{m}" } } +
         actions.map {|m,h| h.map {|k,v| "#{k}##{m}" } }).flatten.sort
     end
 
-    def current_actions(meth)
+    def current_actions(meth) #:nodoc:
       meth.include?('.') ? @class_actions : @actions
     end
 
-    def split_method(meth)
+    def split_method(meth) #:nodoc:
       meth = "Kernel##{meth}" if !meth.to_s[/[.#]/]
       meth.split(/[.#]/,2)
     end
 
+    # Returns the first action by looking up the object's ancestors and finding the first
+    # one that has an action defined for the given method.
     def find_action(obj, meth)
       last_action = find_action_with(obj, meth, :<=, @class_actions) if obj.is_a?(Module)
       last_action = find_action_with(obj, meth, :is_a?, @actions) unless last_action
@@ -62,13 +82,13 @@ module Bond
       @last_action = last_action ? last_action[1] : last_action
     end
 
-    def find_action_with(obj, meth, find_meth, actions)
+    def find_action_with(obj, meth, find_meth, actions) #:nodoc:
       (actions[meth] || {}).select {|k,v| get_class(k) }.
         sort {|a,b| get_class(a[0]) <=> get_class(b[0]) || -1 }.
         find {|k,v| obj.send(find_meth, get_class(k)) }
     end
 
-    def get_class(klass)
+    def get_class(klass) #:nodoc:
       (@klasses ||= {})[klass] ||= any_const_get(klass)
     end
 
@@ -88,6 +108,7 @@ module Bond
   OBJECTS = %w{\S*?} + Mission::OBJECTS
   CONDITION = %q{(OBJECTS)\.?(METHODS)(?:\s+|\()(['":])?(.*)$}
 
+  #:stopdoc:
   def do_match(input)
     (@on = default_on) && super && eval_object(@matched[1] ? @matched[1] : 'self') &&
       MethodMission.find_action(@evaled_object, @meth = matched_method)
@@ -126,5 +147,6 @@ module Bond
   def match_message
     "Matches completion for method '#{@meth}' in '#{MethodMission.last_class}'."
   end
+  #:startdoc:
   end
 end

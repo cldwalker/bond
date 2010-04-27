@@ -4,7 +4,8 @@ module Bond
   # Occurs when a mission or search action fails.
   class FailedMissionError < StandardError; end
 
-  # A set of conditions and actions to take for a completion scenario or mission in Bond's mind.
+  # Represents a completion rule, given a condition (:on) on which to match and an action
+  # (block or :action) with which to generate possible completions.
   class Mission
     class<<self
       # default search used across missions
@@ -36,13 +37,17 @@ module Bond
       #:startdoc:
     end
 
-    attr_reader :action, :place, :matched
     OPERATORS = %w{% & * ** + - / < << <= <=> == === =~ > >= >> [] []= ^ | ~ ! != !~}
     OBJECTS = %w<\([^\)]*\) '[^']*' "[^"]*" \/[^\/]*\/> +
       %w<(?:%q|%r|%Q|%w|%s|%)?\[[^\]]*\] (?:proc|lambda|%q|%r|%Q|%w|%s|%)?\s*\{[^\}]*\}>
 
-    # Options are almost the same as those explained at Bond.complete. The only difference is that the action is passed
-    # as an :action option here.
+    # Generates possible completions and searches them if search is disabled.
+    attr_reader :action
+    # See Bond.complete's :place.
+    attr_reader :place
+    # A MatchData object generated from matching the user input with the condition.
+    attr_reader :matched
+    # Takes same options as Bond.complete.
     def initialize(options)
       raise InvalidMissionError, ":action" unless (options[:action] || respond_to?(:default_action))
       raise InvalidMissionError, ":on" unless (options[:on] && options[:on].is_a?(Regexp)) || respond_to?(:default_on)
@@ -51,7 +56,7 @@ module Bond
       @search = options.has_key?(:search) ? options[:search] : Mission.default_search
     end
 
-    # Returns a boolean indicating if a mission matches the given input.
+    # Returns a boolean indicating if a mission matches the given Input and should be executed for completion.
     def matches?(input)
       @matched = @input = @completion_prefix = @eval_binding = nil
       (match = do_match(input)) && after_match(@line = input)
@@ -71,6 +76,7 @@ module Bond
       completions
     end
 
+    # When search is enabled, searches the possible completions from the action.
     def call_search(search, input, list)
       Rc.send("#{search}_search", input || '', list)
     rescue
@@ -80,6 +86,7 @@ module Bond
       raise FailedMissionError, [message, match_message]
     end
 
+    # Calls the action to generate an array of possible completions.
     def call_action(input)
       @action.respond_to?(:call) ? @action.call(input) : Rc.send(@action, input)
     rescue StandardError, SyntaxError
@@ -89,19 +96,37 @@ module Bond
       raise FailedMissionError, [message, match_message]
     end
 
+    # A message used to explains under what conditions a mission matched the user input.
+    # Useful for spying and debugging.
     def match_message
       "Matches completion with condition #{condition.inspect}."
     end
 
+    # A regexp representing the condition under which a mission matches the input.
     def condition
       self.class.const_defined?(:CONDITION) ? Regexp.new(self.class.const_get(:CONDITION)) : @on
     end
 
+    # The name or generated unique_id for a mission. Mostly for use with Bond.recomplete.
+    def name
+      @name ? @name.to_s : unique_id
+    end
+
+    # Method which must return non-nil for a mission to match.
+    def do_match(input)
+      @matched = input.match(@on)
+    end
+
+    # Stuff a mission needs to do after matching successfully, in preparation for Mission.execute.
+    def after_match(input)
+      create_input(input[/\S+$/])
+    end
+
+    #:stopdoc:
     def condition_with_objects
       self.class.const_get(:CONDITION).sub('OBJECTS', self.class.const_get(:OBJECTS).join('|'))
     end
 
-    #:stopdoc:
     def eval_object(obj)
       @evaled_object = self.class.current_eval(obj, eval_binding)
       true
@@ -113,24 +138,12 @@ module Bond
       @eval_binding ||= self.class.eval_binding
     end
 
-    def name
-      @name ? @name.to_s : unique_id
-    end
-
     def unique_id
       @on.inspect
     end
 
     def create_input(input, options={})
       @input = Input.new(input, options.merge(:line=>@line, :matched=>@matched))
-    end
-
-    def after_match(input)
-      create_input(input[/\S+$/])
-    end
-
-    def do_match(input)
-      @matched = input.match(@on)
     end
     #:startdoc:
   end
