@@ -19,9 +19,9 @@ module Bond
   # Defines a completion rule (Mission). A valid Mission consists of a condition and an action. A
   # condition is specified with one of the following options: :on, :object, :anywhere or :method(s). Each
   # of these options creates a different Mission class. An action is either this method's block or :action.
-  # An action takes what the user has typed (Input) and usually returns an array of possible completions.
-  # Bond searches these completions to return matching completions. This searching behavior can be
-  # customized or turned off per mission. If turned off, the action must also handle searching.
+  # An action takes what the user has typed (Input) and returns an array of possible completions. Bond
+  # searches these completions and returns matching completions. This searching behavior can be configured
+  # or turned off per mission with :search. If turned off, the action must also handle searching.
   # ====Options:
   # [*:on*] Regular expression which matches the full line of input to create a Mission object.
   # [*:method*, *:methods*, *:class*] See MethodMission.
@@ -71,8 +71,12 @@ module Bond
 
   # Starts Bond with a default set of completions that replace and improve irb's completion. Loads completion
   # files in the following order: lib/bond/completion.rb, optional ~/.bondrc, lib/bond/completions/*.rb,
-  # optional ~/.bond/completions/*.rb and optional block. See Rc for syntax to use in completion files. See
-  # Bond.config for valid options.
+  # optional ~/.bond/completions/*.rb and optional block. See Rc for the DSL to use in completion files and
+  # in the block. See Bond.config for valid options.
+  # ==== Example:
+  #   Bond.start(:default_search=>:ignore_case) do
+  #     complete(:method=>"Object#respond_to?") {|e| e.object.methods }
+  #   end
   def start(options={}, &block); M.start(options, &block); end
 
   # The agent handling all the completion missions.

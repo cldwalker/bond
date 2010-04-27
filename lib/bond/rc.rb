@@ -1,6 +1,20 @@
 module Bond
   # Namespace in which completion files, ~/.bondrc and ~/.bond/completions/*.rb, are evaluated. Methods in this module
-  # and Search can be used as top-level methods in completion files and in completion actions.
+  # and Search are the DSL in completion files and can be used within completion actions.
+  #
+  # === Example ~/.bondrc
+  #   # complete arguments for any object's :respond_to?
+  #   complete(:method=>"Object#respond_to?") {|e| e.object.methods }
+  #   # complete arguments for any module's :public
+  #   complete(:method=>"Module#public") {|e| e.object.instance_methods }
+  #
+  #   # Share search_tags action across completions
+  #   complete(:method=>"edit_tags", :action=>:search_tags)
+  #   complete(:method=>"delete_tags", :search=>false) {|e| search_tags(e).grep(/#{e}/i) }
+  #
+  #   def search_tags(input)
+  #    ...
+  #   end
   module Rc
     extend self, Search
 

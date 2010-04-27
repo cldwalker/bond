@@ -1,16 +1,17 @@
 module Bond
-  # An enhanced string representing the last word the user has typed. This string is passed to a mission
-  # action to generate possible completions.
+  # A string representing the last word the user has typed. This string is passed to a mission
+  # action to generate possible completions. This string contains a number of attributes from the
+  # matching mission, useful in generating completions.
   class Input < String
     # Actual object a user has just typed. Used by MethodMission and ObjectMission.
     attr_accessor :object
-    # MatchData object of the matching mission.
+    # MatchData object from the matching mission (Mission#matched).
     attr_reader :matched
     # Argument count and array of argument strings. Used by MethodMission.
     attr_accessor :argument, :arguments
     # The full line the user has typed.
     attr_reader :line
-    def initialize(str, options={})
+    def initialize(str, options={}) #:nodoc:
       super(str || '')
       @matched = options[:matched]
       @line = options[:line]

@@ -37,7 +37,9 @@ module Bond
       #:startdoc:
     end
 
+    # All known operator methods
     OPERATORS = %w{% & * ** + - / < << <= <=> == === =~ > >= >> [] []= ^ | ~ ! != !~}
+    # Regular expressions which describe common objects for MethodMission and ObjectMission
     OBJECTS = %w<\([^\)]*\) '[^']*' "[^"]*" \/[^\/]*\/> +
       %w<(?:%q|%r|%Q|%w|%s|%)?\[[^\]]*\] (?:proc|lambda|%q|%r|%Q|%w|%s|%)?\s*\{[^\}]*\}>
 
@@ -76,7 +78,7 @@ module Bond
       completions
     end
 
-    # When search is enabled, searches the possible completions from the action.
+    # Searches possible completions from the action which match the input.
     def call_search(search, input, list)
       Rc.send("#{search}_search", input || '', list)
     rescue

@@ -7,6 +7,7 @@ module Bond
     OBJECTS = %w{\S+} + Mission::OBJECTS
     CONDITION = %q{(OBJECTS)\s*(METHODS)\s*(['":])?(.*)$}
 
+    #:stopdoc:
     def current_methods
       (OPERATORS & MethodMission.action_methods) + ['[']
     end
@@ -20,5 +21,6 @@ module Bond
       @completion_prefix, typed = input.to_s.sub(/#{Regexp.quote(@matched[-1])}$/, ''), @matched[-1]
       create_input typed, :object=>@evaled_object, :argument=>1
     end
+    #:startdoc:
   end
 end
