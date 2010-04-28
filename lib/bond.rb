@@ -81,4 +81,7 @@ module Bond
 
   # The agent handling all the completion missions.
   def agent; M.agent; end
+
+  # Shortcut to MethodMission.all_methods
+  def list_methods; MethodMission.all_methods; end
 end
