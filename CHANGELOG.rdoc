@@ -1,3 +1,15 @@
+== 0.2.0
+* Added comprehensive argument completion per module, method and argument.
+* Added 60+ default method argument completions.
+* Added configuration system and DSL.
+* Added user-friendly completion error handling.
+* Improved Bond.spy.
+* Fixed several 1.9 bugs.
+* Replaced require 'bond/completion' with Bond.start.
+* Changed underscore_search to use '_' instead of '-'.
+* Removed Bond.debrief and Bond.reset.
+* Switched to bacon for tests.
+
 == 0.1.4
 * Added Bond.recomplete to make redefinition of completion missions easy.
 * Added flag to readline extension building so that installing bond doesn't fail for
