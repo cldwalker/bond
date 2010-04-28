@@ -7,7 +7,7 @@ module Bond
     attr_accessor :object
     # MatchData object from the matching mission (Mission#matched).
     attr_reader :matched
-    # Argument count and array of argument strings. Used by MethodMission.
+    # Current argument number and array of argument strings. Used by MethodMission.
     attr_accessor :argument, :arguments
     # The full line the user has typed.
     attr_reader :line

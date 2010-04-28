@@ -16,13 +16,37 @@ module Bond
   #   Bond.complete(:methods=>%w{delete index rindex}, :class=>"Array#") {|e| e.object }
   #   Bond.complete(:method=>"Hash#index") {|e| e.object.values }
   #
-  # ==== Notes
+  # ==== Flexible Arguments
+  # All method arguments can autocomplete as symbols or strings and can be optionally prefixed with '(':
+  #   >> Bond.complete(:method=>'example') { %w{some example eh} }
+  #   => true
+  #   >> example '[TAB]
+  #   eh    example    some
+  #   >> example :[TAB]
+  #   :eh   :example   :some
+  #
+  #  >> example("[TAB]
+  #   eh    example    some
+  #
+  # ==== Multiple Arguments
+  # Every time a comma appears after a method, Bond starts a new completion. This allows a method to
+  # complete multiple arguments as well as complete keys for a hash. *Each* argument can be have a unique
+  # set of completions since a completion action is aware of what argument it is currently completing:
+  #   >> Bond.complete(:method=>'FileUtils.chown') {|e|
+  #        e.argument > 3 ? %w{noop verbose} : %w{root admin me} }
+  #   => true
+  #   >> FileUtils.chown 'r[TAB]
+  #   >> FileUtils.chown 'root'
+  #   >> FileUtils.chown 'root', 'a[TAB]
+  #   >> FileUtils.chown 'root', 'admin'
+  #   >> FileUtils.chown 'root', 'admin', 'some_file', :v[TAB]
+  #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose
+  #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose=>true
+  #--
   # Unlike other missions, creating these missions with Bond.complete doesn't add more completion rules
   # for an Agent to look through. Instead, all :method(s) completions are handled by one MethodMission
   # object which looks them up with its own hashes. In the same way, all operator methods are
   # handled by one OperatorMethodMission object.
-  #
-  # Arguments to methods can be symbols, quoted strings and optionally come after '('.
   class MethodMission < Bond::Mission
   class<<self
     attr_accessor :actions, :last_action, :class_actions, :last_class

@@ -1,7 +1,7 @@
 == Description
 
 Bond is on a mission to improve irb's autocompletion. Aside from doing everything irb's can do and fixing its quirks,
-Bond can autocomplete argument(s) to methods, uniquely completing per module and per method. Bond brings irb's completion
+Bond can autocomplete argument(s) to methods, uniquely completing per module, method and argument. Bond brings irb's completion
 closer to bash/zsh as it provides a configuration system and a DSL for creating custom completions and completion rules. With
 this configuration system, users can customize their irb autocompletion experience and share it with others. Bond is able
 to offer more than irb's completion since it uses a Readline C extension to get the full line of input when completing

@@ -43,7 +43,8 @@ module Bond
     OBJECTS = %w<\([^\)]*\) '[^']*' "[^"]*" \/[^\/]*\/> +
       %w<(?:%q|%r|%Q|%w|%s|%)?\[[^\]]*\] (?:proc|lambda|%q|%r|%Q|%w|%s|%)?\s*\{[^\}]*\}>
 
-    # Generates possible completions and searches them if search is disabled.
+    # Generates array of possible completions and searches them if search is disabled. Any values
+    # that aren't strings are automatically converted with to_s.
     attr_reader :action
     # See Bond.complete's :place.
     attr_reader :place
