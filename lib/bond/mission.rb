@@ -50,12 +50,15 @@ module Bond
     attr_reader :place
     # A MatchData object generated from matching the user input with the condition.
     attr_reader :matched
+    # Regexp condition
+    attr_reader :on
     # Takes same options as Bond.complete.
     def initialize(options)
       raise InvalidMissionError, ":action" unless (options[:action] || respond_to?(:default_action))
       raise InvalidMissionError, ":on" unless (options[:on] && options[:on].is_a?(Regexp)) || respond_to?(:default_on)
       @action, @on = options[:action], options[:on]
-      @place, @name = options[:place], options[:name]
+      @place = options[:place] if options[:place]
+      @name = options[:name] if options[:name]
       @search = options.has_key?(:search) ? options[:search] : Mission.default_search
     end
 
