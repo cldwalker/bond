@@ -79,9 +79,9 @@ module Bond
   #   end
   def start(options={}, &block); M.start(options, &block); end
 
-  # The agent handling all the completion missions.
+  # An Agent who saves all Bond.complete missions and executes the correct one when a completion is called.
   def agent; M.agent; end
 
-  # Shortcut to MethodMission.all_methods
+  # Lists all methods that have argument completion.
   def list_methods; MethodMission.all_methods; end
 end

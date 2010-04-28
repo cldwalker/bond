@@ -1,7 +1,7 @@
 module Bond
   # A mission which completes arguments for any module/class method that is an operator i.e. '>' or '*'.
-  # The only operator method this mission doesn't complete is '[]='. The operator '[]' should cover
-  # the first argument completion of '[]=' anyways.
+  # Takes same Bond.complete options as MethodMission. The only operator method this mission doesn't
+  # complete is '[]='. The operator '[]' should cover the first argument completion of '[]=' anyways.
   class OperatorMethodMission < MethodMission
     OPERATORS = Mission::OPERATORS - ["[]", "[]="]
     OBJECTS = %w{\S+} + Mission::OBJECTS

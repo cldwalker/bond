@@ -1,7 +1,15 @@
 module Bond
   # A mission which completes arguments for any module/class method that isn't an operator method.
   # To create this mission or OperatorMethodMission, :method or :methods must be passed to Bond.complete.
-  #
+  # A completion for a given module/class effects any object that has it as an ancestor. If an object
+  # has two ancestors that have completions for the same method, the ancestor closer to the object is
+  # picked. For example, if Array#collect and Enumerable#collect have completions, Array#collect is chosen.
+  #--
+  # Unlike other missions, creating these missions with Bond.complete doesn't add more completion rules
+  # for an Agent to look through. Instead, all :method(s) completions are handled by one MethodMission
+  # object which looks them up with its own hashes. In the same way, all operator methods are
+  # handled by one OperatorMethodMission object.
+  #++
   # ==== Bond.complete Options:
   # [*:method*] String representing an instance (Class#method) or class method (Class.method). Gets
   #             its class from :class or from substring prefixing '#' or '.'. If no class is given,
@@ -16,8 +24,9 @@ module Bond
   #   Bond.complete(:methods=>%w{delete index rindex}, :class=>"Array#") {|e| e.object }
   #   Bond.complete(:method=>"Hash#index") {|e| e.object.values }
   #
-  # ==== Flexible Arguments
-  # All method arguments can autocomplete as symbols or strings and can be optionally prefixed with '(':
+  # ==== Argument Format
+  # All method arguments can autocomplete as symbols or strings and the first argument can be prefixed
+  # with '(':
   #   >> Bond.complete(:method=>'example') { %w{some example eh} }
   #   => true
   #   >> example '[TAB]
@@ -42,11 +51,6 @@ module Bond
   #   >> FileUtils.chown 'root', 'admin', 'some_file', :v[TAB]
   #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose
   #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose=>true
-  #--
-  # Unlike other missions, creating these missions with Bond.complete doesn't add more completion rules
-  # for an Agent to look through. Instead, all :method(s) completions are handled by one MethodMission
-  # object which looks them up with its own hashes. In the same way, all operator methods are
-  # handled by one OperatorMethodMission object.
   class MethodMission < Bond::Mission
   class<<self
     attr_accessor :actions, :last_action, :class_actions, :last_class

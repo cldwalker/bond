@@ -89,7 +89,7 @@ for private methods:
   >> Bond.send :remove_const, :Ag[TAB]
   >> Bond.send :remove_const, :Agent
 
-Since Bond uses a comma to restart completions, methods whose last argument is a hash can have their keys
+Since Bond uses a comma to delimit completions, methods whose last argument is a hash can have their hash keys
 autocompleted. Revisiting the above Rails example:
   >> Url.create :n[TAB]
   >> Url.create :name
@@ -103,11 +103,8 @@ autocompleted. Revisiting the above Rails example:
   ...
 
 == Creating Completions
-
-Bond's completion configuration resembles bash/zsh's. When Bond.start is called, Bond looks up completion files in
-multiple places: ~/.bondrc and ~/.bond/completions/*.rb.
-
-In a similar vein, here's a comparison of bash and bond completion definitions:
+Bond's completion resembles bash/zsh's. When Bond.start is called, Bond looks up completion files in multiple places:
+ ~/.bondrc and ~/.bond/completions/*.rb. Here's how bash and bond completion definitions compare in their config files:
   # Bash
   complete -W "one two three" example
   complete -F _example example
@@ -115,8 +112,11 @@ In a similar vein, here's a comparison of bash and bond completion definitions:
   # Bond
   complete(:method=>'example') { %w{one two three} }
   complete(:method=>'example', :action=>'_example')
-  
-What happens when we want to dynamically generate completions as in the case of Hash#[]?
+
+To read up on the wealth of completion types one can make, see the docs for Bond.complete.
+
+=== Creating Method Argument Completions
+To dynamically generate completions per object as in the case of Hash#[]:
   complete(:method=>"Hash#[]") {|e| e.object.keys }
 
 The argument passed into the completion block is a Bond::Input object. While this object looks like
@@ -126,7 +126,14 @@ Another such useful attribute is Bond::Input#argument which holds the current ar
 Here's a completion that completes differently for the first argument and the remaining arguments:
    complete(:method=>'example') {|e| e.argument > 1 ? %w{verbose force noop} : %w{one two three} }
 
-To read up on the wealth of completions one can make, see the docs for Bond.complete.
+=== Creating Other Completions
+First you should know Bond works: A user creates completion missions with Bond.start and its config files (which are just
+Bond.complete calls). When a user autocompletes, Bond.agent looks up missions in the *order* they were defined and completes
+with the first one that matches. The exception to this ordering are :method completions.
+
+To create a completion, Bond.complete needs a regexp to match the user input and an action to generate completions when
+it matches. If the completion isn't working, use Bond.spy to see which completion is executing. If a completion needs to be placed
+before existing completions, use the :place option.
 
 == Irb's Incorrect Completions
 
