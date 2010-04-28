@@ -21,7 +21,7 @@ To start off, replace irb's completion (require 'irb/completion') with Bond's en
   Bond.start
 
 This gives you more consistent method completion on any object, customizable completions
-and argument completion of some 70+ methods including Hash#[], Kernel#system, Kernel#require and some Rails methods.
+and argument completion of some 60+ methods including Hash#[], Kernel#system, Kernel#require and some Rails methods.
 
 == Method Argument Completion
 

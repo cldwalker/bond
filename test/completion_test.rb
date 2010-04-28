@@ -36,7 +36,7 @@ describe "Completion" do
   end
 
   it "methods don't swallow up default completion" do
-    Bond.agent.find_mission("Bond.complete(:method=>'blah') { Arr").should == nil
+    Bond.agent.find_mission("some_method(:verbose=>true) { Arr").should == nil
   end
 
   describe "completes object methods" do
