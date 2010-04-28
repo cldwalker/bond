@@ -1,11 +1,11 @@
 == Description
 
 Bond is on a mission to improve irb's autocompletion. Aside from doing everything irb's can do and fixing its quirks,
-Bond can autocomplete argument(s) to methods, uniquely completing per module, method and argument. Bond brings irb's completion
-closer to bash/zsh as it provides a configuration system and a DSL for creating custom completions and completion rules. With
-this configuration system, users can customize their irb autocompletion experience and share it with others. Bond is able
-to offer more than irb's completion since it uses a Readline C extension to get the full line of input when completing
-as opposed to irb's last-word approach.
+Bond can autocomplete argument(s) to methods, uniquely completing per module, per method and per argument. Bond brings
+irb's completion closer to bash/zsh as it provides a configuration system and a DSL for creating custom completions
+and completion rules. With this configuration system, users can customize their irb autocompletion experience and share
+it with others. Bond is able to offer more than irb's completion since it uses a Readline C extension to get the full
+line of input when completing as opposed to irb's last-word approach.
 
 == Install
 
@@ -21,51 +21,165 @@ To start off, replace irb's completion (require 'irb/completion') with Bond's en
   Bond.start
 
 This gives you more consistent method completion on any object, customizable completions
-and argument completion of some 60+ methods including Kernel#system, Kernel#require and some Rails methods.
+and argument completion of some 70+ methods including Hash#[], Kernel#system, Kernel#require and some Rails methods.
 
 == Method Argument Completion
 
-== Irb's Inconsistencies
+Bond can autocomplete a number of core methods:
 
-== Underscore Search
+  $ irb
+  >> require 'rb[TAB]
+  rbconfig.rb          rbconfig/datadir.rb 
+  >> require 'rbconfig
+  >> require 'rbconfig.rb'
+  => true
 
-    # Firing up a rails console
-    bash> script/console
-    >> require 'bond'
-    => true
+  # hash keys
+  >> CONFIG::CONFIG[TAB]
+  Display all 142 possibilities? (y or n)
+  >> CONFIG::CONFIG['m[TAB]
+  >> CONFIG::CONFIG['mandir'
+  >> CONFIG::CONFIG['mandir']
+  => "/usr/share/man"
 
-    # Set all ActiveRecord::Base descendants to use the predefined underscore search
-    >> Bond.complete :object=>ActiveRecord::Base, :search=>:underscore
-    => true
+  # system commands
+  >> system 'ec[TAB]
+  >> system 'echo
+  >> system 'echo'
 
-    # With this search we can still autocomplete the traditional way.
-    # Url is a model object
-    >> Url.first.tag_[TAB]
-    Url.first.tag_add_and_remove   Url.first.tag_and_save         Url.first.tag_ids=             Url.first.tag_list=            
-    Url.first.tag_add_and_save     Url.first.tag_ids              Url.first.tag_list             Url.first.tag_remove_and_save
-    >> Url.tag_ad[TAB]
-    >> Url.tag_add_and_
-    >> Url.tag_add_and_[TAB]
-    Url.first.tag_add_and_remove  Url.first.tag_add_and_save 
-    >> Url.tag_add_and_s[TAB]
-    >> Url.tag_add_and_save
+  => true
 
-    # But this search goes the extra mile with textmate-like searching.
-    # Type just the first letter of each underscored word separated by '_'
-    >> Url.first.t_a_a_s[TAB]
-    >> Url.first.tag_add_and_save
+Bond also comes with some basic Rails completions, mostly for attributes/columns of models:
 
-    # With this search, most multi-worded methods are just a few keystrokes away.
-    # If multiple methods match the underscore alias, it still autocompletes the beginning of the method:
-    >> Url.first.p[TAB]
-    Url.first.partial_updates                  Url.first.pretty_inspect                   Url.first.pretty_print_instance_variables  Url.first.public_methods
-    Url.first.partial_updates?                 Url.first.pretty_print                     Url.first.primary_key_prefix_type          
-    Url.first.pluralize_table_names            Url.first.pretty_print_cycle               Url.first.private_methods                  
-    Url.first.present?                         Url.first.pretty_print_inspect             Url.first.protected_methods
-    >> Url.first.p_p[TAB]
-    >> Url.first.pretty_print
-    >> Url.first.pretty_print_c[TAB]
-    >> Url.first.pretty_print_cycle
+  $ script/console
+  >> Url.column_names
+  => ["id", "name", "description", "created_at", "updated_at"]
+  >> Url.create :n[TAB]
+  >> Url.create :name
+  ...
+  >> Url.first.update_attribute :d[TAB]
+  >> Url.first.update_attribute :description
+  ...
+
+To see more methods whose arguments can be completed:
+  >> puts Bond.list_methods
+  ActiveRecord::Base#[]
+  ActiveRecord::Base#attribute_for_inspect
+  ...
+
+== Multiple Arguments
+Every time a comma appears after a method, Bond starts a new completion. This allows a method to
+complete multiple arguments. *Each* argument can be have a unique set of completions since a completion action
+is aware of what argument it is currently completing. Take for example the completion Object#send:
+
+  >> Bond.send :me[TAB]
+  >> Bond.send :method
+  >> Bond.send :method, [TAB]
+  agent       complete    config      recomplete  spy         start
+  >> Bond.send :method, :a[TAB]
+  >> Bond.send :method, :agent
+  => #<Method: Module#agent>
+
+The first argument completed a Bond method while the second argument completed an argument for Bond.method. Any argument after
+the first argument is clever as it looks up the completion action of the first argument. The second argument completed in
+this case only because there exists a Module#method completion action. Using Object#send, it's possible to define and use completions
+for private methods:
+  >> Bond.send :remove_const, :A[TAB]
+  :Agent            :AnywhereMission
+  >> Bond.send :remove_const, :Ag[TAB]
+  >> Bond.send :remove_const, :Agent
+
+Since Bond uses a comma to restart completions, methods whose last argument is a hash can have their keys
+autocompleted. Revisiting the above Rails example:
+  >> Url.create :n[TAB]
+  >> Url.create :name
+  >> Url.create :name=>'example.com', :d[TAB]
+  >> Url.create :name=>'example.com', :description
+  ...
+  >> Url.first.update_attributes :d[TAB]
+  >> Url.first.update_attributes :description
+  >> Url.first.update_attributes :description=>'zzz', :u[TAB]
+  >> Url.first.update_attributes :description=>'zzz', :updated_at
+  ...
+
+== Creating Completions
+
+Bond's completion configuration resembles bash/zsh's. When Bond.start is called, Bond looks up completion files in
+multiple places: ~/.bondrc and ~/.bond/completions/*.rb.
+
+In a similar vein, here's a comparison of bash and bond completion definitions:
+  # Bash
+  complete -W "one two three" example
+  complete -F _example example
+
+  # Bond
+  complete(:method=>'example') { %w{one two three} }
+  complete(:method=>'example', :action=>'_example')
+  
+What happens when we want to dynamically generate completions as in the case of Hash#[]?
+  complete(:method=>"Hash#[]") {|e| e.object.keys }
+
+The argument passed into the completion block is a Bond::Input object. While this object looks like
+and can be used as a string, it comes with useful attributes like #object.
+
+Another such useful attribute is Bond::Input#argument which holds the current argument number being completed.
+Here's a completion that completes differently for the first argument and the remaining arguments:
+   complete(:method=>'example') {|e| e.argument > 1 ? %w{verbose force noop} : %w{one two three} }
+
+To read up on the wealth of completions one can make, see the docs for Bond.complete.
+
+== Irb's Incorrect Completions
+
+There are a number of incorrect completions irb gives for object methods. Bond fixes all of the ones described below.
+
+Irb completes anything surrounded with '{}' the same:
+
+  >> proc {}.c[TAB]
+  }.call     }.class    }.clear    }.clone    }.collect
+  >> %w{ab bc}.c[TAB]
+  }.call     }.class    }.clear    }.clone    }.collect
+  >> %r{ab bc}.c[TAB]
+  }.call     }.class    }.clear    }.clone    }.collect
+  >> {}.c[TAB]
+  }.call     }.class    }.clear    }.clone    }.collect
+  >> {}.call
+  NoMethodError: undefined method `call' for {}:Hash
+          from (irb):1
+
+There are a number of cases where irb gives a default completion because it doesn't know what else to do.
+  # The default completion
+  >> self.[TAB]
+  Display all 496 possibilities? (y or n)
+
+  # And all of these cases are apparently the same:
+  >> nil.[TAB]
+  Display all 496 possibilities? (y or n)
+  >> false.[TAB]
+  Display all 496 possibilities? (y or n)
+  >> true.[TAB]
+  Display all 496 possibilities? (y or n)
+  # Regular expressions with spaces
+  >> /man oh man/.[TAB]
+  Display all 496 possibilities? (y or n)
+  # Grouped expressions
+ >> (3 + 4).[TAB]
+ Display all 496 possibilities? (y or n)
+
+ # Nested hashes and arrays
+ >> {:a=>{:a=>1}}.[TAB]
+ Display all 496 possibilities? (y or n)
+ >> [[1,2], [3,4]].[TAB]
+ Display all 496 possibilities? (y or n)
+
+ # Any object produced from a method call
+ >> 'awesome'.to_sym.[TAB]
+ Display all 496 possibilities? (y or n)
+ >> :dude.to_s.[TAB]
+ Display all 496 possibilities? (y or n)
+ 
+Ranges don't get much love
+  >> (2..4).[TAB]
+  # Nothing happens
 
 == Credits
 Thanks to Csaba Hank for {providing the C extension}[http://www.creo.hu/~csaba/ruby/irb-enhancements/doc/files/README.html]
