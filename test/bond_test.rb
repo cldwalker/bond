@@ -26,7 +26,19 @@ describe "Bond" do
       tab('blah a_q').should == ["all_quiet"]
       M.reset
     end
+
+    it "defines completion in block" do
+      Bond.start do
+        complete(:on=>/blah/) { %w{all_quiet on_the western_front}}
+      end
+      tab('blah all').should == ["all_quiet"]
+    end
     after_all { M.debrief :readline_plugin=>valid_readline_plugin }
+  end
+
+  it "start prints error for failed completion file" do
+    Rc.stubs(:module_eval).raises('wtf')
+    capture_stderr { Bond.start }.should =~ /Bond Error: Completion file.*with:\nwtf/
   end
 
   it "reset clears existing missions" do

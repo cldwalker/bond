@@ -111,6 +111,12 @@ describe "method mission" do
       complete(:method=>"Array#fetch", :action=>"Array#index")
       tab('[].fetch a').should == %w{ab ad}
     end
+
+    it "with symbol :action references Rc method" do
+      Rc.module_eval %[def _fetch(input); %w{ab cd ef ad}; end ]
+      complete(:method=>"Array#fetch", :action=>:_fetch)
+      tab('[].fetch a').should == %w{ab ad}
+    end
   end
 
   describe "any class method" do

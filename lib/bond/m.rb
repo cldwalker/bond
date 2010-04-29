@@ -74,7 +74,7 @@ module Bond
     def load_file(file)
       Rc.module_eval File.read(file)
     rescue Exception => e
-      puts "Error: File '#{file}' failed to load:", e.message
+      $stderr.puts "Bond Error: Completion file '#{file}' failed to load with:", e.message
     end
 
     def load_dir(base_dir) #:nodoc:
