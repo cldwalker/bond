@@ -4,7 +4,7 @@ module Bond
   # complete is '[]='. The operator '[]' should cover the first argument completion of '[]=' anyways.
   class OperatorMethodMission < MethodMission
     OPERATORS = Mission::OPERATORS - ["[]", "[]="]
-    OBJECTS = %w{\S+} + Mission::OBJECTS
+    OBJECTS = Mission::OBJECTS + %w{\S+}
     CONDITION = %q{(OBJECTS)\s*(METHODS)\s*(['":])?(.*)$}
 
     #:stopdoc:

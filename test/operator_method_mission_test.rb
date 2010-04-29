@@ -27,6 +27,10 @@ describe "operator method mission" do
       tab('{}[ a').should == ["ab", "ae"]
     end
 
+    it "completes with operator characters in object" do
+      tab('{:a=> 1}[').should == ["1}[ab", "1}[cd", "1}[ae"]
+    end
+
     it "completes all arguments with only space as argument" do
       tab('{}[ ').should == ["ab", "cd", "ae"]
     end
