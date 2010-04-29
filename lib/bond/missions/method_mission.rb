@@ -53,7 +53,14 @@ module Bond
   #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose=>true
   class MethodMission < Bond::Mission
   class<<self
-    attr_accessor :actions, :last_action, :class_actions, :last_class
+    # Hash of instance method actions which maps methods to hashes of modules to actions
+    attr_accessor :actions
+    # Same as :actions but for class method actions
+    attr_accessor :class_actions
+    # Stores action from last search in MethodMission.find_action
+    attr_accessor :last_action
+    # Stores class from last search in MethodMission.find_action
+    attr_accessor :last_class
 
     # Creates a method action given the same options as Bond.complete
     def create(options)
@@ -106,7 +113,7 @@ module Bond
     def find_action(obj, meth)
       last_action = find_action_with(obj, meth, :<=, @class_actions) if obj.is_a?(Module)
       last_action = find_action_with(obj, meth, :is_a?, @actions) unless last_action
-      @last_class = last_action[0] if last_action.is_a?(Array)
+      @last_class = last_action.is_a?(Array) ? last_action[0] : nil
       @last_action = last_action ? last_action[1] : last_action
     end
 
