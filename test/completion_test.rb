@@ -35,6 +35,14 @@ describe "Completion" do
     tab("blah[:m").should == ["blah[:mah"]
   end
 
+  it "completes method arguments with parenthesis" do
+    tab("%w{ab bc cd}.delete(").should == %w{ab bc cd}
+  end
+
+  it "completes hash coming from a method" do
+    tab('Bond.config[:r').should == ["Bond.config[:readline_plugin"]
+  end
+
   it "methods don't swallow up default completion" do
     Bond.agent.find_mission("some_method(:verbose=>true) { Arr").should == nil
   end

@@ -13,7 +13,7 @@
 class Bond::ObjectMission < Bond::Mission
   #:stopdoc:
   OBJECTS = %w<\S+> + Bond::Mission::OBJECTS
-  CONDITION = '(OBJECTS)\.([^.\s]*)$'
+  CONDITION = '(OBJECTS)\.(\w*(?:\?|!)?)$'
   def initialize(options={})
     @object_condition = /^#{options[:object]}$/
     options[:on] ||= Regexp.new condition_with_objects
