@@ -1,3 +1,5 @@
+Note: To read a linked version of this README, {click here}[http://tagaholic.me/bond/doc/]
+
 == Description
 
 Bond is on a mission to improve irb's autocompletion. Aside from doing everything irb's can do and fixing its quirks,
@@ -25,16 +27,17 @@ and argument completion of some 60+ methods including Hash#[], Kernel#system, Ke
 
 == Method Argument Completion
 
-Bond can autocomplete a number of core methods:
+By default, Bond autocompletes arguments for a number of core methods:
 
   $ irb
+  # anything in $LOAD_PATH and gems
   >> require 'rb[TAB]
   rbconfig.rb          rbconfig/datadir.rb 
   >> require 'rbconfig
   >> require 'rbconfig.rb'
   => true
 
-  # hash keys
+  # any hash keys
   >> CONFIG::CONFIG[TAB]
   Display all 142 possibilities? (y or n)
   >> CONFIG::CONFIG['m[TAB]
@@ -104,7 +107,7 @@ autocompleted. Revisiting the above Rails example:
 
 == Creating Completions
 Bond's completion resembles bash/zsh's. When Bond.start is called, Bond looks up completion files in multiple places:
- ~/.bondrc and ~/.bond/completions/*.rb. Here's how bash and bond completion definitions compare in their config files:
+~/.bondrc and ~/.bond/completions/*.rb. Here's how bash and bond completion definitions compare in their config files:
   # Bash
   complete -W "one two three" example
   complete -F _example example
