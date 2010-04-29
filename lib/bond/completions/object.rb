@@ -7,8 +7,9 @@ complete(:method=>"Object#method") {|e|
 }
 complete(:method=>"Object#[]") {|e| e.object.keys rescue [] }
 complete(:method=>"Object#send") {|e|
-  if e.argument > 1 && (meth = Mission.current_eval(e.arguments[0])) && meth.to_s != 'send'
-    if (action = MethodMission.find_action(e.object, meth.to_s))
+  if e.argument > 1
+    if (meth = eval(e.arguments[0])) && meth.to_s != 'send' &&
+      (action = MethodMission.find_action(e.object, meth.to_s))
       e.argument -= 1
       e.arguments.shift
       action.call(e)

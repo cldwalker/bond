@@ -6,7 +6,7 @@ complete :all_operator_methods=>true
 # classes and constants
 complete(:name=>:constants, :anywhere=>'(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)') {|e|
   receiver = e.matched[2]
-  candidates = Mission.current_eval("#{receiver}.constants | #{receiver}.methods")
+  candidates = eval("#{receiver}.constants | #{receiver}.methods") || []
   default_search(e.matched[5], candidates).map {|e| receiver + "::" + e}
 }
 # absolute constants

@@ -66,7 +66,8 @@ module Bond
   #                     Default is :underscore. See Bond.complete's :search option for valid values.
   # [*:eval_binding*] Specifies a binding to use when evaluating objects in ObjectMission and MethodMission.
   #                   When in irb, defaults to irb's current binding. Otherwise defaults to TOPLEVEL_BINDING.
-  # [*:debug*]  Boolean to show the stacktrace when autocompletion fails. Default is false.
+  # [*:debug*]  Boolean to show the stacktrace when autocompletion fails and raise exceptions in Rc.eval.
+  #             Default is false.
   def config; M.config; end
 
   # Starts Bond with a default set of completions that replace and improve irb's completion. Loads completion

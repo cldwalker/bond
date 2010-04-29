@@ -47,6 +47,18 @@ describe "Agent" do
       tab('blah').should complete_error(/Bond Error: Failed.*action.*'NoMethodError'/)
     end
 
+    it 'for completion action failing with Rc.eval completes empty' do
+      Bond.config[:debug] = false
+      complete(:on=>/blah/) { Rc.eval '{[}'}
+      tab('blah').should == []
+      Bond.config[:debug] = true
+    end
+
+    it 'for completion action failing with Rc.eval and debug completes error' do
+      complete(:on=>/blah/) { Rc.eval('{[}') || [] }
+      tab('blah').should complete_error(/Bond Error: Failed.*action.*(eval)/)
+    end
+
     it "for completion action raising SyntaxError in eval completes error" do
       complete(:on=>/blah/) { eval '{[}'}
       tab('blah').should complete_error(/Bond Error: Failed.*action.*(eval)/)

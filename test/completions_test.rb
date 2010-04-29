@@ -58,6 +58,10 @@ describe "completions for" do
       tab('Bond.send :const_get, Ag').should == ['Agent']
     end
 
+    it "#send and invalid first argument" do
+      tab('Bond.send :blah, ').should == []
+    end
+
     it "#instance_variable_get" do
       tab("Bond::M.instance_variable_get '@a").should == ['@agent']
     end

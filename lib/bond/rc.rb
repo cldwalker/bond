@@ -36,5 +36,13 @@ module Bond
       ObjectSpace.each_object(klass) {|e| object.push(e) }
       object
     end
+
+    # Calls eval with Mission.current_eval, rescuing any exceptions to return nil.
+    # If Bond.config[:debug] is true, exceptions are raised again.
+    def eval(str)
+      Mission.current_eval(str)
+    rescue Exception
+      raise if Bond.config[:debug]
+    end
   end
 end

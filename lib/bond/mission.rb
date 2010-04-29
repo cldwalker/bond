@@ -22,11 +22,13 @@ module Bond
         else                                          new(options)
         end
       end
-      #:stopdoc:
+
+      # Calls eval with either the irb's current workspace binding or TOPLEVEL_BINDING.
       def current_eval(string, ebinding=eval_binding)
         eval(string, ebinding)
       end
 
+      #:stopdoc:
       def eval_binding
         @eval_binding || IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
       end
