@@ -4,15 +4,23 @@ module Bond
   class Agent
     # The array of missions that will be searched when a completion occurs.
     attr_reader :missions
+    # An agent's best friend a.k.a. the readline plugin.
+    attr_reader :weapon
 
     def initialize(options={}) #:nodoc:
-      raise ArgumentError unless options[:readline_plugin].is_a?(Module)
-      extend(options[:readline_plugin])
+      setup_readline_plugin(options[:readline_plugin])
       @default_mission_action = options[:default_mission] if options[:default_mission]
       Mission.eval_binding = options[:eval_binding] if options[:eval_binding]
       Mission.default_search = options[:default_search] if options[:default_search]
-      setup
       @missions = []
+    end
+
+    def setup_readline_plugin(plugin) #:nodoc:
+      raise ArgumentError unless plugin.is_a?(Module)
+      @weapon = plugin.extend(plugin)
+      @weapon.setup(self)
+    rescue
+      $stderr.puts "Bond Error: Failed #{plugin.to_s[/[^:]+$/]} setup with '#{$!.message}'"
     end
 
     # Creates a mission.
@@ -55,7 +63,7 @@ module Bond
 
     # This is where the action starts when a completion is initiated.
     def call(input)
-      mission_input = line_buffer
+      mission_input = @weapon.line_buffer
       mission_input = $1 if mission_input !~ /#{Regexp.escape(input)}$/ && mission_input =~ /^(.*#{Regexp.escape(input)})/
       (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(Input.new(input))
     rescue FailedMissionError

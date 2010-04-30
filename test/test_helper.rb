@@ -41,7 +41,7 @@ module TestHelpers
   end
 
   def tab(full_line, last_word=full_line)
-    Bond.agent.stubs(:line_buffer).returns(full_line)
+    Bond.agent.weapon.stubs(:line_buffer).returns(full_line)
     Bond.agent.call(last_word)
   end
 
@@ -50,7 +50,7 @@ module TestHelpers
   end
 
   def valid_readline_plugin
-    Module.new{ def setup; end; def line_buffer; end }
+    Module.new{ def setup(arg); end; def line_buffer; end }
   end
 end
 

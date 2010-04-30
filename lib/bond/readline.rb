@@ -1,10 +1,11 @@
 module Bond
-  # This is the default readline plugin for Bond. A valid plugin must define methods setup and line_buffer as described below.
+  # This is the default readline plugin for Bond. A valid plugin must be a module that defines methods setup
+  # and line_buffer as described below.
   module Readline
     DefaultBreakCharacters = " \t\n\"\\'`><=;|&{("
 
-    # Loads the readline-like library and sets the completion_proc to itself.
-    def setup
+    # Loads the readline-like library and sets the completion_proc to the given agent.
+    def setup(agent)
       require 'readline'
       begin
         require 'readline_line_buffer'
@@ -35,8 +36,8 @@ module Bond
         ::Readline.basic_word_break_characters = DefaultBreakCharacters
       end
 
-      ::Readline.completion_proc = self
-      if (Readline::VERSION rescue nil).to_s[/editline/i]
+      ::Readline.completion_proc = agent
+      if (::Readline::VERSION rescue nil).to_s[/editline/i]
         puts "Bond has detected EditLine and may not work with it. See the README's Limitations section."
       end
     end

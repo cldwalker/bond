@@ -8,7 +8,7 @@ describe "Bond" do
     end
     
     it "prints error if readline_plugin doesn't have all required methods" do
-      capture_stderr {Bond.start :readline_plugin=>Module.new{ def setup; end } }.should =~ /Invalid/
+      capture_stderr {Bond.start :readline_plugin=>Module.new{ def setup(arg); end } }.should =~ /Invalid/
     end
 
     it "prints no error if valid readline_plugin" do
@@ -24,7 +24,6 @@ describe "Bond" do
       Bond.start :default_search=>:underscore, :readline_plugin=>valid_readline_plugin
       complete(:on=>/blah/) { %w{all_quiet on_the western_front}}
       tab('blah a_q').should == ["all_quiet"]
-      M.reset
     end
 
     it "defines completion in block" do
@@ -33,7 +32,13 @@ describe "Bond" do
       end
       tab('blah all').should == ["all_quiet"]
     end
-    after_all { M.debrief :readline_plugin=>valid_readline_plugin }
+    after_all { M.debrief :readline_plugin=>valid_readline_plugin; M.reset }
+  end
+
+  it "prints error if Readline setup fails" do
+    Bond::Readline.expects(:setup).raises('WTF')
+    capture_stderr { Bond.start(:readline_plugin=>Bond::Readline) }.should =~ /Error.*Failed Readline.*'WTF'/
+    M.debrief :readline_plugin=>valid_readline_plugin
   end
 
   it "start prints error for failed completion file" do
