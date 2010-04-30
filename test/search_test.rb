@@ -57,4 +57,66 @@ describe "Search" do
     tab('blah [').should == ['[doh]']
     tab('blah ?').should == ['?ok']
   end
+
+  describe "modules search" do
+    before {
+      complete(:on=>/blah/, :search=>:modules) { %w{A1 M1::Z M1::Y::X M2::X} }
+    }
+    it "completes all modules" do
+      tab('blah ').should == ["A1", "M1::", "M2::"]
+    end
+
+    it "completes single first level module" do
+      tab('blah A').should == %w{A1}
+    end
+
+    it "completes single first level module parent" do
+      tab('blah M2').should == %w{M2::}
+    end
+
+    it "completes all second level modules" do
+      tab('blah M1::').should == %w{M1::Z M1::Y::}
+    end
+
+    it "completes second level module parent" do
+      tab('blah M1::Y').should == %w{M1::Y::}
+    end
+
+    it "completes third level module" do
+      tab('blah M1::Y::').should == %w{M1::Y::X}
+    end
+  end
+
+  describe "files search" do
+    before {
+      complete(:on=>/rm/, :search=>:files) { %w{a1 d1/f2 d1/d2/f1 d2/f1 d2/f1/} }
+    }
+    it "completes all paths" do
+      tab('rm ').should == %w{a1 d1/ d2/}
+    end
+
+    it "completes single first level file" do
+      tab('rm a').should == %w{a1}
+    end
+
+    it "completes single first level directory" do
+      tab('rm d2').should == %w{d2/}
+    end
+
+    it "completes all second level paths" do
+      tab('rm d1/').should == %w{d1/f2 d1/d2/}
+    end
+
+    it "completes single second level directory" do
+      tab('rm d1/d2').should == %w{d1/d2/}
+    end
+
+    it "completes single third level file" do
+      tab('rm d1/d2/').should == %w{d1/d2/f1}
+    end
+
+    it "completes file and directory with same name" do
+      tab('rm d2/f').should == %w{d2/f1 d2/f1/}
+    end
+  end
 end
