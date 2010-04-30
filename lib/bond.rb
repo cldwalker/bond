@@ -43,12 +43,13 @@ module Bond
   #  Bond.complete(:object=>ActiveRecord::Base, :search=>:underscore, :place=>:last)
   #  Bond.complete(:method=>'you', :search=>proc {|input, list| list.grep(/#{input}/i)} ) {|input| %w{Only Live Twice} }
   #  Bond.complete(:method=>'system', :action=>:shell_commands)
-  def complete(*args, &block); M.complete(*args, &block); end
+  def complete(options={}, &block); M.complete(options, &block); end
 
-  # Redefines an existing completion mission. Takes same options as Bond.complete.
+  # Redefines an existing completion mission to have a different action. The condition can only be varied if :name is
+  # used to identify and replace a mission. Takes same options as Bond.complete.
   # ==== Example:
   #   Bond.recomplete(:on=>/man/, :name=>:count) { %w{4 5 6}}
-  def recomplete(*args, &block); M.recomplete(*args, &block); end
+  def recomplete(options={}, &block); M.recomplete(options, &block); end
 
   # Reports what completion mission matches for a given input. Helpful for debugging missions.
   # ==== Example:
