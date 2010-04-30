@@ -191,6 +191,10 @@ Ranges don't get much love
   >> (2..4).[TAB]
   # Nothing happens
 
+== Limitations
+If on a Mac and using Editline as a Readline replacement (Readline::VERSION =~ /editline/i), Bond will probably not work consistently. I strongly recommend switching to the official Readline. If using rvm, {this post}[http://niwos.com/2010/03/19/rvm-on-osx-snow-leopard-readline-errors/]
+has good instructions for reinstalling ruby with the official Readline.
+
 == Credits
 Thanks to Csaba Hank for {providing the C extension}[http://www.creo.hu/~csaba/ruby/irb-enhancements/doc/files/README.html]
 which Bond uses to read Readline's full buffer. Thanks also goes out to Takao Kouji for {recently

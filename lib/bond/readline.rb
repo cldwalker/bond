@@ -36,6 +36,9 @@ module Bond
       end
 
       ::Readline.completion_proc = self
+      if (Readline::VERSION rescue nil).to_s[/editline/i]
+        puts "Bond has detected EditLine and may not work with it. See the README's Limitations section."
+      end
     end
 
     # Returns full line of what the user has typed.
