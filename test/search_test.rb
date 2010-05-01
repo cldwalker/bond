@@ -89,10 +89,10 @@ describe "Search" do
 
   describe "files search" do
     before {
-      complete(:on=>/rm/, :search=>:files) { %w{a1 d1/f2 d1/d2/f1 d2/f1 d2/f1/} }
+      complete(:on=>/rm/, :search=>:files) { %w{a1 d1/f2 d1/d2/f1 d2/f1 d2/f1/ /f1} }
     }
     it "completes all paths" do
-      tab('rm ').should == %w{a1 d1/ d2/}
+      tab('rm ').should == %w{a1 d1/ d2/ /}
     end
 
     it "completes single first level file" do
@@ -117,6 +117,10 @@ describe "Search" do
 
     it "completes file and directory with same name" do
       tab('rm d2/f').should == %w{d2/f1 d2/f1/}
+    end
+
+    it "completes file with full path" do
+      tab('rm /f').should == %w{/f1}
     end
   end
 end

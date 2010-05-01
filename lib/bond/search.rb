@@ -52,8 +52,8 @@ module Bond
       i = 0; input.gsub(delim) {|e| i+= 1 }
       delim_chars = delim.split('').uniq.join('')
       current_matches, future_matches = underscore_search(input, list).partition {|e|
-        e[/^[^#{delim_chars}]+(#{delim}[^#{delim_chars}]+){0,#{i}}$/] }
-      (current_matches + future_matches.map {|e| e[/^(([^#{delim_chars}]+#{delim}){0,#{i+1}})/, 1] }).uniq
+        e[/^[^#{delim_chars}]*(#{delim}[^#{delim_chars}]+){0,#{i}}$/] }
+      (current_matches + future_matches.map {|e| e[/^(([^#{delim_chars}]*#{delim}){0,#{i+1}})/, 1] }).uniq
     end
   end
 end
