@@ -90,7 +90,7 @@ describe "method mission" do
   end
 
   describe "any instance method" do
-    before { complete(:method=>'Array#index') {|e| %w{ab cd ef ad} } }
+    before { complete(:method=>'Array#index', :search=>:anywhere) {|e| %w{ab cd ef ad} } }
 
     it "completes for objects of a subclass" do
       class ::MyArray < Array; end
@@ -107,9 +107,19 @@ describe "method mission" do
       tab("[{].index a").should == []
     end
 
-    it "with string :action copies existing action" do
+    it "with string :action copies its action" do
       complete(:method=>"Array#fetch", :action=>"Array#index")
       tab('[].fetch a').should == %w{ab ad}
+    end
+
+    it "with string :action copies its search" do
+      complete(:method=>"Array#fetch", :action=>"Array#index")
+      tab('[].fetch d').should == %w{cd ad}
+    end
+
+    it "with string :action and :search doesn't copy its search" do
+      complete(:method=>"Array#fetch", :action=>"Array#index", :search=>:normal)
+      tab('[].fetch d').should == []
     end
 
     it "with symbol :action references Rc method" do
