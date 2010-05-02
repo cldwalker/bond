@@ -12,7 +12,7 @@ complete(:method=>"Object#send") {|e|
       (action = MethodMission.find_action(e.object, meth.to_s))
       e.argument -= 1
       e.arguments.shift
-      action.call(e)
+      action[0].call(e)
     end
   else
     send_methods(e.object)

@@ -208,6 +208,11 @@ describe "method mission" do
     tab("String.new a").should == %w{ab ad}
   end
 
+  it "with :search completes" do
+    complete(:method=>"blah", :search=>:anywhere) { %w{abc bcd cde} }
+    tab('blah bc').should == ['abc', 'bcd']
+  end
+
   describe "with :class" do
     it "completes for instance methods" do
       complete(:method=>"blong", :class=>"Array#") { %w{ab cd ef ad} }

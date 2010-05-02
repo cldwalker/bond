@@ -17,7 +17,7 @@ module Bond
     end
 
     def after_match(input)
-      @action = default_action
+      set_action_and_search
       @completion_prefix, typed = input.to_s.sub(/#{Regexp.quote(@matched[-1])}$/, ''), @matched[-1]
       create_input typed, :object=>@evaled_object, :argument=>1
     end

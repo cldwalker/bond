@@ -58,4 +58,9 @@ describe "operator method mission" do
     complete(:method=>"Hash.*") { %w{ab cd ae} }
     tab('Hash * a').should == %w{ab ae}
   end
+
+  it "with :search completes" do
+    complete(:method=>"Array#*", :search=>:anywhere) { %w{abc bcd cde} }
+    tab('[1, 2] * b').should == ['abc', 'bcd']
+  end
 end

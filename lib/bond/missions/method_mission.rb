@@ -19,7 +19,7 @@ module Bond
   #            indicate instance/class method. Suggested for use with :methods.
   # [*:action*] If a string, it refers to another :method's action. This is useful in reusing another
   #             method's action. Otherwise defaults to normal :action behavior.
-  # [*:search*] This option is not supported by a MethodMission/OperatorMethodMission completion.
+  # [*:name*,*:place*] These options aren't supported by a MethodMission/OperatorMethodMission completion.
   # ==== Examples:
   #   Bond.complete(:methods=>%w{delete index rindex}, :class=>"Array#") {|e| e.object }
   #   Bond.complete(:method=>"Hash#index") {|e| e.object.values }
@@ -66,7 +66,11 @@ module Bond
     def create(options)
       if options[:action].is_a?(String)
         klass, klass_meth = split_method(options[:action])
-        options[:action] = (current_actions(options[:action])[klass_meth] || {})[klass]
+        if (arr = (current_actions(options[:action])[klass_meth] || {})[klass])
+          options[:action], options[:search] = arr
+        else
+          raise InvalidMissionError, "string :action"
+        end
       end
 
       meths = options[:methods] || Array(options[:method])
@@ -78,7 +82,7 @@ module Bond
 
       meths.each {|meth|
         klass, klass_meth = split_method(meth)
-        (current_actions(meth)[klass_meth] ||= {})[klass] = options[:action]
+        (current_actions(meth)[klass_meth] ||= {})[klass] = [options[:action], options[:search]].compact
       }
       nil
     end
@@ -158,18 +162,22 @@ module Bond
   end
 
   def default_action
-    MethodMission.last_action
+    MethodMission.last_action[0]
   end
 
   def matched_method
     @matched[2]
   end
 
-  def after_match(input)
+  def set_action_and_search
     @action = default_action
+    @search = MethodMission.last_action[1] || Mission.default_search
+  end
+
+  def after_match(input)
+    set_action_and_search
     @completion_prefix, typed = @matched[3], @matched[-1]
-    arg_count = typed.count(',')
-    input_options = {:object=>@evaled_object, :argument=>1+arg_count,
+    input_options = {:object=>@evaled_object, :argument=>1+typed.count(','),
       :arguments=>(@completion_prefix.to_s+typed).split(/\s*,\s*/) }
     if typed.to_s.include?(',') && (match = typed.match(/(.*?\s*)([^,]*)$/))
       typed = match[2]

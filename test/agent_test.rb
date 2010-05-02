@@ -83,41 +83,49 @@ describe "Agent" do
 
   describe "complete" do
     before {|e| Bond.agent.reset }
+    def complete_prints_error(msg, *args, &block)
+      capture_stderr { complete(*args, &block) }.should =~ msg
+    end
+
     it "with no :action prints error" do
-      capture_stderr { complete :on=>/blah/ }.should =~ /Invalid :action/
+      complete_prints_error /Invalid :action/, :on=>/blah/
     end
 
     it "with no :on prints error" do
-      capture_stderr { complete {|e| []} }.should =~ /Invalid :on/
+      complete_prints_error(/Invalid :on/) { [] }
     end
 
     it "with invalid :on prints error" do
-      capture_stderr { complete(:on=>'blah') {|e| []} }.should =~ /Invalid :on/
+      complete_prints_error(/Invalid :on/, :on=>'blah') { [] }
     end
 
     it "with internal failure prints error" do
       Mission.expects(:create).raises(RuntimeError, 'blah')
-      capture_stderr { complete(:on=>/blah/) {|e| [] } }.should =~ /Unexpected error.*blah/
+      complete_prints_error(/Unexpected error.*blah/, :on=>/blah/) { [] }
     end
 
     it "with invalid :anywhere and :prefix prints no error" do
-      capture_stderr { complete(:prefix=>nil, :anywhere=>:blah) {} }.should == ''
+      complete_prints_error(/^$/, :prefix=>nil, :anywhere=>:blah) {}
     end
 
     it "with invalid :object prints no error" do
-      capture_stderr { complete(:object=>:Mod) {} }.should == ''
+      complete_prints_error(/^$/, :object=>:Mod) {}
     end
 
     it "with invalid :method prints error" do
-      capture_stderr { complete(:method=>true) {} }.should =~ /Invalid :method\(s\)/
+      complete_prints_error(/Invalid :method\(s\)/, :method=>true) {}
     end
 
     it "with invalid :methods prints error" do
-      capture_stderr { complete(:methods=>[:blah]) {} }.should =~ /Invalid :method\(s\)/
+      complete_prints_error(/Invalid :method\(s\)/, :methods=>[:blah]) {}
+    end
+
+    it "with invalid :action for method completion prints error" do
+      complete_prints_error(/Invalid string :action/, :method=>"blah", :action=>"Kernel#wtf") {}
     end
 
     it "with invalid :class prints no error" do
-      capture_stderr { complete(:method=>'ok', :class=>/wtf/) {} }.should == ''
+      complete_prints_error(/^$/, :method=>'ok', :class=>/wtf/) {}
     end
 
     it "places missions last when declared last" do
