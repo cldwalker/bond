@@ -32,7 +32,7 @@ module Bond
       list.grep(/^#{Regexp.escape(input)}/i)
     end
 
-    # Searches completions from the beginning but also provides aliasing of underscored words.
+    # A normal_search which also provides aliasing of underscored words.
     # For example 'some_dang_long_word' can be specified as 's_d_l_w'. Aliases can be any unique string
     # at the beginning of an underscored word. For example, to choose the first completion between 'so_long'
     # and 'so_larger', type 's_lo'.
@@ -45,7 +45,12 @@ module Bond
       end
     end
 
-    # Does the default search on the given paths but only returns ones that match the input's current
+    # Default search across missions to be invoked by a search that wrap another search i.e. files_search.
+    def default_search(input, list)
+      send("#{Search.default_search}_search", input, list)
+    end
+
+    # Does default_search on the given paths but only returns ones that match the input's current
     # directory depth, determined by '/'. For example if a user has typed 'irb/c', this search returns
     # matching paths that are one directory deep i.e. 'irb/cmd/ irb/completion.rb irb/context.rb'.
     def files_search(input, list)
@@ -61,7 +66,7 @@ module Bond
     def incremental_filter(input, list, delim)
       i = 0; input.gsub(delim) {|e| i+= 1 }
       delim_chars = delim.split('').uniq.join('')
-      current_matches, future_matches = underscore_search(input, list).partition {|e|
+      current_matches, future_matches = default_search(input, list).partition {|e|
         e[/^[^#{delim_chars}]*(#{delim}[^#{delim_chars}]+){0,#{i}}$/] }
       (current_matches + future_matches.map {|e| e[/^(([^#{delim_chars}]*#{delim}){0,#{i+1}})/, 1] }).uniq
     end

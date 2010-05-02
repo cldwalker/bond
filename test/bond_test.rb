@@ -21,9 +21,9 @@ describe "Bond" do
     end
 
     it "sets default search" do
-      Bond.start :default_search=>:underscore, :readline_plugin=>valid_readline_plugin
+      Bond.start :default_search=>:anywhere, :readline_plugin=>valid_readline_plugin
       complete(:on=>/blah/) { %w{all_quiet on_the western_front}}
-      tab('blah a_q').should == ["all_quiet"]
+      tab('blah qu').should == ["all_quiet"]
     end
 
     it "defines completion in block" do

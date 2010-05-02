@@ -58,6 +58,12 @@ describe "Search" do
     tab('blah ?').should == ['?ok']
   end
 
+  it "default search uses default search" do
+    Search.default_search.should == :underscore
+    Rc.expects(:underscore_search).with('a', %w{ab cd})
+    Rc.send(:default_search, 'a', %w{ab cd})
+  end
+
   describe "modules search" do
     before {
       complete(:on=>/blah/, :search=>:modules) { %w{A1 M1::Z M1::Y::X M2::X} }
