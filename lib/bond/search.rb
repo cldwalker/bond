@@ -7,13 +7,18 @@ module Bond
   # Say you want to create a custom search which ignores completions containing '-'.
   # In a completion file under Rc namespace, define this method:
   #   def ignore_hyphen_search(input, list)
-  #     default_search(input, list.select {|e| e !~ /-/ })
+  #     normal_search(input, list.select {|e| e !~ /-/ })
   #   end
   #
   # Now you can pass this custom search to any complete() as :search=>:ignore_hyphen
   module Search
+    class<<self
+      # Default search used across missions, set by Bond.config[:default_search]
+      attr_accessor :default_search
+    end
+
     # Searches completions from the beginning of the string.
-    def default_search(input, list)
+    def normal_search(input, list)
       list.grep(/^#{Regexp.escape(input)}/)
     end
 
@@ -36,7 +41,7 @@ module Bond
         regex = input.split('_').map {|e| Regexp.escape(e) }.join("([^_]+)?_")
         list.select {|e| e =~ /^#{regex}/ }
       else
-        default_search(input, list)
+        normal_search(input, list)
       end
     end
 

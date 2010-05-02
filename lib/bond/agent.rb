@@ -11,7 +11,7 @@ module Bond
       setup_readline_plugin(options[:readline_plugin])
       @default_mission_action = options[:default_mission] if options[:default_mission]
       Mission.eval_binding = options[:eval_binding] if options[:eval_binding]
-      Mission.default_search = options[:default_search] if options[:default_search]
+      Search.default_search = options[:default_search] || :normal
       @missions = []
     end
 

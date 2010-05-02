@@ -7,7 +7,7 @@ complete :all_operator_methods=>true
 complete(:name=>:constants, :anywhere=>'(((::)?[A-Z][^:.\(]*)+)::?([^:.]*)') {|e|
   receiver = e.matched[2]
   candidates = eval("#{receiver}.constants | #{receiver}.methods") || []
-  default_search(e.matched[5], candidates).map {|e| receiver + "::" + e}
+  normal_search(e.matched[5], candidates).map {|e| receiver + "::" + e}
 }
 # absolute constants
 complete(:prefix=>'::', :anywhere=>'[A-Z][^:\.\(]*') {|e| Object.constants }

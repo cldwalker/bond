@@ -8,8 +8,6 @@ module Bond
   # (block or :action) with which to generate possible completions.
   class Mission
     class<<self
-      # default search used across missions
-      attr_accessor :default_search
       # eval binding used across missions
       attr_accessor :eval_binding
       # Handles creation of proper Mission class depending on the options passed.
@@ -28,15 +26,9 @@ module Bond
         eval(string, ebinding)
       end
 
-      #:stopdoc:
-      def eval_binding
+      def eval_binding #:nodoc:
         @eval_binding || IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
       end
-
-      def default_search
-        @default_search ||= :default
-      end
-      #:startdoc:
     end
 
     # All known operator methods
@@ -61,7 +53,7 @@ module Bond
       @action, @on = options[:action], options[:on]
       @place = options[:place] if options[:place]
       @name = options[:name] if options[:name]
-      @search = options.has_key?(:search) ? options[:search] : Mission.default_search
+      @search = options.has_key?(:search) ? options[:search] : Search.default_search
     end
 
     # Returns a boolean indicating if a mission matches the given Input and should be executed for completion.

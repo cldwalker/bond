@@ -27,9 +27,9 @@ module Bond
   # [*:method*, *:methods*, *:class*] See MethodMission.
   # [*:anywhere*, *:prefix*] See AnywhereMission.
   # [*:object*] See ObjectMission.
-  # [*:search*] A symbol or false which determines how completions are searched. Defaults to :default_search
-  #             value in Bond.config. If false, search is turned off and assumed to be done in the action.
-  #             Possible symbols are :anywhere, :ignore_case, :underscore, :default, :files and :modules.
+  # [*:search*] A symbol or false which determines how completions are searched. Defaults to
+  #             Search.default_search. If false, search is turned off and assumed to be done in the action.
+  #             Possible symbols are :anywhere, :ignore_case, :underscore, :normal, :files and :modules.
   #             See Search for more info.
   # [*:action*] Rc method name that takes an Input and returns possible completions. See MethodMission for
   #             specific behavior with :method(s).

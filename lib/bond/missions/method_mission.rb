@@ -173,7 +173,7 @@ module Bond
 
   def set_action_and_search
     @action = default_action
-    @search = MethodMission.last_find[1] || Mission.default_search
+    @search = MethodMission.last_find[1] || Search.default_search
   end
 
   def after_match(input)
