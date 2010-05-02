@@ -3,7 +3,8 @@ module Bond
   # To create this mission or OperatorMethodMission, :method or :methods must be passed to Bond.complete.
   # A completion for a given module/class effects any object that has it as an ancestor. If an object
   # has two ancestors that have completions for the same method, the ancestor closer to the object is
-  # picked. For example, if Array#collect and Enumerable#collect have completions, Array#collect is chosen.
+  # picked. For example, if Array#collect and Enumerable#collect have completions, argument completion on
+  # '[].collect ' would use Array#collect.
   #--
   # Unlike other missions, creating these missions with Bond.complete doesn't add more completion rules
   # for an Agent to look through. Instead, all :method(s) completions are handled by one MethodMission
@@ -53,13 +54,13 @@ module Bond
   #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose=>true
   class MethodMission < Bond::Mission
   class<<self
-    # Hash of instance method actions which maps methods to hashes of modules to actions
+    # Hash of instance method completions which maps methods to hashes of modules to arrays ([action, search])
     attr_accessor :actions
-    # Same as :actions but for class method actions
+    # Same as :actions but for class methods
     attr_accessor :class_actions
-    # Stores action from last search in MethodMission.find_action
-    attr_accessor :last_action
-    # Stores class from last search in MethodMission.find_action
+    # Stores last search result from MethodMission.find
+    attr_accessor :last_find
+    # Stores class from last search in MethodMission.find
     attr_accessor :last_class
 
     # Creates a method action given the same options as Bond.complete
@@ -112,16 +113,17 @@ module Bond
       meth.split(/[.#]/,2)
     end
 
-    # Returns the first action by looking up the object's ancestors and finding the first
-    # one that has an action defined for the given method.
-    def find_action(obj, meth)
-      last_action = find_action_with(obj, meth, :<=, @class_actions) if obj.is_a?(Module)
-      last_action = find_action_with(obj, meth, :is_a?, @actions) unless last_action
-      @last_class = last_action.is_a?(Array) ? last_action[0] : nil
-      @last_action = last_action ? last_action[1] : last_action
+    # Returns the first completion by looking up the object's ancestors and finding the closest
+    # one that has a completion definition for the given method. Completion is returned
+    # as an array containing action proc and optional search to go with it.
+    def find(obj, meth)
+      last_find = find_with(obj, meth, :<=, @class_actions) if obj.is_a?(Module)
+      last_find = find_with(obj, meth, :is_a?, @actions) unless last_find
+      @last_class = last_find.is_a?(Array) ? last_find[0] : nil
+      @last_find = last_find ? last_find[1] : last_find
     end
 
-    def find_action_with(obj, meth, find_meth, actions) #:nodoc:
+    def find_with(obj, meth, find_meth, actions) #:nodoc:
       (actions[meth] || {}).select {|k,v| get_class(k) }.
         sort {|a,b| get_class(a[0]) <=> get_class(b[0]) || -1 }.
         find {|k,v| obj.send(find_meth, get_class(k)) }
@@ -150,7 +152,7 @@ module Bond
   #:stopdoc:
   def do_match(input)
     (@on = default_on) && super && eval_object(@matched[1] ? @matched[1] : 'self') &&
-      MethodMission.find_action(@evaled_object, @meth = matched_method)
+      MethodMission.find(@evaled_object, @meth = matched_method)
   end
 
   def default_on
@@ -162,7 +164,7 @@ module Bond
   end
 
   def default_action
-    MethodMission.last_action[0]
+    MethodMission.last_find[0]
   end
 
   def matched_method
@@ -171,7 +173,7 @@ module Bond
 
   def set_action_and_search
     @action = default_action
-    @search = MethodMission.last_action[1] || Mission.default_search
+    @search = MethodMission.last_find[1] || Mission.default_search
   end
 
   def after_match(input)

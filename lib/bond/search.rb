@@ -29,8 +29,8 @@ module Bond
 
     # Searches completions from the beginning but also provides aliasing of underscored words.
     # For example 'some_dang_long_word' can be specified as 's_d_l_w'. Aliases can be any unique string
-    # at the beginning of an underscored word. For example, to choose the first completion between 'so_long' and 'so_larger',
-    # type 's_lo'.
+    # at the beginning of an underscored word. For example, to choose the first completion between 'so_long'
+    # and 'so_larger', type 's_lo'.
     def underscore_search(input, list)
       if input[/_(.+)$/]
         regex = input.split('_').map {|e| Regexp.escape(e) }.join("([^_]+)?_")
@@ -40,14 +40,19 @@ module Bond
       end
     end
 
+    # Does the default search on the given paths but only returns ones that match the input's current
+    # directory depth, determined by '/'. For example if a user has typed 'irb/c', this search returns
+    # matching paths that are one directory deep i.e. 'irb/cmd/ irb/completion.rb irb/context.rb'.
     def files_search(input, list)
       incremental_filter(input, list, '/')
     end
 
+    # Does the same as files_search but for modules. A module depth is delimited by '::'.
     def modules_search(input, list)
       incremental_filter(input, list, '::')
     end
 
+    # Used by files_search and modules_search.
     def incremental_filter(input, list, delim)
       i = 0; input.gsub(delim) {|e| i+= 1 }
       delim_chars = delim.split('').uniq.join('')

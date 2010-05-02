@@ -29,7 +29,8 @@ module Bond
   # [*:object*] See ObjectMission.
   # [*:search*] A symbol or false which determines how completions are searched. Defaults to :default_search
   #             value in Bond.config. If false, search is turned off and assumed to be done in the action.
-  #             Possible symbols are :anywhere, :ignore_case, :underscore, :default. See Search for more.
+  #             Possible symbols are :anywhere, :ignore_case, :underscore, :default, :files and :modules.
+  #             See Search for more info.
   # [*:action*] Rc method name that takes an Input and returns possible completions. See MethodMission for
   #             specific behavior with :method(s).
   # [*:place*] A number or :last which indicates where a mission is inserted amongst existing missions.

@@ -8,11 +8,11 @@ module Bond
   #   # complete arguments for any module's :public
   #   complete(:method=>"Module#public") {|e| e.object.instance_methods }
   #
-  #   # Share search_tags action across completions
-  #   complete(:method=>"edit_tags", :action=>:search_tags)
-  #   complete(:method=>"delete_tags", :search=>false) {|e| search_tags(e).grep(/#{e}/i) }
+  #   # Share generate_tags action across completions
+  #   complete(:method=>"edit_tags", :action=>:generate_tags)
+  #   complete(:method=>"delete_tags", :search=>false) {|e| generate_tags(e).grep(/#{e}/i) }
   #
-  #   def search_tags(input)
+  #   def generate_tags(input)
   #    ...
   #   end
   module Rc
