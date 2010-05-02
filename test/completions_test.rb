@@ -35,9 +35,9 @@ describe "completions for" do
     end
 
     it "#require" do
-      mock_libs = ['net/http.rb', 'net/https.rb', 'abbrev.rb'].map {|e| $:[0] + "/#{e}" }
+      mock_libs = ['net/http.rb', 'net/http/get.rb', 'abbrev.rb'].map {|e| $:[0] + "/#{e}" }
       Dir.stubs(:[]).returns(mock_libs)
-      tab("require 'net/htt").should == %w{net/http.rb net/https.rb}
+      tab("require 'net/htt").should == %w{net/http.rb net/http/}
     end
   end
 
@@ -87,6 +87,10 @@ describe "completions for" do
 
     it "#>" do
       tab("Object > Mod").should == %w{Module}
+    end
+
+    it "#> and :files search" do
+      tab("Object > Bon").should == %w{Bond Bond::}
     end
   end
 end
