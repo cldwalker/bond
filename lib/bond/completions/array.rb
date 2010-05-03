@@ -1,1 +1,1 @@
-complete(:methods=>%w{delete index rindex}, :class=>"Array#") {|e| e.object }
+complete(:methods=>%w{delete index rindex include?}, :class=>"Array#") {|e| e.object }

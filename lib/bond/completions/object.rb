@@ -1,10 +1,8 @@
-instance_meths = %w{instance_variable_get instance_variable_set remove_instance_variable}
+instance_meths = %w{instance_variable_get instance_variable_set remove_instance_variable instance_variable_defined?}
 complete(:methods=>instance_meths, :class=>"Object#") {|e| e.object.instance_variables }
 complete(:method=>"Object#instance_of?", :search=>:modules) { objects_of(Class) }
-complete(:methods=>%w{Object#is_a? Object#kind_a?}, :search=>:modules) { objects_of(Module) }
-complete(:method=>"Object#method") {|e|
-  e.object.is_a?(Module) ? e.object.methods - e.object.class.methods : e.object.class.instance_methods(false)
-}
+complete(:methods=>%w{is_a? kind_a? extend}, :class=>"Object#", :search=>:modules) { objects_of(Module) }
+complete(:methods=>%w{Object#method Object#respond_to?}) {|e| e.object.methods }
 complete(:method=>"Object#[]") {|e| e.object.keys rescue [] }
 complete(:method=>"Object#send") {|e|
   if e.argument > 1
