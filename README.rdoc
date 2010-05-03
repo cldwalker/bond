@@ -5,7 +5,7 @@ Note: To read a linked version of this README, {click here}[http://tagaholic.me/
 Bond is on a mission to improve irb's autocompletion. Aside from doing everything irb's can do and fixing its quirks,
 Bond can autocomplete argument(s) to methods, uniquely completing per module, per method and per argument. Bond brings
 irb's completion closer to bash/zsh as it provides a configuration system and a DSL for creating custom completions
-and completion rules. With this configuration system, users can customize their irb autocompletion experience and share
+and completion rules. With this configuration system, users can customize their irb autocompletions and share
 it with others. Bond is able to offer more than irb's completion since it uses a Readline C extension to get the full
 line of input when completing as opposed to irb's last-word approach.
 
@@ -23,34 +23,41 @@ To start off, replace irb's completion (require 'irb/completion') with Bond's en
   Bond.start
 
 This gives you more consistent method completion on any object, customizable completions
-and argument completion of some 60+ methods including Hash#[], Kernel#system, Kernel#require and some Rails methods.
+and argument completion of some 80+ methods including Hash#[], Kernel#system, Kernel#require and some Rails methods.
 
 == Method Argument Completion
 
 By default, Bond autocompletes arguments for a number of core methods:
 
   $ irb
-  # anything in $LOAD_PATH and gems
+  # require completes gems and anything in $LOAD_PATH
   >> require 'rb[TAB]
-  rbconfig.rb          rbconfig/datadir.rb 
+  rbconfig.rb          rbconfig/
   >> require 'rbconfig
   >> require 'rbconfig.rb'
-  => true
 
-  # any hash keys
+  # hash methods can complete their keys
   >> CONFIG::CONFIG[TAB]
-  Display all 142 possibilities? (y or n)
   >> CONFIG::CONFIG['m[TAB]
   >> CONFIG::CONFIG['mandir'
   >> CONFIG::CONFIG['mandir']
-  => "/usr/share/man"
 
-  # system commands
+  >> ENV['CO[TAB]
+  COLUMNS       COMMAND_MODE
+  >> ENV['COL[TAB]
+  >> ENV['COLUMNS'
+  >> ENV['COLUMNS']
+
+  # array methods can complete their elements
+  >> %w{ab bc cd de}.delete '[TAB]
+  ab  bc  cd  de
+  >> %w{ab  bc  cd  de}.delete 'a[TAB]
+  >> %w{ab  bc  cd  de}.delete 'ab'
+
+  # system can complete shell commands
   >> system 'ec[TAB]
   >> system 'echo
   >> system 'echo'
-
-  => true
 
 Bond also comes with some basic Rails completions, mostly for attributes/columns of models:
 
@@ -73,7 +80,7 @@ To see more methods whose arguments can be completed:
 == Multiple Arguments
 Every time a comma appears after a method, Bond starts a new completion. This allows a method to
 complete multiple arguments. *Each* argument can be have a unique set of completions since a completion action
-is aware of what argument it is currently completing. Take for example the completion Object#send:
+is aware of what argument it is currently completing. Take for example the completion for Object#send:
 
   >> Bond.send :me[TAB]
   >> Bond.send :method
@@ -83,10 +90,9 @@ is aware of what argument it is currently completing. Take for example the compl
   >> Bond.send :method, :agent
   => #<Method: Module#agent>
 
-The first argument completed a Bond method while the second argument completed an argument for Bond.method. Any argument after
-the first argument is clever as it looks up the completion action of the first argument. The second argument completed in
-this case only because there exists a Module#method completion action. Using Object#send, it's possible to define and use completions
-for private methods:
+Notice the arguments were completed differently: the first completing for Bond.send and the second for Bond.method. The second
+argument was only able to complete because there's a completion for Module#method. Using Object#send it's possible to
+use completions defined for private methods i.e. Module#remove_const:
   >> Bond.send :remove_const, :A[TAB]
   :Agent            :AnywhereMission
   >> Bond.send :remove_const, :Ag[TAB]
@@ -118,15 +124,15 @@ Bond's completion resembles bash/zsh's. When Bond.start is called, Bond looks up
 
 To read up on the wealth of completion types one can make, see the docs for Bond.complete.
 
-=== Creating Method Argument Completions
-To dynamically generate completions per object as in the case of Hash#[]:
+=== Creating Argument Completions for Methods
+While the above method completion was a static list, most completions will dynamically generate completions based on the method's
+receiver (object). Let's look at such an example with Hash#[] :
   complete(:method=>"Hash#[]") {|e| e.object.keys }
 
-The argument passed into the completion block is a Bond::Input object. While this object looks like
-and can be used as a string, it comes with useful attributes like #object.
-
-Another such useful attribute is Bond::Input#argument which holds the current argument number being completed.
-Here's a completion that completes differently for the first argument and the remaining arguments:
+As you can see, the currently typed object is available as the :object attribute of the block's argument, a Bond::Input object.
+This object can offer other useful attributes describing what the user has typed. For example, the :argument attribute holds the
+current argument number being completed. Here's a completion that uses this attribute to complete differently for the first argument
+and remaining arguments:
    complete(:method=>'example') {|e| e.argument > 1 ? %w{verbose force noop} : %w{one two three} }
 
 === Creating Other Completions

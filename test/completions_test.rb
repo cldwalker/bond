@@ -67,7 +67,7 @@ describe "completions for" do
     end
 
     it "#method" do
-      tab("Bond::M.method :h").should == [':home']
+      tab("Bond::M.method :ho").should == [':home']
     end
 
     it "#[]" do
