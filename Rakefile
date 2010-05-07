@@ -19,7 +19,7 @@ begin
     s.name = "bond"
     s.version = Bond::VERSION
     s.summary = "Mission: Easy custom autocompletion for arguments, methods and beyond. Accomplished for irb and any other readline-like console environments."
-    s.description = "Bond is on a mission to make custom autocompletion easy in irb and other console/readline-like environments. Bond supports custom argument completion of methods, method completion of objects and anything else your wicked regex's can do. Bond comes armed with a Readline C extension to get the full line of input as opposed to irb's last-word based completion. Bond makes custom searching of possible completions easy which allows for nontraditional ways of autocompleting i.e. instant aliasing of multi worded methods."
+    s.description = "Bond is on a mission to improve irb’s autocompletion. Aside from doing everything irb’s can do and fixing its quirks, Bond can autocomplete argument(s) to methods, uniquely completing per module, per method and per argument. Bond brings irb’s completion closer to bash/zsh as it provides a configuration system and a DSL for creating custom completions and completion rules. With this configuration system, users can customize their irb autocompletions and share it with others. Bond is able to offer more than irb’s completion since it uses a Readline C extension to get the full line of input when completing as opposed to irb’s last-word approach."
     s.email = "gabriel.horner@gmail.com"
     s.homepage = "http://tagaholic.me/bond/"
     s.authors = ["Gabriel Horner"]
