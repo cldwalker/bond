@@ -1,9 +1,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang='en'>
   <head>
-    <title>: Bond::InvalidMissionActionError [RDoc Documentation]</title>
+    <title>File: anywhere_mission.rb [RDoc Documentation]</title>
     <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
-    <link href='../../rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
+    <link href='../../../../rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
     <script type='text/javascript'>
       //<![CDATA[
         function popupCode(url) {
@@ -23,28 +23,37 @@
     </script>
   </head>
   <body class='page'>
-    <div class='class' id='wrapper'>
+    <div class='file' id='wrapper'>
       <div class='header'>
-        <h1 class='name'>
-          <span class='type'>Class</span>
-          Bond::InvalidMissionActionError
-        </h1>
-        <ol class='paths'>
-          <li>
-            <a href="../../files/lib/bond/mission_rb.html">lib/bond/mission.rb</a>
-          </li>
-        </ol>
-        <div class='parent'>
-          Parent:
-          <strong>StandardError</strong>
+        <h1 class='name'>anywhere_mission.rb</h1>
+        <div class='paths'>
+          lib/bond/missions/anywhere_mission.rb
+        </div>
+        <div class='last-update'>
+          Last Update:
+          <span class='datetime'>Tue Apr 27 05:17:10 -0400 2010</span>
         </div>
       </div>
       <div id='content'>
         <div id='text'>
           <div id='description'>
             <p>
-            Occurs when a mission action is incorrectly defined.
+            A mission which completes anywhere i.e. even after non word break
+            characters such as &#8217;[&#8217; or &#8217;}&#8217;. It generates the
+            following regexp condition /#{prefix}(#{anywhere})$/ and passes the first
+            capture group to the mission action.
             </p>
+            <h4><a href="../../../../classes/Bond.html#M000002">Bond.complete</a> Options:</h4>
+            <dl>
+            <dt><b>:anywhere</b></dt><dd>A regexp string which generates the first capture group in the above
+            regexp.
+            
+            </dd>
+            <dt><b>:prefix</b></dt><dd>An optional string which prefixes the first capture group in the above
+            regexp.
+            
+            </dd>
+            </dl>
           </div>
           <div id='section'>
           </div>

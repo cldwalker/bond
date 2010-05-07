@@ -8,9 +8,9 @@
     
       <meta name="keywords" content="irb completion, irb autocompletion, ruby completion, ruby autocompletion, console completion, method completion, argument completion, ruby bond" />
       <meta name="description" content="<p>
-Bond is on a mission to make custom autocompletion easy in irb and other
-console/readline-like environments. Bond supports custom argument
-completion of met" />
+Bond is on a mission to improve irb&#8217;s autocompletion. Aside from
+doing everything irb&#8217;s can do and fixing its quirks, Bond can
+autocomplete argu" />
     
     <link rel="stylesheet" href="http://tagaholic.me/stylesheets/master.css" type="text/css" media="screen" charset="utf-8"/>
     <link rel="stylesheet" href="http://tagaholic.me/stylesheets/syntax.css" type="text/css" />
@@ -70,20 +70,22 @@ completion of met" />
 
 
 <h2>Install</h2>
-<pre id="install">gem install cldwalker-bond --source http://gems.github.com</pre>
+<pre id="install">gem install bond</pre>
 
 
 <h2>Description</h2>
 <p>
   <p>
-Bond is on a mission to make custom autocompletion easy in irb and other
-console/readline-like environments. Bond supports custom argument
-completion of methods, method completion of objects and anything else your
-wicked regex&#8217;s can do. Bond comes armed with a Readline C extension
-to get the full line of input as opposed to irb&#8217;s last-word based
-completion. Bond makes custom searching of possible completions easy which
-allows for nontraditional ways of autocompleting i.e. instant aliasing of
-multi worded methods.
+Bond is on a mission to improve irb&#8217;s autocompletion. Aside from
+doing everything irb&#8217;s can do and fixing its quirks, Bond can
+autocomplete argument(s) to methods, uniquely completing per module, per
+method and per argument. Bond brings irb&#8217;s completion closer to
+bash/zsh as it provides a configuration system and a DSL for creating
+custom completions and completion rules. With this configuration system,
+users can customize their irb autocompletions and share it with others.
+Bond is able to offer more than irb&#8217;s completion since it uses a
+Readline C extension to get the full line of input when completing as
+opposed to irb&#8217;s last-word approach.
 </p>
 
   

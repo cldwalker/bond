@@ -43,19 +43,22 @@
         <div id='text'>
           <div id='description'>
             <p>
-            Handles finding and executing the first mission that matches the input
-            line. Once found, it calls the mission&#8217;s action.
+            Every time a completion is attempted, the <a href="Agent.html">Agent</a>
+            searches its missions for the first one that matches the user input. Using
+            either the found mission or <a
+            href="Agent.html#M000058">Agent.default_mission</a>, the <a
+            href="Agent.html">Agent</a> executes the mission&#8217;s action.
             </p>
           </div>
           <div id='method-list'>
             <h2>Methods</h2>
             <h3>public instance</h3>
             <ol>
-              <li><a href="#M000026">call</a></li>
-              <li><a href="#M000024">complete</a></li>
-              <li><a href="#M000028">default_mission</a></li>
-              <li><a href="#M000025">recomplete</a></li>
-              <li><a href="#M000027">spy</a></li>
+              <li><a href="#M000056">call</a></li>
+              <li><a href="#M000054">complete</a></li>
+              <li><a href="#M000058">default_mission</a></li>
+              <li><a href="#M000055">recomplete</a></li>
+              <li><a href="#M000057">spy</a></li>
             </ol>
           </div>
           <div id='section'>
@@ -71,13 +74,21 @@
                       The array of missions that will be searched when a completion occurs.
                     </td>
                   </tr>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>weapon</td>
+                    <td class='context-item-value'>[R]</td>
+                    <td class='context-item-desc'>
+                      
+                      An agent&#8217;s best friend a.k.a. the readline plugin.
+                    </td>
+                  </tr>
                 </table>
               </div>
             </div>
             <div id='methods'>
               <h2>Public instance methods</h2>
-              <div class='public-instance method' id='method-M000026'>
-                <a name='M000026'>      </a>
+              <div class='public-instance method' id='method-M000056'>
+                <a name='M000056'>      </a>
                 <div class='synopsis'>
                   <span class='name'>call</span>
                   <span class='arguments'>(input)</span>
@@ -88,67 +99,84 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000026-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000056-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000026-source'><span class="ruby-comment cmt"># File lib/bond/agent.rb, line 57</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">call</span>(<span class="ruby-identifier">input</span>)&#x000A;      <span class="ruby-identifier">mission_input</span> = <span class="ruby-identifier">line_buffer</span>&#x000A;      <span class="ruby-identifier">mission_input</span> = <span class="ruby-identifier">$1</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">mission_input</span> <span class="ruby-operator">!~</span> <span class="ruby-node">/#{Regexp.escape(input)}$/</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">mission_input</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/^(.*#{Regexp.escape(input)})/</span>&#x000A;      (<span class="ruby-identifier">mission</span> = <span class="ruby-identifier">find_mission</span>(<span class="ruby-identifier">mission_input</span>)) <span class="ruby-operator">?</span> <span class="ruby-identifier">mission</span>.<span class="ruby-identifier">execute</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">default_mission</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">input</span>)&#x000A;    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">FailedExecutionError</span>&#x000A;      <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;&quot;</span>, <span class="ruby-identifier">$!</span>.<span class="ruby-identifier">message</span>&#x000A;    <span class="ruby-keyword kw">rescue</span>&#x000A;      <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Bond</span>.<span class="ruby-identifier">config</span>[<span class="ruby-identifier">:debug</span>]&#x000A;        <span class="ruby-identifier">p</span> <span class="ruby-identifier">$!</span>&#x000A;        <span class="ruby-identifier">p</span> <span class="ruby-identifier">$!</span>.<span class="ruby-identifier">backtrace</span>.<span class="ruby-identifier">slice</span>(<span class="ruby-value">0</span>,<span class="ruby-value">5</span>)&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;      <span class="ruby-identifier">default_mission</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-identifier">input</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000056-source'><span class="ruby-comment cmt"># File lib/bond/agent.rb, line 65</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">call</span>(<span class="ruby-identifier">input</span>)&#x000A;      <span class="ruby-identifier">mission_input</span> = <span class="ruby-ivar">@weapon</span>.<span class="ruby-identifier">line_buffer</span>&#x000A;      <span class="ruby-identifier">mission_input</span> = <span class="ruby-identifier">$1</span> <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">mission_input</span> <span class="ruby-operator">!~</span> <span class="ruby-node">/#{Regexp.escape(input)}$/</span> <span class="ruby-operator">&amp;&amp;</span> <span class="ruby-identifier">mission_input</span> <span class="ruby-operator">=~</span> <span class="ruby-node">/^(.*#{Regexp.escape(input)})/</span>&#x000A;      (<span class="ruby-identifier">mission</span> = <span class="ruby-identifier">find_mission</span>(<span class="ruby-identifier">mission_input</span>)) <span class="ruby-operator">?</span> <span class="ruby-identifier">mission</span>.<span class="ruby-identifier">execute</span> <span class="ruby-operator">:</span> <span class="ruby-identifier">default_mission</span>.<span class="ruby-identifier">execute</span>(<span class="ruby-constant">Input</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">input</span>))&#x000A;    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">FailedMissionError</span>&#x000A;      <span class="ruby-identifier">completion_error</span>(<span class="ruby-identifier">$!</span>.<span class="ruby-identifier">message</span>[<span class="ruby-value">0</span>], <span class="ruby-node">&quot;Completion Info: #{$!.message[1]}&quot;</span>)&#x000A;    <span class="ruby-keyword kw">rescue</span>&#x000A;      <span class="ruby-identifier">completion_error</span> <span class="ruby-node">&quot;Failed internally with '#{$!.message}'.&quot;</span>,&#x000A;        <span class="ruby-value str">&quot;Please report this issue with debug on: Bond.config[:debug] = true.&quot;</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000024'>
-                <a name='M000024'>      </a>
+              <div class='public-instance method' id='method-M000054'>
+                <a name='M000054'>      </a>
                 <div class='synopsis'>
                   <span class='name'>complete</span>
                   <span class='arguments'>(options={}, &amp;block)</span>
                 </div>
+                <div class='description'>
+                  <p>
+                  Creates a mission.
+                  </p>
+                </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000024-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000054-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000024-source'><span class="ruby-comment cmt"># File lib/bond/agent.rb, line 17</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;      <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">mission</span> = <span class="ruby-identifier">create_mission</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)).<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Mission</span>)&#x000A;        <span class="ruby-identifier">mission</span>.<span class="ruby-identifier">place</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Integer</span>) <span class="ruby-operator">?</span> <span class="ruby-ivar">@missions</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-identifier">mission</span>.<span class="ruby-identifier">place</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">mission</span>).<span class="ruby-identifier">compact!</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@missions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">mission</span>&#x000A;        <span class="ruby-identifier">sort_last_missions</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;      <span class="ruby-identifier">mission</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000054-source'><span class="ruby-comment cmt"># File lib/bond/agent.rb, line 27</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;      <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">mission</span> = <span class="ruby-identifier">create_mission</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)).<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Mission</span>)&#x000A;        <span class="ruby-identifier">mission</span>.<span class="ruby-identifier">place</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Integer</span>) <span class="ruby-operator">?</span> <span class="ruby-ivar">@missions</span>.<span class="ruby-identifier">insert</span>(<span class="ruby-identifier">mission</span>.<span class="ruby-identifier">place</span> <span class="ruby-operator">-</span> <span class="ruby-value">1</span>, <span class="ruby-identifier">mission</span>).<span class="ruby-identifier">compact!</span> <span class="ruby-operator">:</span> <span class="ruby-ivar">@missions</span> <span class="ruby-operator">&lt;&lt;</span> <span class="ruby-identifier">mission</span>&#x000A;        <span class="ruby-identifier">sort_last_missions</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;      <span class="ruby-identifier">mission</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000028'>
-                <a name='M000028'>      </a>
+              <div class='public-instance method' id='method-M000058'>
+                <a name='M000058'>      </a>
                 <div class='synopsis'>
                   <span class='name'>default_mission</span>
                   <span class='arguments'>()</span>
                 </div>
                 <div class='description'>
                   <p>
-                  Default mission used by agent.
+                  Default mission used by agent. An instance of <a
+                  href="DefaultMission.html">DefaultMission</a>.
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000028-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000058-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000028-source'><span class="ruby-comment cmt"># File lib/bond/agent.rb, line 91</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">default_mission</span>&#x000A;      <span class="ruby-ivar">@default_mission</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">Missions</span><span class="ruby-operator">::</span><span class="ruby-constant">DefaultMission</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:action=</span><span class="ruby-operator">&gt;</span><span class="ruby-ivar">@default_mission_action</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000058-source'><span class="ruby-comment cmt"># File lib/bond/agent.rb, line 97</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">default_mission</span>&#x000A;      <span class="ruby-ivar">@default_mission</span> <span class="ruby-operator">||=</span> <span class="ruby-constant">DefaultMission</span>.<span class="ruby-identifier">new</span>(<span class="ruby-identifier">:action=</span><span class="ruby-operator">&gt;</span><span class="ruby-ivar">@default_mission_action</span>)&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000025'>
-                <a name='M000025'>      </a>
+              <div class='public-instance method' id='method-M000055'>
+                <a name='M000055'>      </a>
                 <div class='synopsis'>
                   <span class='name'>recomplete</span>
                   <span class='arguments'>(options={}, &amp;block)</span>
                 </div>
+                <div class='description'>
+                  <p>
+                  Creates a mission and replaces the mission it matches if possible.
+                  </p>
+                </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000025-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000055-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000025-source'><span class="ruby-comment cmt"># File lib/bond/agent.rb, line 36</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">recomplete</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;      <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">mission</span> = <span class="ruby-identifier">create_mission</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)).<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Mission</span>)&#x000A;        <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">existing_mission</span> = <span class="ruby-ivar">@missions</span>.<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">unique_id</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">mission</span>.<span class="ruby-identifier">unique_id</span> })&#x000A;          <span class="ruby-ivar">@missions</span>[<span class="ruby-ivar">@missions</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">existing_mission</span>)] = <span class="ruby-identifier">mission</span>&#x000A;          <span class="ruby-identifier">sort_last_missions</span>&#x000A;        <span class="ruby-keyword kw">else</span>&#x000A;          <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;No existing mission found to recomplete.&quot;</span>&#x000A;        <span class="ruby-keyword kw">end</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;      <span class="ruby-identifier">mission</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000055-source'><span class="ruby-comment cmt"># File lib/bond/agent.rb, line 44</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">recomplete</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)&#x000A;      <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">mission</span> = <span class="ruby-identifier">create_mission</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>)).<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Mission</span>)&#x000A;        <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">existing_mission</span> = <span class="ruby-ivar">@missions</span>.<span class="ruby-identifier">find</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">e</span>.<span class="ruby-identifier">name</span> <span class="ruby-operator">==</span> <span class="ruby-identifier">mission</span>.<span class="ruby-identifier">name</span> })&#x000A;          <span class="ruby-ivar">@missions</span>[<span class="ruby-ivar">@missions</span>.<span class="ruby-identifier">index</span>(<span class="ruby-identifier">existing_mission</span>)] = <span class="ruby-identifier">mission</span>&#x000A;          <span class="ruby-identifier">sort_last_missions</span>&#x000A;        <span class="ruby-keyword kw">else</span>&#x000A;          <span class="ruby-keyword kw">return</span> <span class="ruby-value str">&quot;No existing mission found to recomplete.&quot;</span>&#x000A;        <span class="ruby-keyword kw">end</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;      <span class="ruby-identifier">mission</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000027'>
-                <a name='M000027'>      </a>
+              <div class='public-instance method' id='method-M000057'>
+                <a name='M000057'>      </a>
                 <div class='synopsis'>
                   <span class='name'>spy</span>
                   <span class='arguments'>(input)</span>
                 </div>
+                <div class='description'>
+                  <p>
+                  Given a hypothetical user input, reports back what mission it would have
+                  found and executed.
+                  </p>
+                </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000027-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000057-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000027-source'><span class="ruby-comment cmt"># File lib/bond/agent.rb, line 71</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">spy</span>(<span class="ruby-identifier">input</span>)&#x000A;      <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">mission</span> = <span class="ruby-identifier">find_mission</span>(<span class="ruby-identifier">input</span>))&#x000A;        <span class="ruby-keyword kw">if</span> <span class="ruby-identifier">mission</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Missions</span><span class="ruby-operator">::</span><span class="ruby-constant">ObjectMission</span>)&#x000A;          <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Matches completion mission for object with an ancestor matching #{mission.object_condition.inspect}.&quot;</span>&#x000A;        <span class="ruby-keyword kw">elsif</span> <span class="ruby-identifier">mission</span>.<span class="ruby-identifier">is_a?</span>(<span class="ruby-constant">Missions</span><span class="ruby-operator">::</span><span class="ruby-constant">MethodMission</span>)&#x000A;          <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Matches completion mission for method matching #{mission.method_condition.inspect}.&quot;</span>&#x000A;        <span class="ruby-keyword kw">else</span>&#x000A;          <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Matches completion mission with condition #{mission.condition.inspect}.&quot;</span>&#x000A;        <span class="ruby-keyword kw">end</span>&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-node">&quot;Possible completions: #{mission.execute.inspect}&quot;</span>&#x000A;      <span class="ruby-keyword kw">else</span>&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Doesn't match a completion mission.&quot;</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000057-source'><span class="ruby-comment cmt"># File lib/bond/agent.rb, line 83</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">spy</span>(<span class="ruby-identifier">input</span>)&#x000A;      <span class="ruby-keyword kw">if</span> (<span class="ruby-identifier">mission</span> = <span class="ruby-identifier">find_mission</span>(<span class="ruby-identifier">input</span>))&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-identifier">mission</span>.<span class="ruby-identifier">match_message</span>, <span class="ruby-node">&quot;Possible completions: #{mission.execute.inspect}&quot;</span>,&#x000A;          <span class="ruby-node">&quot;Matches for #{mission.condition.inspect} are #{mission.matched.to_a.inspect}&quot;</span>&#x000A;      <span class="ruby-keyword kw">else</span>&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Doesn't match a completion.&quot;</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
             </div>

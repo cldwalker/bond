@@ -1,0 +1,168 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>: Bond::Rc [RDoc Documentation]</title>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <link href='../../rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='class' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>
+          <span class='type'>Module</span>
+          Bond::Rc
+        </h1>
+        <ol class='paths'>
+          <li>
+            <a href="../../files/lib/bond/rc_rb.html">lib/bond/rc.rb</a>
+          </li>
+        </ol>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='description'>
+            <p>
+            Namespace in which completion files, ~/.bondrc and
+            ~/.bond/completions/*.rb, are evaluated. Methods in this module and <a
+            href="Search.html">Search</a> are the DSL in completion files and can be
+            used within completion actions.
+            </p>
+            <h3>Example ~/.bondrc</h3>
+            <pre># complete arguments for any object's :respond_to?&#x000A;complete(:method=&gt;&quot;Object#respond_to?&quot;) {|e| e.object.methods }&#x000A;# complete arguments for any module's :public&#x000A;complete(:method=&gt;&quot;Module#public&quot;) {|e| e.object.instance_methods }&#x000A;&#x000A;# Share generate_tags action across completions&#x000A;complete(:method=&gt;&quot;edit_tags&quot;, :action=&gt;:generate_tags)&#x000A;complete(:method=&gt;&quot;delete_tags&quot;, :search=&gt;false) {|e| generate_tags(e).grep(/#{e}/i) }&#x000A;&#x000A;def generate_tags(input)&#x000A; ...&#x000A;end</pre>
+          </div>
+          <div id='method-list'>
+            <h2>Methods</h2>
+            <h3>public instance</h3>
+            <ol>
+              <li><a href="#M000027">complete</a></li>
+              <li><a href="#M000031">eval</a></li>
+              <li><a href="#M000029">files</a></li>
+              <li><a href="#M000030">objects_of</a></li>
+              <li><a href="#M000028">recomplete</a></li>
+            </ol>
+          </div>
+          <div id='section'>
+            <div id='methods'>
+              <h2>Public instance methods</h2>
+              <div class='public-instance method' id='method-M000027'>
+                <a name='M000027'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>complete</span>
+                  <span class='arguments'>(*args, &amp;block)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  See <a href="../Bond.html#M000002">Bond.complete</a>
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000027-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000027-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 22</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">complete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000031'>
+                <a name='M000031'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>eval</span>
+                  <span class='arguments'>(str)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Calls eval with <a href="Mission.html#M000038">Mission.current_eval</a>,
+                  rescuing any exceptions to return nil. If <a
+                  href="../Bond.html#M000005">Bond.config</a>[:debug] is true, exceptions are
+                  raised again.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000031-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000031-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 42</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">eval</span>(<span class="ruby-identifier">str</span>)&#x000A;      <span class="ruby-constant">Mission</span>.<span class="ruby-identifier">current_eval</span>(<span class="ruby-identifier">str</span>)&#x000A;    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span>&#x000A;      <span class="ruby-identifier">raise</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Bond</span>.<span class="ruby-identifier">config</span>[<span class="ruby-identifier">:debug</span>]&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000029'>
+                <a name='M000029'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>files</span>
+                  <span class='arguments'>(input)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Action method with search which returns array of files that match current
+                  input.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000029-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000029-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 27</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">files</span>(<span class="ruby-identifier">input</span>)&#x000A;      (<span class="ruby-operator">::</span><span class="ruby-constant">Readline</span><span class="ruby-operator">::</span><span class="ruby-constant">FILENAME_COMPLETION_PROC</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">input</span>) <span class="ruby-operator">||</span> []).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-identifier">f</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^~/</span> <span class="ruby-operator">?</span>  <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">f</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">f</span>&#x000A;      }&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000030'>
+                <a name='M000030'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>objects_of</span>
+                  <span class='arguments'>(klass)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Helper method which returns objects of a given class.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000030-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000030-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 34</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">objects_of</span>(<span class="ruby-identifier">klass</span>)&#x000A;      <span class="ruby-identifier">object</span> = []&#x000A;      <span class="ruby-constant">ObjectSpace</span>.<span class="ruby-identifier">each_object</span>(<span class="ruby-identifier">klass</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">e</span>) }&#x000A;      <span class="ruby-identifier">object</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000028'>
+                <a name='M000028'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>recomplete</span>
+                  <span class='arguments'>(*args, &amp;block)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  See <a href="../Bond.html#M000003">Bond.recomplete</a>
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000028-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000028-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 24</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">recomplete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">recomplete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>

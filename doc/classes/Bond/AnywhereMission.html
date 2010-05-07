@@ -1,7 +1,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html lang='en'>
   <head>
-    <title>: Bond::Missions [RDoc Documentation]</title>
+    <title>: Bond::AnywhereMission [RDoc Documentation]</title>
     <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
     <link href='../../rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
     <script type='text/javascript'>
@@ -27,32 +27,40 @@
       <div class='header'>
         <h1 class='name'>
           <span class='type'>Class</span>
-          Bond::Missions
+          Bond::AnywhereMission
         </h1>
         <ol class='paths'>
           <li>
-            <a href="../../files/lib/bond/mission_rb.html">lib/bond/mission.rb</a>
+            <a href="../../files/lib/bond/missions/anywhere_mission_rb.html">lib/bond/missions/anywhere_mission.rb</a>
           </li>
         </ol>
         <div class='parent'>
           Parent:
-          <strong>Object</strong>
+          <strong><a href="Mission.html">Bond::Mission</a></strong>
         </div>
       </div>
       <div id='content'>
         <div id='text'>
           <div id='description'>
             <p>
-            Namespace for subclasses of <a href="Mission.html">Bond::Mission</a>.
+            A mission which completes anywhere i.e. even after non word break
+            characters such as &#8217;[&#8217; or &#8217;}&#8217;. It generates the
+            following regexp condition /#{prefix}(#{anywhere})$/ and passes the first
+            capture group to the mission action.
             </p>
+            <h4><a href="../Bond.html#M000002">Bond.complete</a> Options:</h4>
+            <dl>
+            <dt><b>:anywhere</b></dt><dd>A regexp string which generates the first capture group in the above
+            regexp.
+            
+            </dd>
+            <dt><b>:prefix</b></dt><dd>An optional string which prefixes the first capture group in the above
+            regexp.
+            
+            </dd>
+            </dl>
           </div>
           <div id='section'>
-            <div id='class-list'>
-              <h2>Classes and Modules</h2>
-              Class <a href="Missions/DefaultMission.html" class="link">Bond::Missions::DefaultMission</a><br />
-              Class <a href="Missions/MethodMission.html" class="link">Bond::Missions::MethodMission</a><br />
-              Class <a href="Missions/ObjectMission.html" class="link">Bond::Missions::ObjectMission</a><br />
-            </div>
           </div>
         </div>
       </div>

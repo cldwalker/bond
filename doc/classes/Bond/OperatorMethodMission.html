@@ -1,0 +1,87 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html lang='en'>
+  <head>
+    <title>: Bond::OperatorMethodMission [RDoc Documentation]</title>
+    <meta content='text/html; charset=utf-8' http-equiv='Content-Type'>
+    <link href='../../rdoc-style.css' media='screen' rel='stylesheet' type='text/css'>
+    <script type='text/javascript'>
+      //<![CDATA[
+        function popupCode(url) {
+          window.open(url, "Code", "resizable=yes,scrollbars=yes,toolbar=no,status=no,height=150,width=400")
+        }
+        
+        function toggleCode(id) {
+          var code = document.getElementById(id)
+        
+          code.style.display = code.style.display != 'block' ? 'block' : 'none'
+          return true
+        }
+        
+        // Make codeblocks hidden by default
+        document.writeln('<' + 'style type="text/css">.method .source pre { display: none }<\/style>')
+      //]]>
+    </script>
+  </head>
+  <body class='page'>
+    <div class='class' id='wrapper'>
+      <div class='header'>
+        <h1 class='name'>
+          <span class='type'>Class</span>
+          Bond::OperatorMethodMission
+        </h1>
+        <ol class='paths'>
+          <li>
+            <a href="../../files/lib/bond/missions/operator_method_mission_rb.html">lib/bond/missions/operator_method_mission.rb</a>
+          </li>
+        </ol>
+        <div class='parent'>
+          Parent:
+          <strong><a href="MethodMission.html">Bond::MethodMission</a></strong>
+        </div>
+      </div>
+      <div id='content'>
+        <div id='text'>
+          <div id='description'>
+            <p>
+            A mission which completes arguments for any module/class method that is an
+            operator i.e. &#8217;>&#8217; or &#8217;*&#8217;. Takes same <a
+            href="../Bond.html#M000002">Bond.complete</a> options as <a
+            href="MethodMission.html">MethodMission</a>. The only operator method this
+            mission doesn&#8217;t complete is &#8217;[]=&#8217;. The operator
+            &#8217;[]&#8217; should cover the first argument completion of
+            &#8217;[]=&#8217; anyways.
+            </p>
+          </div>
+          <div id='section'>
+            <div id='constants-list'>
+              <h2>Constants</h2>
+              <div class='name-list'>
+                <table summary='Constants'>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>OPERATORS</td>
+                    <td>=</td>
+                    <td class='context-item-value'>Mission::OPERATORS - [&quot;[]&quot;, &quot;[]=&quot;]</td>
+                  </tr>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>OBJECTS</td>
+                    <td>=</td>
+                    <td class='context-item-value'>Mission::OBJECTS + %w{\S+}</td>
+                  </tr>
+                  <tr class='top-aligned-row context-row'>
+                    <td class='context-item-name'>CONDITION</td>
+                    <td>=</td>
+                    <td class='context-item-value'>%q{(OBJECTS)\s*(METHODS)\s*(['&quot;:])?(.*)$}</td>
+                  </tr>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div id='footer-push'></div>
+    </div>
+    <div id='footer'>
+      <a href="http://github.com/mislav/hanna/tree/master"><strong>Hanna</strong> RDoc template</a>
+    </div>
+  </body>
+</html>
