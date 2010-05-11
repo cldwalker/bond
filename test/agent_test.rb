@@ -18,6 +18,11 @@ describe "Agent" do
       errors[1].should =~ /Please/
     end
 
+    it "allows the readline buffer to be provided as an argument" do
+      Bond.agent.weapon.stubs(:line_buffer).raises(Exception)
+      should.not.raise { Bond.agent.call('bl', 'bl foo') }
+    end
+
     def complete_error(msg)
       lambda {|e|
         e[0].should =~ msg

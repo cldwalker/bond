@@ -62,8 +62,8 @@ module Bond
     end
 
     # This is where the action starts when a completion is initiated.
-    def call(input)
-      mission_input = @weapon.line_buffer
+    def call(input, line_buffer=nil)
+      mission_input = line_buffer || @weapon.line_buffer
       mission_input = $1 if mission_input !~ /#{Regexp.escape(input)}$/ && mission_input =~ /^(.*#{Regexp.escape(input)})/
       (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(Input.new(input))
     rescue FailedMissionError=>e
