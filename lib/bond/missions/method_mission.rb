@@ -148,7 +148,7 @@ module Bond
   end
 
   self.reset
-  OBJECTS = %w{\S*?} + Mission::OBJECTS
+  OBJECTS = Mission::OBJECTS + %w{\S*?}
   CONDITION = %q{(OBJECTS)\.?(METHODS)(?:\s+|\()(['":])?(.*)$}
 
   #:stopdoc:

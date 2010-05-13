@@ -39,6 +39,10 @@ describe "Completion" do
     tab("%w{ab bc cd}.delete(").should == %w{ab bc cd}
   end
 
+  it "completes method arguments when object contains method names" do
+    tab("%w{find ab cd}.delete ").should == %w{find ab cd}
+  end
+
   it "completes hash coming from a method" do
     tab('Bond.config[:r').should == ["Bond.config[:readline_plugin"]
   end
