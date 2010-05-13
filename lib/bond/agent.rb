@@ -70,6 +70,8 @@ module Bond
       (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(Input.new(input))
     rescue FailedMissionError
       completion_error($!.message[0], "Completion Info: #{$!.message[1]}")
+    rescue FailedMatchError
+      completion_error($!.message[1], "Completion Info: #{$!.message[0].match_message}")
     rescue
       completion_error "Failed internally with '#{$!.message}'.",
         "Please report this issue with debug on: Bond.config[:debug] = true."
@@ -89,6 +91,10 @@ module Bond
       else
         puts "Doesn't match a completion."
       end
+    rescue FailedMatchError
+      mission, message = $!.message
+      puts mission.match_message, message,
+        "Matches for #{mission.condition.inspect} are #{mission.matched.to_a.inspect}"
     end
 
     def find_mission(input) #:nodoc:

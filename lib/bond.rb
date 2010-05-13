@@ -71,6 +71,8 @@ module Bond
   #                   When in irb, defaults to irb's current binding. Otherwise defaults to TOPLEVEL_BINDING.
   # [*:debug*]  Boolean to show the stacktrace when autocompletion fails and raise exceptions in Rc.eval.
   #             Default is false.
+  # [*:eval_debug*] Boolean to raise eval errors occuring when finding a matching completion. Useful to debug
+  #                 an incorrect completion. Default is false.
   def config; M.config; end
 
   # Starts Bond with a default set of completions that replace and improve irb's completion. Loads completion
