@@ -1,8 +1,12 @@
 module Bond
   # Occurs when a mission is incorrectly defined.
   class InvalidMissionError < StandardError; end
-  # Occurs when a mission or search action fails.
-  class FailedMissionError < StandardError; end
+  # Occurs when a mission fails.
+  class FailedMissionError < StandardError
+    # Mission that failed
+    attr_reader :mission
+    def initialize(mission); @mission = mission; end #:nodoc:
+  end
   # Occurs when a mission fails while matching.
   class FailedMatchError < StandardError; end
 
@@ -85,7 +89,7 @@ module Bond
       message = $!.is_a?(NoMethodError) && !Rc.respond_to?("#{search}_search") ?
         "Completion search '#{search}' doesn't exist." :
         "Failed during completion search with '#{$!.message}'."
-      raise FailedMissionError, [message, match_message]
+      raise FailedMissionError.new(self), message
     end
 
     # Calls the action to generate an array of possible completions.
@@ -95,7 +99,7 @@ module Bond
       message = $!.is_a?(NoMethodError) && !@action.respond_to?(:call) &&
         !Rc.respond_to?(@action) ? "Completion action '#{@action}' doesn't exist." :
         "Failed during completion action with '#{$!.message}'."
-      raise FailedMissionError, [message, match_message]
+      raise FailedMissionError.new(self), message
     end
 
     # A message used to explains under what conditions a mission matched the user input.

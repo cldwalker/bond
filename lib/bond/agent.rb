@@ -68,8 +68,8 @@ module Bond
       mission_input = @weapon ? @weapon.line_buffer : input
       mission_input = $1 if mission_input !~ /#{Regexp.escape(input)}$/ && mission_input =~ /^(.*#{Regexp.escape(input)})/
       (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(Input.new(input))
-    rescue FailedMissionError
-      completion_error($!.message[0], "Completion Info: #{$!.message[1]}")
+    rescue FailedMissionError=>e
+      completion_error(e.message, "Completion Info: #{e.mission.match_message}")
     rescue FailedMatchError
       completion_error($!.message[1], "Completion Info: #{$!.message[0].match_message}")
     rescue
@@ -91,6 +91,9 @@ module Bond
       else
         puts "Doesn't match a completion."
       end
+    rescue FailedMissionError=>e
+      puts e.mission.match_message, e.message,
+        "Matches for #{e.mission.condition.inspect} are #{e.mission.matched.to_a.inspect}"
     rescue FailedMatchError
       mission, message = $!.message
       puts mission.match_message, message,
