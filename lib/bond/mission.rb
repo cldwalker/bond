@@ -7,8 +7,6 @@ module Bond
     attr_reader :mission
     def initialize(mission); @mission = mission; end #:nodoc:
   end
-  # Occurs when a mission fails while matching.
-  class FailedMatchError < StandardError; end
 
   # Represents a completion rule, given a condition (:on) on which to match and an action
   # (block or :action) with which to generate possible completions.
@@ -137,7 +135,7 @@ module Bond
       @evaled_object = self.class.current_eval(obj, eval_binding)
       true
     rescue Exception
-      raise FailedMatchError, [self, "Match failed during eval of '#{obj}'."] if Bond.config[:eval_debug]
+      raise FailedMissionError.new(self), "Match failed during eval of '#{obj}'." if Bond.config[:eval_debug]
       false
     end
 
