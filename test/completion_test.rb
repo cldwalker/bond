@@ -25,8 +25,7 @@ describe "Completion" do
   end
 
   it "completes nested classes anywhere" do
-    mock_irb
-    tab("blah IRB::In").should == ["IRB::InputCompletor"]
+    tab("module Blah; include Bond::Sea").should == ["Bond::Search"]
   end
 
   it "completes symbols anywhere" do
