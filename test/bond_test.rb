@@ -4,7 +4,7 @@ describe "Bond" do
   describe "start" do
     before { M.instance_eval("@agent = @config = nil"); M.expects(:load_completions) }
     it "prints error if readline_plugin is not a module" do
-      capture_stderr { Bond.start :readline_plugin=>false }.should =~ /Invalid/
+      capture_stderr { Bond.start :readline_plugin=>'' }.should =~ /Invalid/
     end
     
     it "prints error if readline_plugin doesn't have all required methods" do

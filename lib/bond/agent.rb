@@ -16,6 +16,7 @@ module Bond
     end
 
     def setup_readline_plugin(plugin) #:nodoc:
+      return @weapon = false if plugin == false
       raise ArgumentError unless plugin.is_a?(Module)
       @weapon = plugin.extend(plugin)
       @weapon.setup(self)
@@ -61,9 +62,10 @@ module Bond
       @missions = []
     end
 
-    # This is where the action starts when a completion is initiated.
+    # This is where the action starts when a completion is initiated. Argument is the last word typed
+    # unless no readline_plugin is used, in which case it's the full line buffer.
     def call(input)
-      mission_input = @weapon.line_buffer
+      mission_input = @weapon ? @weapon.line_buffer : input
       mission_input = $1 if mission_input !~ /#{Regexp.escape(input)}$/ && mission_input =~ /^(.*#{Regexp.escape(input)})/
       (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(Input.new(input))
     rescue FailedMissionError

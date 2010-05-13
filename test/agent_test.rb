@@ -18,6 +18,14 @@ describe "Agent" do
       errors[1].should =~ /Please/
     end
 
+    it "takes readline buffer as argument if no readline_plugin" do
+      M.debrief(:readline_plugin=>false)
+      M.reset
+      Bond.agent.weapon.stubs(:line_buffer).raises(Exception)
+      should.not.raise { Bond.agent.call('bl') }
+      M.debrief(:readline_plugin=>valid_readline_plugin)
+    end
+
     def complete_error(msg)
       lambda {|e|
         e[0].should =~ msg
