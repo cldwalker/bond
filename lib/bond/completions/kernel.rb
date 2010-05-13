@@ -1,5 +1,5 @@
 complete(:methods=>%w{Kernel#raise Kernel#fail}) { objects_of(Class).select {|e| e < StandardError } }
-complete(:method=>%w{Kernel#system Kernel#exec}) {|e|
+complete(:methods=>%w{Kernel#system Kernel#exec}) {|e|
   ENV['PATH'].split(File::PATH_SEPARATOR).uniq.map {|e|
     File.directory?(e) ? Dir.entries(e) : []
   }.flatten.uniq - ['.', '..']

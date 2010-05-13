@@ -121,11 +121,15 @@ describe "Agent" do
     end
 
     it "with invalid :method prints error" do
-      complete_prints_error(/Invalid :method\(s\)/, :method=>true) {}
+      complete_prints_error(/Invalid.*:method\(s\)/, :method=>true) {}
+    end
+
+    it "with invalid array :method prints error" do
+      complete_prints_error(/Invalid array :method/, :method=>%w{one two}) {}
     end
 
     it "with invalid :methods prints error" do
-      complete_prints_error(/Invalid :method\(s\)/, :methods=>[:blah]) {}
+      complete_prints_error(/Invalid.*:method\(s\)/, :methods=>[:blah]) {}
     end
 
     it "with invalid :action for method completion prints error" do
