@@ -6,7 +6,7 @@ module Bond
     # See Bond.complete
     def complete(options={}, &block)
       if (result = agent.complete(options, &block)).is_a?(String)
-        $stderr.puts result
+        $stderr.puts "Bond Error: "+result
         false
       else
         true
@@ -16,7 +16,7 @@ module Bond
     # See Bond.recomplete
     def recomplete(options={}, &block)
       if (result = agent.recomplete(options, &block)).is_a?(String)
-        $stderr.puts result
+        $stderr.puts "Bond Error: "+result
         false
       else
         true
@@ -50,7 +50,7 @@ module Bond
       plugin_methods = %w{setup line_buffer}
       unless config[:readline_plugin].is_a?(Module) &&
         plugin_methods.all? {|e| config[:readline_plugin].instance_methods.map {|f| f.to_s}.include?(e)}
-        $stderr.puts "Invalid readline plugin set. Try again."
+        $stderr.puts "Bond Error: Invalid readline plugin given."
       end
     end
 

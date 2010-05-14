@@ -10,7 +10,7 @@ module Bond
       begin
         require 'readline_line_buffer'
       rescue LoadError
-        $stderr.puts "Failed to load readline_line_buffer extension. Falling back on RubyInline extension."
+        $stderr.puts "Bond Error: Failed to load readline_line_buffer extension. Falling back on RubyInline extension."
         require 'inline'
         eval %[
           module ::Readline

@@ -37,7 +37,7 @@ module Bond
     rescue InvalidMissionError
       "Invalid #{$!.message} for completion with options: #{options.inspect}"
     rescue
-      "Unexpected error while creating completion with options #{options.inspect}:\n#{$!}"
+      "Unexpected error while creating completion with options #{options.inspect} and message:\n#{$!}"
     end
 
     # Creates a mission and replaces the mission it matches if possible.
@@ -61,7 +61,8 @@ module Bond
       @missions = []
     end
 
-    # This is where the action starts when a completion is initiated.
+    # This is where the action starts when a completion is initiated. Optional line_buffer
+    # overrides line buffer from readline plugin.
     def call(input, line_buffer=nil)
       mission_input = line_buffer || @weapon.line_buffer
       mission_input = $1 if mission_input !~ /#{Regexp.escape(input)}$/ && mission_input =~ /^(.*#{Regexp.escape(input)})/
