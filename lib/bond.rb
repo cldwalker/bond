@@ -61,8 +61,7 @@ module Bond
 
   # Global config with the following keys:
   # [*:readline_plugin*] Specifies a Bond plugin to interface with a Readline-like library. Available
-  #                      plugins are Readline, Rawline and false. Defaults to Readline. If false, then
-  #                      line buffer is expected to be passed directly to Agent#call.
+  #                      plugins are Readline and Rawline. Defaults to Readline.
   # [*:default_mission*] A proc or name of an Rc method to use as the default completion when no
   #                      missions match.
   # [*:default_search*] Name of a *_search method in Rc to use as the default search in completions.
