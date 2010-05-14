@@ -75,10 +75,12 @@ module Bond
   def config; M.config; end
 
   # Starts Bond with a default set of completions that replace and improve irb's completion. Loads completion
-  # files in the following order: lib/bond/completion.rb, optional ~/.bondrc, lib/bond/completions/*.rb,
-  # optional ~/.bond/completions/*.rb and optional block. See Rc for the DSL to use in completion files and
-  # in the block. See Bond.config for valid options.
-  # ==== Example:
+  # files in the following order: optional :gems completions, lib/bond/completion.rb, optional ~/.bondrc,
+  # lib/bond/completions/*.rb, optional ~/.bond/completions/*.rb and optional block. See Rc for the DSL to use
+  # in completion files and in the block. Options are Bond.config keys and the following:
+  # [*:gems*] Array of gems which have their completions loaded from lib/bond/completions/#{gem}.rb.
+  # ==== Examples:
+  #   Bond.start :gems=>%w{hirb}
   #   Bond.start(:default_search=>:ignore_case) do
   #     complete(:method=>"Object#respond_to?") {|e| e.object.methods }
   #   end

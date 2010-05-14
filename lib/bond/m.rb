@@ -57,9 +57,17 @@ module Bond
     # See Bond.start
     def start(options={}, &block)
       debrief options
+      Array(options[:gems]).each {|e| load_gem_completion(e) }
       load_completions
       Rc.module_eval(&block) if block
       true
+    end
+
+    def load_gem_completion(rubygem)
+      begin gem(rubygem); rescue Exception; end
+      if dir = $:.find {|e| File.exists? File.join(e, 'bond', 'completions', "#{rubygem}.rb") }
+        load_file File.join(dir, 'bond', 'completions', "#{rubygem}.rb")
+      end
     end
 
     def load_completions #:nodoc:
