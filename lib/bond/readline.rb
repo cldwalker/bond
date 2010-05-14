@@ -7,28 +7,7 @@ module Bond
     # Loads the readline-like library and sets the completion_proc to the given agent.
     def setup(agent)
       require 'readline'
-      begin
-        require 'readline_line_buffer'
-      rescue LoadError
-        $stderr.puts "Bond Error: Failed to load readline_line_buffer extension. Falling back on RubyInline extension."
-        require 'inline'
-        eval %[
-          module ::Readline
-            inline do |builder|
-              %w(<errno.h> <stdio.h> <readline/readline.h>).each{|h| builder.include h }
-              builder.c_raw_singleton <<-EOC
-          static VALUE line_buffer(VALUE self)
-          {
-            rb_secure(4);
-            if (rl_line_buffer == NULL)
-          return Qnil;
-            return rb_tainted_str_new2(rl_line_buffer);
-          }
-          EOC
-            end
-          end
-        ]
-      end
+      load_extension unless ::Readline.respond_to?(:line_buffer)
 
       # Reinforcing irb defaults
       ::Readline.completion_append_character = nil
@@ -40,6 +19,29 @@ module Bond
       if (::Readline::VERSION rescue nil).to_s[/editline/i]
         puts "Bond has detected EditLine and may not work with it. See the README's Limitations section."
       end
+    end
+
+    def load_extension
+      require 'readline_line_buffer'
+    rescue LoadError
+      $stderr.puts "Bond Error: Failed to load readline_line_buffer extension. Falling back on RubyInline extension."
+      require 'inline'
+      eval %[
+        module ::Readline
+          inline do |builder|
+            %w(<errno.h> <stdio.h> <readline/readline.h>).each{|h| builder.include h }
+            builder.c_raw_singleton <<-EOC
+        static VALUE line_buffer(VALUE self)
+        {
+          rb_secure(4);
+          if (rl_line_buffer == NULL)
+        return Qnil;
+          return rb_tainted_str_new2(rl_line_buffer);
+        }
+        EOC
+          end
+        end
+      ]
     end
 
     # Returns full line of what the user has typed.
