@@ -27,7 +27,7 @@ describe "Bond" do
     end
 
     it "defines completion in block" do
-      Bond.start do
+      Bond.start(:readline_plugin=>valid_readline_plugin) do
         complete(:on=>/blah/) { %w{all_quiet on_the western_front}}
       end
       tab('blah all').should == ["all_quiet"]

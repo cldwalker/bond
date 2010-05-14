@@ -24,7 +24,7 @@ describe "anywhere mission" do
     complete(:anywhere=>'\$[^\s.]*', :search=>false) {|e|
       global_variables.grep(/^#{Regexp.escape(e.matched[1])}/)
     }
-    tab("$LO").should == ["$LOAD_PATH", "$LOADED_FEATURES"]
+    tab("$LO").sort.should == ["$LOADED_FEATURES", "$LOAD_PATH"]
   end
 
   it 'with :prefix completes' do
