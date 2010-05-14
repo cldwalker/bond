@@ -24,6 +24,11 @@ describe "Completion" do
     }.should == ''
   end
 
+  it "completes nested classes greater than 2 levels" do
+    eval %[module ::Foo; module Bar; module Baz; end; end; end]
+    tab("Foo::Bar::B").should == %w{Foo::Bar::Baz}
+  end
+
   it "completes nested classes anywhere" do
     tab("module Blah; include Bond::Sea").should == ["Bond::Search"]
   end
