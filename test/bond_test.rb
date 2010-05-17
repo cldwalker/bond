@@ -35,28 +35,44 @@ describe "Bond" do
       tab('blah all').should == ["all_quiet"]
     end
 
-    describe "with :gems" do
-      it "attempts to load gem" do
-        M.expects(:gem).twice
-        start(:gems=>%w{one two})
-      end
+    after_all { M.debrief :readline_plugin=>valid_readline_plugin; M.reset }
+  end
 
-      it "rescues nonexistent gem" do
-        M.expects(:gem).raises(LoadError)
-        should.not.raise { start(:gems=>%w{blah}) }
-      end
+  describe "start with :gems" do
+    before {
+      M.stubs(:load_dir)
+      File.stubs(:exists?).returns(true)
+    }
+    it "attempts to load gem" do
+      M.stubs(:load_file)
+      M.expects(:gem).twice
+      start(:gems=>%w{one two})
+    end
 
-      it "rescues nonexistent method 'gem'" do
-        M.expects(:gem).raises(NoMethodError)
-        should.not.raise { start(:gems=>%w{blah}) }
-      end
+    it "rescues nonexistent gem" do
+      M.stubs(:load_file)
+      M.expects(:gem).raises(LoadError)
+      should.not.raise { start(:gems=>%w{blah}) }
+    end
 
-      it "loads completion file" do
-        M.expects(:gem)
-        File.expects(:exists?).returns(true)
-        File.expects(:read).with(File.join($:[0], 'bond', 'completions', 'awesome.rb')).returns('')
-        start(:gems=>%w{awesome})
-      end
+    it "rescues nonexistent method 'gem'" do
+      M.stubs(:load_file)
+      M.expects(:gem).raises(NoMethodError)
+      should.not.raise { start(:gems=>%w{blah}) }
+    end
+
+    it "prints error if gem completion not found" do
+      M.stubs(:load_file)
+      M.expects(:find_gem_file).returns(nil)
+      capture_stderr { start(:gems=>%w{invalid}) }.should =~ /No completions.*'invalid'/
+    end
+
+    it "loads gem completion file" do
+      File.expects(:read).returns('')
+      File.expects(:read).returns('')
+      File.expects(:read).with(File.join($:[0], 'bond', 'completions', 'awesome.rb')).returns('')
+      M.expects(:gem)
+      start(:gems=>%w{awesome})
     end
     after_all { M.debrief :readline_plugin=>valid_readline_plugin; M.reset }
   end

@@ -74,10 +74,10 @@ module Bond
   #                 an incorrect completion. Default is false.
   def config; M.config; end
 
-  # Starts Bond with a default set of completions that replace and improve irb's completion. Loads completion
-  # files in the following order: optional :gems completions, lib/bond/completion.rb, optional ~/.bondrc,
-  # lib/bond/completions/*.rb, optional ~/.bond/completions/*.rb and optional block. See Rc for the DSL to use
-  # in completion files and in the block. Options are Bond.config keys and the following:
+  # Starts Bond with a default set of completions that replace and improve irb's completion. Loads completions
+  # in this order: lib/bond/completion.rb, lib/bond/completions/*.rb and the following optional
+  # completions: gem completions from :gems, ~/.bondrc, ~/.bond/completions/*.rb and from block. See Rc for
+  # the DSL to use in completion files and in the block. Valid options are Bond.config keys and the following:
   # [*:gems*] Array of gems which have their completions loaded from lib/bond/completions/#{gem}.rb.
   # ==== Examples:
   #   Bond.start :gems=>%w{hirb}
@@ -85,6 +85,9 @@ module Bond
   #     complete(:method=>"Object#respond_to?") {|e| e.object.methods }
   #   end
   def start(options={}, &block); M.start(options, &block); end
+
+  # Loads completions for gems that ship with them at lib/bond/completions/#{gem}.rb.
+  def load_gems(*gems); M.load_gems(*gems); end
 
   # An Agent who saves all Bond.complete missions and executes the correct one when a completion is called.
   def agent; M.agent; end

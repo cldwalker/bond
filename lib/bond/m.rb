@@ -57,28 +57,32 @@ module Bond
     # See Bond.start
     def start(options={}, &block)
       debrief options
-      Array(options[:gems]).each {|e| load_gem_completion(e) }
       load_completions
       Rc.module_eval(&block) if block
       true
     end
 
-    def load_gem_completion(rubygem)
-      (file = find_gem_file(rubygem, File.join('bond', 'completions', "#{rubygem}.rb"))) &&
-        load_file(file)
+    def load_gem_completion(rubygem) #:nodoc:
+      (file = find_gem_file(rubygem, File.join('bond', 'completions', "#{rubygem}.rb"))) ?
+        load_file(file) : $stderr.puts("Bond Error: No completions found for gem '#{rubygem}'")
     end
 
+    # Finds the full path to a gem's file relative it's load path directory. Returns nil if not found.
     def find_gem_file(rubygem, file)
       begin gem(rubygem); rescue Exception; end
       (dir = $:.find {|e| File.exists?(File.join(e, file)) }) && File.join(dir, file)
     end
 
+    def load_gems(*gems) #:nodoc:
+      gems.select {|e| load_gem_completion(e) }
+    end
+
     def load_completions #:nodoc:
       load_file File.join(File.dirname(__FILE__), 'completion.rb')
+      load_dir File.dirname(__FILE__)
+      load_gems *Array(config[:gems])
       load_file(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc'))
-      [File.dirname(__FILE__), File.join(home, '.bond')].each do |base_dir|
-        load_dir(base_dir)
-      end
+      load_dir File.join(home, '.bond')
     end
 
     # Loads a completion file in Rc namespace.
@@ -88,7 +92,8 @@ module Bond
       $stderr.puts "Bond Error: Completion file '#{file}' failed to load with:", e.message
     end
 
-    def load_dir(base_dir) #:nodoc:
+    # Loads completion files in given directory.
+    def load_dir(base_dir)
       if File.exists?(dir = File.join(base_dir, 'completions'))
         Dir[dir + '/*.rb'].each {|file| load_file(file) }
       end
