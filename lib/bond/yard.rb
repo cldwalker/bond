@@ -5,9 +5,10 @@ module Bond
     def load_yard_gems(*gems)
       @options = gems[-1].is_a?(Hash) ? gems.pop : {}
       require 'yard'
+      raise LoadError unless YARD::VERSION >= '0.5.2'
       gems.each {|e| load_yard_gem(e) }
     rescue LoadError
-      $stderr.puts "Bond Error: yard gem not installed"
+      $stderr.puts "Bond Error: yard gem (version >= 0.5.2) not installed "
     end
 
     def load_yard_gem(rubygem)
@@ -25,13 +26,13 @@ module Bond
     end
 
     def find_yardoc(rubygem)
-      (file = YARD::Registry.yardoc_file_for_gem(rubygem)) and return(file)
+      (file = YARD::Registry.yardoc_file_for_gem(rubygem) rescue nil) and return(file)
       if (file = M.find_gem_file(rubygem, rubygem+'.rb'))
         output_dir = File.join(dir('.yardocs'), rubygem)
         cmd = ['yardoc', '-nq', '-b', output_dir]
         cmd += ['-c', output_dir] unless @options[:reload]
         cmd += [file, File.expand_path(file+'/..')+"/#{rubygem}/**/*.rb"]
-        puts cmd.join(' '), "Generating #{rubygem}'s YARD documentation ..."
+        puts cmd.join(' '), "Building #{rubygem}'s YARD database ..."
         system *cmd
         output_dir
       end
