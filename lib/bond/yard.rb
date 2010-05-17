@@ -53,7 +53,8 @@ module Bond
     def find_methods_with_options
       YARD::Registry.all(:method).inject({}) {|a,m|
         opts = m.tags.select {|e| e.is_a?(YARD::Tags::OptionTag) }.map {|e| e.pair.name }
-        a[m.path] = opts if !opts.empty? ; a
+        a[m.path.to_s.sub(/#initialize$/, '.new')] = opts if !opts.empty?
+        a
       }
     end
 
