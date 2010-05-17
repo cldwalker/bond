@@ -28,7 +28,7 @@ module Bond
       (file = YARD::Registry.yardoc_file_for_gem(rubygem)) and return(file)
       if (file = M.find_gem_file(rubygem, rubygem+'.rb'))
         output_dir = File.join(dir('.yardocs'), rubygem)
-        cmd = ['yardoc', '-n', '-b', output_dir]
+        cmd = ['yardoc', '-nq', '-b', output_dir]
         cmd += ['-c', output_dir] unless @options[:reload]
         cmd += [file, File.expand_path(file+'/..')+"/#{rubygem}/**/*.rb"]
         puts cmd.join(' '), "Generating #{rubygem}'s YARD documentation ..."
