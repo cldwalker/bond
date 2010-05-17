@@ -12,9 +12,14 @@ module Bond
 
     def load_yard_gem(rubygem)
       if (yardoc = find_yardoc(rubygem))
-        YARD::Registry.load!(yardoc)
-        methods_hash = find_methods_with_options
-        generate_method_completions(methods_hash)
+        completion_file = File.join(dir('yard_completions'), rubygem+'.rb')
+        unless File.exists? completion_file
+          YARD::Registry.load!(yardoc)
+          methods_hash = find_methods_with_options
+          body = generate_method_completions(methods_hash)
+          File.open(completion_file, 'w') {|e| e.write body }
+        end
+        M.load_file completion_file
       else
         raise YardError, "Failed to load yard gem '#{rubygem}'. Unable to find its .yardoc."
       end
@@ -25,7 +30,7 @@ module Bond
     def find_yardoc(rubygem)
       (file = YARD::Registry.yardoc_file_for_gem(rubygem)) and return(file)
       if !(file = `gem which #{rubygem}`.chomp).empty?
-        output_dir = File.join(yardocs_dir, rubygem)
+        output_dir = File.join(dir('.yardocs'), rubygem)
         cmd = ['yardoc', '-n', '-c', output_dir, '-b', output_dir, file,
           File.expand_path(file+'/..')+"/#{rubygem}/**/*.rb"]
         puts cmd.join(' '), "Generating #{rubygem}'s YARD documentation ..."
@@ -36,10 +41,10 @@ module Bond
       end
     end
 
-    def yardocs_dir
-      @yardocs_dir ||= begin
-        require 'fileutils'; FileUtils.mkdir_p File.join(M.home, '.bond', '.yardocs')
-        File.join(M.home, '.bond', '.yardocs')
+    def dir(subdir)
+      (@dirs ||= {})[subdir] ||= begin
+        require 'fileutils'; FileUtils.mkdir_p File.join(M.home, '.bond', subdir)
+        File.join(M.home, '.bond', subdir)
       end
     end
 
@@ -51,12 +56,10 @@ module Bond
     end
 
     def generate_method_completions(methods_hash)
-      str = ''
-      methods_hash.each do |meth, options|
+      methods_hash.map do |meth, options|
         options.map! {|e| e.sub(/^:/, '') }
-        str << %Q[complete(:method=>'#{meth}') {\n  #{options.inspect}\n}\n]
-      end
-      puts str
+        %Q[complete(:method=>'#{meth}') {\n  #{options.inspect}\n}]
+      end.join("\n")
     end
 
     def require_yard
