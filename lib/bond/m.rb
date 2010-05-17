@@ -64,10 +64,13 @@ module Bond
     end
 
     def load_gem_completion(rubygem)
+      (file = find_gem_file(rubygem, File.join('bond', 'completions', "#{rubygem}.rb"))) &&
+        load_file(file)
+    end
+
+    def find_gem_file(rubygem, file)
       begin gem(rubygem); rescue Exception; end
-      if dir = $:.find {|e| File.exists? File.join(e, 'bond', 'completions', "#{rubygem}.rb") }
-        load_file File.join(dir, 'bond', 'completions', "#{rubygem}.rb")
-      end
+      (dir = $:.find {|e| File.exists?(File.join(e, file)) }) && File.join(dir, file)
     end
 
     def load_completions #:nodoc:

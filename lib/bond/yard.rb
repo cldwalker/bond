@@ -29,15 +29,13 @@ module Bond
 
     def find_yardoc(rubygem)
       (file = YARD::Registry.yardoc_file_for_gem(rubygem)) and return(file)
-      if !(file = `gem which #{rubygem}`.chomp).empty?
+      if (file = M.find_gem_file(rubygem, rubygem+'.rb'))
         output_dir = File.join(dir('.yardocs'), rubygem)
         cmd = ['yardoc', '-n', '-c', output_dir, '-b', output_dir, file,
           File.expand_path(file+'/..')+"/#{rubygem}/**/*.rb"]
         puts cmd.join(' '), "Generating #{rubygem}'s YARD documentation ..."
         system *cmd
         output_dir
-      else
-        nil
       end
     end
 
