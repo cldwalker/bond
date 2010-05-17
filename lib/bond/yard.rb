@@ -1,12 +1,15 @@
 module Bond
+  # Generates method autocompletions for gems that use {yard}[http://yardoc.org] documentation. Currently
+  # generates completions for methods that take a hash of options and have been documented with @option.
   module Yard
     extend self
 
+    # :stopdoc:
     def load_yard_gems(*gems)
       @options = gems[-1].is_a?(Hash) ? gems.pop : {}
       require 'yard'
       raise LoadError unless YARD::VERSION >= '0.5.2'
-      gems.each {|e| load_yard_gem(e) }
+      gems.select {|e| load_yard_gem(e) }
     rescue LoadError
       $stderr.puts "Bond Error: yard gem (version >= 0.5.2) not installed "
     end
@@ -29,10 +32,12 @@ module Bond
       (file = YARD::Registry.yardoc_file_for_gem(rubygem) rescue nil) and return(file)
       if (file = M.find_gem_file(rubygem, rubygem+'.rb'))
         output_dir = File.join(dir('.yardocs'), rubygem)
-        cmd = ['yardoc', '-nq', '-b', output_dir]
+        cmd = ['yardoc', '-n', '-b', output_dir]
+        cmd << '-q' unless @options[:verbose]
         cmd += ['-c', output_dir] unless @options[:reload]
         cmd += [file, File.expand_path(file+'/..')+"/#{rubygem}/**/*.rb"]
-        puts cmd.join(' '), "Building #{rubygem}'s YARD database ..."
+        puts cmd.join(' ') if @options[:verbose]
+        puts "Building #{rubygem}'s .yardoc database ..."
         system *cmd
         output_dir
       end
@@ -58,5 +63,6 @@ module Bond
         %Q[complete(:method=>'#{meth}') {\n  #{options.inspect}\n}]
       end.join("\n")
     end
+    #:startdoc:
   end
 end

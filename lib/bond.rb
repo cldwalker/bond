@@ -12,6 +12,7 @@ require 'bond/missions/method_mission'
 require 'bond/missions/object_mission'
 require 'bond/missions/anywhere_mission'
 require 'bond/missions/operator_method_mission'
+require 'bond/yard'
 
 module Bond
   extend self
@@ -75,10 +76,11 @@ module Bond
   def config; M.config; end
 
   # Starts Bond with a default set of completions that replace and improve irb's completion. Loads completions
-  # in this order: lib/bond/completion.rb, lib/bond/completions/*.rb and the following optional
-  # completions: gem completions from :gems, ~/.bondrc, ~/.bond/completions/*.rb and from block. See Rc for
-  # the DSL to use in completion files and in the block. Valid options are Bond.config keys and the following:
+  # in this order: lib/bond/completion.rb, lib/bond/completions/*.rb and the following optional completions:
+  # completions from :gems, completions from :yard_gems, ~/.bondrc, ~/.bond/completions/*.rb and from block. See
+  # Rc for the DSL to use in completion files and in the block. Valid options are Bond.config keys and the following:
   # [*:gems*] Array of gems which have their completions loaded from lib/bond/completions/#{gem}.rb.
+  # [*:yard_gems*] Array of gems using yard documentation to generate completions. See Yard.
   # ==== Examples:
   #   Bond.start :gems=>%w{hirb}
   #   Bond.start(:default_search=>:ignore_case) do
@@ -88,6 +90,12 @@ module Bond
 
   # Loads completions for gems that ship with them at lib/bond/completions/#{gem}.rb.
   def load_gems(*gems); M.load_gems(*gems); end
+
+  # Generates and loads completions for yardoc documented gems.
+  # ==== Options:
+  # [*:verbose*] Boolean which displays additional information when building yardoc. Default is false.
+  # [*:reload*] Rebuilds yard databases. Use when gems have changed versions. Default is false.
+  def load_yard_gems(*gems); Yard.load_yard_gems(*gems); end
 
   # An Agent who saves all Bond.complete missions and executes the correct one when a completion is called.
   def agent; M.agent; end
