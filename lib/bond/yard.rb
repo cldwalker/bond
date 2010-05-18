@@ -17,15 +17,17 @@ module Bond
     def load_yard_gem(rubygem)
       raise("Unable to find gem.") unless (yardoc = find_yardoc(rubygem))
       completion_file = File.join(dir('yard_completions'), rubygem+'.rb')
-      if !File.exists?(completion_file) || @options[:reload]
-        YARD::Registry.load!(yardoc)
-        methods_hash = find_methods_with_options
-        body = generate_method_completions(methods_hash)
-        File.open(completion_file, 'w') {|e| e.write body }
-      end
+      create_completion_file(yardoc, completion_file) if !File.exists?(completion_file) || @options[:reload]
       M.load_file completion_file
     rescue
       $stderr.puts "Bond Error: Didn't load yard completions for gem '#{rubygem}'. #{$!.message}"
+    end
+
+    def create_completion_file(yardoc, completion_file)
+      YARD::Registry.load!(yardoc)
+      methods_hash = find_methods_with_options
+      body = generate_method_completions(methods_hash)
+      File.open(completion_file, 'w') {|e| e.write body }
     end
 
     def find_yardoc(rubygem)
@@ -45,7 +47,8 @@ module Bond
 
     def dir(subdir)
       (@dirs ||= {})[subdir] ||= begin
-        require 'fileutils'; FileUtils.mkdir_p File.join(M.home, '.bond', subdir)
+        require 'fileutils'
+        FileUtils.mkdir_p File.join(M.home, '.bond', subdir)
         File.join(M.home, '.bond', subdir)
       end
     end
@@ -53,7 +56,7 @@ module Bond
     def find_methods_with_options
       YARD::Registry.all(:method).inject({}) {|a,m|
         opts = m.tags.select {|e| e.is_a?(YARD::Tags::OptionTag) }.map {|e| e.pair.name }
-        a[m.path.to_s.sub(/#initialize$/, '.new')] = opts if !opts.empty?
+        a[m.path] = opts if !opts.empty? && m.path
         a
       }
     end
@@ -61,6 +64,7 @@ module Bond
     def generate_method_completions(methods_hash)
       methods_hash.map do |meth, options|
         options.map! {|e| e.sub(/^:/, '') }
+        meth = meth.sub(/#initialize$/, '.new')
         %Q[complete(:method=>'#{meth}') {\n  #{options.inspect}\n}]
       end.join("\n")
     end
