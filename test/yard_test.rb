@@ -48,7 +48,7 @@ describe 'Bond.load_yard_gems' do
 
       it 'prints building message' do
         Yard.expects(:system)
-        capture_stdout { load_yard_gems('bond') }.should =~ /Building bond's/
+        capture_stdout { load_yard_gems('bond') }.should =~ /Building.*bond's/
       end
 
       it "caches yardoc by default" do

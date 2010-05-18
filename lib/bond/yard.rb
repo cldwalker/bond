@@ -38,8 +38,8 @@ module Bond
         cmd << '-q' unless @options[:verbose]
         cmd += ['-c', output_dir] unless @options[:reload]
         cmd += [file, File.expand_path(file+'/..')+"/#{rubygem}/**/*.rb"]
-        puts cmd.join(' ') if @options[:verbose]
-        puts "Building #{rubygem}'s .yardoc database ..."
+        puts "Bond: "+cmd.join(' ') if @options[:verbose]
+        puts "Bond: Building/loading #{rubygem}'s .yardoc database ..."
         system *cmd
         output_dir
       end
