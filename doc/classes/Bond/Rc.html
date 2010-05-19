@@ -51,18 +51,18 @@
             <h2>Methods</h2>
             <h3>public instance</h3>
             <ol>
-              <li><a href="#M000027">complete</a></li>
-              <li><a href="#M000031">eval</a></li>
-              <li><a href="#M000029">files</a></li>
-              <li><a href="#M000030">objects_of</a></li>
-              <li><a href="#M000028">recomplete</a></li>
+              <li><a href="#M000031">complete</a></li>
+              <li><a href="#M000035">eval</a></li>
+              <li><a href="#M000033">files</a></li>
+              <li><a href="#M000034">objects_of</a></li>
+              <li><a href="#M000032">recomplete</a></li>
             </ol>
           </div>
           <div id='section'>
             <div id='methods'>
               <h2>Public instance methods</h2>
-              <div class='public-instance method' id='method-M000027'>
-                <a name='M000027'>      </a>
+              <div class='public-instance method' id='method-M000031'>
+                <a name='M000031'>      </a>
                 <div class='synopsis'>
                   <span class='name'>complete</span>
                   <span class='arguments'>(*args, &amp;block)</span>
@@ -73,35 +73,35 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000027-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000031-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000027-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 22</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">complete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000031-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 22</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">complete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000031'>
-                <a name='M000031'>      </a>
+              <div class='public-instance method' id='method-M000035'>
+                <a name='M000035'>      </a>
                 <div class='synopsis'>
                   <span class='name'>eval</span>
                   <span class='arguments'>(str)</span>
                 </div>
                 <div class='description'>
                   <p>
-                  Calls eval with <a href="Mission.html#M000038">Mission.current_eval</a>,
+                  Calls eval with <a href="Mission.html#M000043">Mission.current_eval</a>,
                   rescuing any exceptions to return nil. If <a
                   href="../Bond.html#M000005">Bond.config</a>[:debug] is true, exceptions are
                   raised again.
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000031-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000035-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000031-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 42</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">eval</span>(<span class="ruby-identifier">str</span>)&#x000A;      <span class="ruby-constant">Mission</span>.<span class="ruby-identifier">current_eval</span>(<span class="ruby-identifier">str</span>)&#x000A;    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span>&#x000A;      <span class="ruby-identifier">raise</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Bond</span>.<span class="ruby-identifier">config</span>[<span class="ruby-identifier">:debug</span>]&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000035-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 42</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">eval</span>(<span class="ruby-identifier">str</span>)&#x000A;      <span class="ruby-constant">Mission</span>.<span class="ruby-identifier">current_eval</span>(<span class="ruby-identifier">str</span>)&#x000A;    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">Exception</span>&#x000A;      <span class="ruby-identifier">raise</span> <span class="ruby-keyword kw">if</span> <span class="ruby-constant">Bond</span>.<span class="ruby-identifier">config</span>[<span class="ruby-identifier">:debug</span>]&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000029'>
-                <a name='M000029'>      </a>
+              <div class='public-instance method' id='method-M000033'>
+                <a name='M000033'>      </a>
                 <div class='synopsis'>
                   <span class='name'>files</span>
                   <span class='arguments'>(input)</span>
@@ -113,14 +113,14 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000029-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000033-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000029-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 27</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">files</span>(<span class="ruby-identifier">input</span>)&#x000A;      (<span class="ruby-operator">::</span><span class="ruby-constant">Readline</span><span class="ruby-operator">::</span><span class="ruby-constant">FILENAME_COMPLETION_PROC</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">input</span>) <span class="ruby-operator">||</span> []).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-identifier">f</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^~/</span> <span class="ruby-operator">?</span>  <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">f</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">f</span>&#x000A;      }&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000033-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 27</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">files</span>(<span class="ruby-identifier">input</span>)&#x000A;      (<span class="ruby-operator">::</span><span class="ruby-constant">Readline</span><span class="ruby-operator">::</span><span class="ruby-constant">FILENAME_COMPLETION_PROC</span>.<span class="ruby-identifier">call</span>(<span class="ruby-identifier">input</span>) <span class="ruby-operator">||</span> []).<span class="ruby-identifier">map</span> {<span class="ruby-operator">|</span><span class="ruby-identifier">f</span><span class="ruby-operator">|</span>&#x000A;        <span class="ruby-identifier">f</span> <span class="ruby-operator">=~</span> <span class="ruby-regexp re">/^~/</span> <span class="ruby-operator">?</span>  <span class="ruby-constant">File</span>.<span class="ruby-identifier">expand_path</span>(<span class="ruby-identifier">f</span>) <span class="ruby-operator">:</span> <span class="ruby-identifier">f</span>&#x000A;      }&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000030'>
-                <a name='M000030'>      </a>
+              <div class='public-instance method' id='method-M000034'>
+                <a name='M000034'>      </a>
                 <div class='synopsis'>
                   <span class='name'>objects_of</span>
                   <span class='arguments'>(klass)</span>
@@ -131,14 +131,14 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000030-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000034-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000030-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 34</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">objects_of</span>(<span class="ruby-identifier">klass</span>)&#x000A;      <span class="ruby-identifier">object</span> = []&#x000A;      <span class="ruby-constant">ObjectSpace</span>.<span class="ruby-identifier">each_object</span>(<span class="ruby-identifier">klass</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">e</span>) }&#x000A;      <span class="ruby-identifier">object</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000034-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 34</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">objects_of</span>(<span class="ruby-identifier">klass</span>)&#x000A;      <span class="ruby-identifier">object</span> = []&#x000A;      <span class="ruby-constant">ObjectSpace</span>.<span class="ruby-identifier">each_object</span>(<span class="ruby-identifier">klass</span>) {<span class="ruby-operator">|</span><span class="ruby-identifier">e</span><span class="ruby-operator">|</span> <span class="ruby-identifier">object</span>.<span class="ruby-identifier">push</span>(<span class="ruby-identifier">e</span>) }&#x000A;      <span class="ruby-identifier">object</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000028'>
-                <a name='M000028'>      </a>
+              <div class='public-instance method' id='method-M000032'>
+                <a name='M000032'>      </a>
                 <div class='synopsis'>
                   <span class='name'>recomplete</span>
                   <span class='arguments'>(*args, &amp;block)</span>
@@ -149,10 +149,10 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000028-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000032-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000028-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 24</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">recomplete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">recomplete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000032-source'><span class="ruby-comment cmt"># File lib/bond/rc.rb, line 24</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">recomplete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">recomplete</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
             </div>

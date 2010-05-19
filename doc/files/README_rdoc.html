@@ -31,7 +31,7 @@
         </div>
         <div class='last-update'>
           Last Update:
-          <span class='datetime'>Mon May 03 14:03:01 -0400 2010</span>
+          <span class='datetime'>Wed May 19 03:16:07 -0400 2010</span>
         </div>
       </div>
       <div id='content'>
@@ -51,10 +51,12 @@
             irb&#8217;s completion closer to bash/zsh as it provides a configuration
             system and a DSL for creating custom completions and completion rules. With
             this configuration system, users can customize their irb autocompletions
-            and share it with others. <a href="../classes/Bond.html">Bond</a> is able
-            to offer more than irb&#8217;s completion since it uses a Readline C
-            extension to get the full line of input when completing as opposed to
-            irb&#8217;s last-word approach.
+            and share it with others. <a href="../classes/Bond.html">Bond</a> can also
+            generate completions from yard documentation and load completions that ship
+            with gems. <a href="../classes/Bond.html">Bond</a> is able to offer more
+            than irb&#8217;s completion since it uses a Readline C extension to get the
+            full line of input when completing as opposed to irb&#8217;s last-word
+            approach.
             </p>
             <h2>Install</h2>
             <p>
@@ -149,7 +151,7 @@
             href="../classes/Bond.html#M000006">Bond.start</a> and its config files
             (which are just <a href="../classes/Bond.html#M000002">Bond.complete</a>
             calls). When a user autocompletes, <a
-            href="../classes/Bond.html#M000007">Bond.agent</a> looks up missions in the
+            href="../classes/Bond.html#M000009">Bond.agent</a> looks up missions in the
             <b>order</b> they were defined and completes with the first one that
             matches. The exception to this ordering are :method completions.
             </p>
@@ -192,17 +194,28 @@
             Readline.
             </p>
             <h2>Credits</h2>
-            <p>
-            Thanks to Csaba Hank for <a
+            <ul>
+            <li>Csaba Hank for <a
             href="http://www.creo.hu/~csaba/ruby/irb-enhancements/doc/files/README.html">providing
             the C extension</a> which <a href="../classes/Bond.html">Bond</a> uses to
-            read Readline&#8217;s full buffer. Thanks also goes out to Takao Kouji for
-            <a
-            href="http://svn.ruby-lang.org/cgi-bin/viewvc.cgi/trunk/ext/readline/readline.c?view=diff&r1=24018&r2=24019">recently
-            commiting</a> this Readline enhancement to ruby.
-            </p>
+            read Readline&#8217;s full buffer.
+            
+            </li>
+            <li>Takao Kouji for <a
+            href="http://svn.ruby-lang.org/cgi-bin/viewvc.cgi/trunk/ext/readline/readline.c?view=diff&r1=24018&r2=24019">commiting</a>
+            this Readline enhancement to ruby 1.9.2.
+            
+            </li>
+            <li>pd for compatibility with emacs&#8217; inf-ruby mode.
+            
+            </li>
+            </ul>
             <h2>Links</h2>
             <ul>
+            <li><a
+            href="http://tagaholic.me/2010/05/07/screencast-of-argument-autocompletion-for-methods-in-irb.html">tagaholic.me/2010/05/07/screencast-of-argument-autocompletion-for-methods-in-irb.html</a>
+            
+            </li>
             <li><a
             href="http://tagaholic.me/2009/07/16/bond-from-irb-with-completion-love.html">tagaholic.me/2009/07/16/bond-from-irb-with-completion-love.html</a>
             
@@ -218,7 +231,8 @@
             </ul>
             <h2>Todo</h2>
             <ul>
-            <li>Load completions that come with a gem easily.
+            <li>Generate method autocompletions for any arguments based on yardoc
+            documentation.
             
             </li>
             <li>Make completion actions more synonymous with argument types.

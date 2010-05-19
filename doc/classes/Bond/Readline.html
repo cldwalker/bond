@@ -41,15 +41,16 @@
             <p>
             This is the default readline plugin for <a href="../Bond.html">Bond</a>. A
             valid plugin must be a module that defines methods setup and <a
-            href="Readline.html#M000035">line_buffer</a> as described below.
+            href="Readline.html#M000040">line_buffer</a> as described below.
             </p>
           </div>
           <div id='method-list'>
             <h2>Methods</h2>
             <h3>public instance</h3>
             <ol>
-              <li><a href="#M000035">line_buffer</a></li>
-              <li><a href="#M000034">setup</a></li>
+              <li><a href="#M000040">line_buffer</a></li>
+              <li><a href="#M000039">load_extension</a></li>
+              <li><a href="#M000038">setup</a></li>
             </ol>
           </div>
           <div id='section'>
@@ -67,8 +68,8 @@
             </div>
             <div id='methods'>
               <h2>Public instance methods</h2>
-              <div class='public-instance method' id='method-M000035'>
-                <a name='M000035'>      </a>
+              <div class='public-instance method' id='method-M000040'>
+                <a name='M000040'>      </a>
                 <div class='synopsis'>
                   <span class='name'>line_buffer</span>
                   <span class='arguments'>()</span>
@@ -79,14 +80,27 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000035-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000040-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000035-source'><span class="ruby-comment cmt"># File lib/bond/readline.rb, line 46</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">line_buffer</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">line_buffer</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000040-source'><span class="ruby-comment cmt"># File lib/bond/readline.rb, line 48</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">line_buffer</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">line_buffer</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000034'>
-                <a name='M000034'>      </a>
+              <div class='public-instance method' id='method-M000039'>
+                <a name='M000039'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>load_extension</span>
+                  <span class='arguments'>()</span>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000039-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000039-source'><span class="ruby-comment cmt"># File lib/bond/readline.rb, line 24</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">load_extension</span>&#x000A;      <span class="ruby-identifier">require</span> <span class="ruby-value str">'readline_line_buffer'</span>&#x000A;    <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">LoadError</span>&#x000A;      <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Bond Error: Failed to load readline_line_buffer extension. Falling back on RubyInline extension.&quot;</span>&#x000A;      <span class="ruby-identifier">require</span> <span class="ruby-value str">'inline'</span>&#x000A;      <span class="ruby-identifier">eval</span> <span class="ruby-value str">%[&#x000A;        module ::Readline&#x000A;          inline do |builder|&#x000A;            %w(&lt;errno.h&gt; &lt;stdio.h&gt; &lt;readline/readline.h&gt;).each{|h| builder.include h }&#x000A;            builder.c_raw_singleton &lt;&lt;-EOC&#x000A;        static VALUE line_buffer(VALUE self)&#x000A;        {&#x000A;          rb_secure(4);&#x000A;          if (rl_line_buffer == NULL)&#x000A;        return Qnil;&#x000A;          return rb_tainted_str_new2(rl_line_buffer);&#x000A;        }&#x000A;        EOC&#x000A;          end&#x000A;        end&#x000A;      ]</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000038'>
+                <a name='M000038'>      </a>
                 <div class='synopsis'>
                   <span class='name'>setup</span>
                   <span class='arguments'>(agent)</span>
@@ -98,10 +112,10 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000034-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000038-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000034-source'><span class="ruby-comment cmt"># File lib/bond/readline.rb, line 8</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup</span>(<span class="ruby-identifier">agent</span>)&#x000A;      <span class="ruby-identifier">require</span> <span class="ruby-value str">'readline'</span>&#x000A;      <span class="ruby-keyword kw">begin</span>&#x000A;        <span class="ruby-identifier">require</span> <span class="ruby-value str">'readline_line_buffer'</span>&#x000A;      <span class="ruby-keyword kw">rescue</span> <span class="ruby-constant">LoadError</span>&#x000A;        <span class="ruby-identifier">$stderr</span>.<span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Failed to load readline_line_buffer extension. Falling back on RubyInline extension.&quot;</span>&#x000A;        <span class="ruby-identifier">require</span> <span class="ruby-value str">'inline'</span>&#x000A;        <span class="ruby-identifier">eval</span> <span class="ruby-value str">%[&#x000A;          module ::Readline&#x000A;            inline do |builder|&#x000A;              %w(&lt;errno.h&gt; &lt;stdio.h&gt; &lt;readline/readline.h&gt;).each{|h| builder.include h }&#x000A;              builder.c_raw_singleton &lt;&lt;-EOC&#x000A;          static VALUE line_buffer(VALUE self)&#x000A;          {&#x000A;            rb_secure(4);&#x000A;            if (rl_line_buffer == NULL)&#x000A;          return Qnil;&#x000A;            return rb_tainted_str_new2(rl_line_buffer);&#x000A;          }&#x000A;          EOC&#x000A;            end&#x000A;          end&#x000A;        ]</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;&#x000A;      <span class="ruby-comment cmt"># Reinforcing irb defaults</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">completion_append_character</span> = <span class="ruby-keyword kw">nil</span>&#x000A;      <span class="ruby-keyword kw">if</span> <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value str">&quot;basic_word_break_characters=&quot;</span>)&#x000A;        <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">basic_word_break_characters</span> = <span class="ruby-constant">DefaultBreakCharacters</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">completion_proc</span> = <span class="ruby-identifier">agent</span>&#x000A;      <span class="ruby-keyword kw">if</span> (<span class="ruby-operator">::</span><span class="ruby-constant">Readline</span><span class="ruby-operator">::</span><span class="ruby-constant">VERSION</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>).<span class="ruby-identifier">to_s</span>[<span class="ruby-regexp re">/editline/i</span>]&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Bond has detected EditLine and may not work with it. See the README's Limitations section.&quot;</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000038-source'><span class="ruby-comment cmt"># File lib/bond/readline.rb, line 8</span>&#x000A;    <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">setup</span>(<span class="ruby-identifier">agent</span>)&#x000A;      <span class="ruby-identifier">require</span> <span class="ruby-value str">'readline'</span>&#x000A;      <span class="ruby-identifier">load_extension</span> <span class="ruby-keyword kw">unless</span> <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-identifier">:line_buffer</span>)&#x000A;&#x000A;      <span class="ruby-comment cmt"># Reinforcing irb defaults</span>&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">completion_append_character</span> = <span class="ruby-keyword kw">nil</span>&#x000A;      <span class="ruby-keyword kw">if</span> <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">respond_to?</span>(<span class="ruby-value str">&quot;basic_word_break_characters=&quot;</span>)&#x000A;        <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">basic_word_break_characters</span> = <span class="ruby-constant">DefaultBreakCharacters</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;&#x000A;      <span class="ruby-operator">::</span><span class="ruby-constant">Readline</span>.<span class="ruby-identifier">completion_proc</span> = <span class="ruby-identifier">agent</span>&#x000A;      <span class="ruby-keyword kw">if</span> (<span class="ruby-operator">::</span><span class="ruby-constant">Readline</span><span class="ruby-operator">::</span><span class="ruby-constant">VERSION</span> <span class="ruby-keyword kw">rescue</span> <span class="ruby-keyword kw">nil</span>).<span class="ruby-identifier">to_s</span>[<span class="ruby-regexp re">/editline/i</span>]&#x000A;        <span class="ruby-identifier">puts</span> <span class="ruby-value str">&quot;Bond has detected EditLine and may not work with it. See the README's Limitations section.&quot;</span>&#x000A;      <span class="ruby-keyword kw">end</span>&#x000A;    <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
             </div>

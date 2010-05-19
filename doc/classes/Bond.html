@@ -34,10 +34,10 @@
             <a href="../files/lib/bond/agent_rb.html">lib/bond/agent.rb</a>
           </li>
           <li class='other'>
-            <a href="../files/lib/bond/m_rb.html">lib/bond/m.rb</a>
+            <a href="../files/lib/bond/input_rb.html">lib/bond/input.rb</a>
           </li>
           <li class='other'>
-            <a href="../files/lib/bond/input_rb.html">lib/bond/input.rb</a>
+            <a href="../files/lib/bond/m_rb.html">lib/bond/m.rb</a>
           </li>
           <li class='other'>
             <a href="../files/lib/bond/mission_rb.html">lib/bond/mission.rb</a>
@@ -58,10 +58,13 @@
             <a href="../files/lib/bond/readline_rb.html">lib/bond/readline.rb</a>
           </li>
           <li class='other'>
+            <a href="../files/lib/bond/search_rb.html">lib/bond/search.rb</a>
+          </li>
+          <li class='other'>
             <a href="../files/lib/bond/version_rb.html">lib/bond/version.rb</a>
           </li>
           <li class='other'>
-            <a href="../files/lib/bond/search_rb.html">lib/bond/search.rb</a>
+            <a href="../files/lib/bond/yard_rb.html">lib/bond/yard.rb</a>
           </li>
           <li class='other'>
             <a href="../files/lib/bond_rb.html">lib/bond.rb</a>
@@ -77,10 +80,12 @@
             <h2>Methods</h2>
             <h3>public instance</h3>
             <ol>
-              <li><a href="#M000007">agent</a></li>
+              <li><a href="#M000009">agent</a></li>
               <li><a href="#M000002">complete</a></li>
               <li><a href="#M000005">config</a></li>
-              <li><a href="#M000008">list_methods</a></li>
+              <li><a href="#M000010">list_methods</a></li>
+              <li><a href="#M000007">load_gems</a></li>
+              <li><a href="#M000008">load_yard_gems</a></li>
               <li><a href="#M000003">recomplete</a></li>
               <li><a href="#M000004">spy</a></li>
               <li><a href="#M000006">start</a></li>
@@ -94,6 +99,7 @@
               Module <a href="Bond/Rc.html" class="link">Bond::Rc</a><br />
               Module <a href="Bond/Readline.html" class="link">Bond::Readline</a><br />
               Module <a href="Bond/Search.html" class="link">Bond::Search</a><br />
+              Module <a href="Bond/Yard.html" class="link">Bond::Yard</a><br />
               Class <a href="Bond/Agent.html" class="link">Bond::Agent</a><br />
               Class <a href="Bond/AnywhereMission.html" class="link">Bond::AnywhereMission</a><br />
               Class <a href="Bond/DefaultMission.html" class="link">Bond::DefaultMission</a><br />
@@ -112,15 +118,15 @@
                   <tr class='top-aligned-row context-row'>
                     <td class='context-item-name'>VERSION</td>
                     <td>=</td>
-                    <td class='context-item-value'>'0.2.0'</td>
+                    <td class='context-item-value'>'0.2.1'</td>
                   </tr>
                 </table>
               </div>
             </div>
             <div id='methods'>
               <h2>Public instance methods</h2>
-              <div class='public-instance method' id='method-M000007'>
-                <a name='M000007'>      </a>
+              <div class='public-instance method' id='method-M000009'>
+                <a name='M000009'>      </a>
                 <div class='synopsis'>
                   <span class='name'>agent</span>
                   <span class='arguments'>()</span>
@@ -133,10 +139,10 @@
                   </p>
                 </div>
                 <div class='source'>
-                  <a class='source-toggle' href='#' onclick="toggleCode('M000007-source'); return false">
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000009-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000007-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 86</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">agent</span>; <span class="ruby-constant">M</span>.<span class="ruby-identifier">agent</span>; <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000009-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 101</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">agent</span>; <span class="ruby-constant">M</span>.<span class="ruby-identifier">agent</span>; <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
               <div class='public-instance method' id='method-M000002'>
@@ -175,7 +181,7 @@
                   
                   </dd>
                   <dt><b>:search</b></dt><dd>A symbol or false which determines how completions are searched. Defaults
-                  to <a href="Bond/Search.html#M000013">Search.default_search</a>. If false,
+                  to <a href="Bond/Search.html#M000015">Search.default_search</a>. If false,
                   search is turned off and assumed to be done in the action. Possible symbols
                   are :anywhere, :ignore_case, :underscore, :normal, :files and :modules. See
                   <a href="Bond/Search.html">Search</a> for more info.
@@ -206,7 +212,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('M000002-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000002-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 47</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">complete</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000002-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 48</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">complete</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">complete</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
               <div class='public-instance method' id='method-M000005'>
@@ -244,7 +250,11 @@
                   
                   </dd>
                   <dt><b>:debug</b></dt><dd>Boolean to show the stacktrace when autocompletion fails and raise
-                  exceptions in <a href="Bond/Rc.html#M000031">Rc.eval</a>. Default is false.
+                  exceptions in <a href="Bond/Rc.html#M000035">Rc.eval</a>. Default is false.
+                  
+                  </dd>
+                  <dt><b>:eval_debug</b></dt><dd>Boolean to raise eval errors occuring when finding a matching completion.
+                  Useful to debug an incorrect completion. Default is false.
                   
                   </dd>
                   </dl>
@@ -253,11 +263,11 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('M000005-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000005-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 73</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">config</span>; <span class="ruby-constant">M</span>.<span class="ruby-identifier">config</span>; <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000005-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 76</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">config</span>; <span class="ruby-constant">M</span>.<span class="ruby-identifier">config</span>; <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
-              <div class='public-instance method' id='method-M000008'>
-                <a name='M000008'>      </a>
+              <div class='public-instance method' id='method-M000010'>
+                <a name='M000010'>      </a>
                 <div class='synopsis'>
                   <span class='name'>list_methods</span>
                   <span class='arguments'>()</span>
@@ -268,10 +278,58 @@
                   </p>
                 </div>
                 <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000010-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000010-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 104</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list_methods</span>; <span class="ruby-constant">MethodMission</span>.<span class="ruby-identifier">all_methods</span>; <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000007'>
+                <a name='M000007'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>load_gems</span>
+                  <span class='arguments'>(*gems)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Loads completions for gems that ship with them under lib/bond/completions/,
+                  relative to the gem&#8217;s base directory.
+                  </p>
+                </div>
+                <div class='source'>
+                  <a class='source-toggle' href='#' onclick="toggleCode('M000007-source'); return false">
+                    [show source]
+                  </a>
+                  <pre id='M000007-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 92</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">load_gems</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">gems</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">load_gems</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">gems</span>); <span class="ruby-keyword kw">end</span></pre>
+                </div>
+              </div>
+              <div class='public-instance method' id='method-M000008'>
+                <a name='M000008'>      </a>
+                <div class='synopsis'>
+                  <span class='name'>load_yard_gems</span>
+                  <span class='arguments'>(*gems)</span>
+                </div>
+                <div class='description'>
+                  <p>
+                  Generates and loads completions for yardoc documented gems.
+                  </p>
+                  <h4>Options:</h4>
+                  <dl>
+                  <dt><b>:verbose</b></dt><dd>Boolean which displays additional information when building yardoc. Default
+                  is false.
+                  
+                  </dd>
+                  <dt><b>:reload</b></dt><dd>Rebuilds yard databases. Use when gems have changed versions. Default is
+                  false.
+                  
+                  </dd>
+                  </dl>
+                </div>
+                <div class='source'>
                   <a class='source-toggle' href='#' onclick="toggleCode('M000008-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000008-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 89</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">list_methods</span>; <span class="ruby-constant">MethodMission</span>.<span class="ruby-identifier">all_methods</span>; <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000008-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 98</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">load_yard_gems</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">gems</span>); <span class="ruby-constant">Yard</span>.<span class="ruby-identifier">load_yard_gems</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">gems</span>); <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
               <div class='public-instance method' id='method-M000003'>
@@ -294,7 +352,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('M000003-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000003-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 53</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">recomplete</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">recomplete</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000003-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 54</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">recomplete</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">recomplete</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
               <div class='public-instance method' id='method-M000004'>
@@ -315,7 +373,7 @@
                   <a class='source-toggle' href='#' onclick="toggleCode('M000004-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000004-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 60</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">spy</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">spy</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>); <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000004-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 61</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">spy</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">spy</span>(<span class="ruby-operator">*</span><span class="ruby-identifier">args</span>); <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
               <div class='public-instance method' id='method-M000006'>
@@ -327,23 +385,33 @@
                 <div class='description'>
                   <p>
                   Starts <a href="Bond.html">Bond</a> with a default set of completions that
-                  replace and improve irb&#8217;s completion. Loads completion files in the
-                  following order: <a
+                  replace and improve irb&#8217;s completion. Loads completions in this
+                  order: <a
                   href="../files/lib/bond/completion_rb.html">lib/bond/completion.rb</a>,
-                  optional ~/.bondrc, lib/bond/completions/*.rb, optional
-                  ~/.bond/completions/*.rb and optional block. See <a
-                  href="Bond/Rc.html">Rc</a> for the DSL to use in completion files and in
-                  the block. See <a href="Bond.html#M000005">Bond.config</a> for valid
-                  options.
+                  lib/bond/completions/*.rb and the following optional completions:
+                  completions from :gems, completions from :yard_gems, ~/.bondrc,
+                  ~/.bond/completions/*.rb and from block. See <a href="Bond/Rc.html">Rc</a>
+                  for the DSL to use in completion files and in the block. Valid options are
+                  <a href="Bond.html#M000005">Bond.config</a> keys and the following:
                   </p>
-                  <h4>Example:</h4>
-                  <pre>Bond.start(:default_search=&gt;:ignore_case) do&#x000A;  complete(:method=&gt;&quot;Object#respond_to?&quot;) {|e| e.object.methods }&#x000A;end</pre>
+                  <dl>
+                  <dt><b>:gems</b></dt><dd>Array of gems which have their completions loaded from
+                  lib/bond/completions/*.rb.
+                  
+                  </dd>
+                  <dt><b>:yard_gems</b></dt><dd>Array of gems using yard documentation to generate completions. See <a
+                  href="Bond/Yard.html">Yard</a>.
+                  
+                  </dd>
+                  </dl>
+                  <h4>Examples:</h4>
+                  <pre>Bond.start :gems=&gt;%w{hirb}&#x000A;Bond.start(:default_search=&gt;:ignore_case) do&#x000A;  complete(:method=&gt;&quot;Object#respond_to?&quot;) {|e| e.object.methods }&#x000A;end</pre>
                 </div>
                 <div class='source'>
                   <a class='source-toggle' href='#' onclick="toggleCode('M000006-source'); return false">
                     [show source]
                   </a>
-                  <pre id='M000006-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 83</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">start</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
+                  <pre id='M000006-source'><span class="ruby-comment cmt"># File lib/bond.rb, line 89</span>&#x000A;  <span class="ruby-keyword kw">def</span> <span class="ruby-identifier">start</span>(<span class="ruby-identifier">options</span>={}, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-constant">M</span>.<span class="ruby-identifier">start</span>(<span class="ruby-identifier">options</span>, <span class="ruby-operator">&amp;</span><span class="ruby-identifier">block</span>); <span class="ruby-keyword kw">end</span></pre>
                 </div>
               </div>
             </div>
