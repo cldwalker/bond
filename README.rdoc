@@ -204,16 +204,17 @@ has good instructions for reinstalling ruby with the official Readline.
 
 == Credits
 * Csaba Hank for {providing the C extension}[http://www.creo.hu/~csaba/ruby/irb-enhancements/doc/files/README.html] which Bond uses to read Readline's full buffer.
-* Takao Kouji for {recently commiting}[http://svn.ruby-lang.org/cgi-bin/viewvc.cgi/trunk/ext/readline/readline.c?view=diff&r1=24018&r2=24019] this Readline enhancement to ruby.
+* Takao Kouji for {commiting}[http://svn.ruby-lang.org/cgi-bin/viewvc.cgi/trunk/ext/readline/readline.c?view=diff&r1=24018&r2=24019] this Readline enhancement to ruby 1.9.2.
 * pd for compatibility with emacs' inf-ruby mode.
 
 == Links
+* http://tagaholic.me/2010/05/07/screencast-of-argument-autocompletion-for-methods-in-irb.html
 * http://tagaholic.me/2009/07/16/bond-from-irb-with-completion-love.html
 * http://tagaholic.me/2009/07/22/better-irb-completion-with-bond.html
 * http://tagaholic.me/2009/07/23/mini-irb-and-mini-script-console.html
 
 == Todo
-* Load completions that come with a gem easily.
+* Generate method autocompletions for any arguments based on yardoc documentation.
 * Make completion actions more synonymous with argument types.
 * Cache expensive completion actions.
 * Ensure completions work when there is additional, unrelated text to the right of a completion.

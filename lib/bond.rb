@@ -79,7 +79,7 @@ module Bond
   # in this order: lib/bond/completion.rb, lib/bond/completions/*.rb and the following optional completions:
   # completions from :gems, completions from :yard_gems, ~/.bondrc, ~/.bond/completions/*.rb and from block. See
   # Rc for the DSL to use in completion files and in the block. Valid options are Bond.config keys and the following:
-  # [*:gems*] Array of gems which have their completions loaded from lib/bond/completions/#{gem}.rb.
+  # [*:gems*] Array of gems which have their completions loaded from lib/bond/completions/*.rb.
   # [*:yard_gems*] Array of gems using yard documentation to generate completions. See Yard.
   # ==== Examples:
   #   Bond.start :gems=>%w{hirb}
@@ -88,7 +88,7 @@ module Bond
   #   end
   def start(options={}, &block); M.start(options, &block); end
 
-  # Loads completions for gems that ship with them at lib/bond/completions/#{gem}.rb.
+  # Loads completions for gems that ship with them under lib/bond/completions/, relative to the gem's base directory.
   def load_gems(*gems); M.load_gems(*gems); end
 
   # Generates and loads completions for yardoc documented gems.
