@@ -63,8 +63,8 @@ module Bond
     end
 
     def load_gem_completion(rubygem) #:nodoc:
-      (file = find_gem_file(rubygem, File.join('bond', 'completions', "#{rubygem}.rb"))) ?
-        load_file(file) : $stderr.puts("Bond Error: No completions found for gem '#{rubygem}'")
+      (dir = find_gem_file(rubygem, File.join(rubygem, '..', 'bond'))) ?
+        load_dir(dir) : $stderr.puts("Bond Error: No completions found for gem '#{rubygem}'.")
     end
 
     # Finds the full path to a gem's file relative it's load path directory. Returns nil if not found.

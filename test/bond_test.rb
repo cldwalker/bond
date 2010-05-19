@@ -40,37 +40,38 @@ describe "Bond" do
 
   describe "start with :gems" do
     before {
-      M.stubs(:load_dir)
       File.stubs(:exists?).returns(true)
-    }
-    it "attempts to load gem" do
       M.stubs(:load_file)
+    }
+
+    it "attempts to load gem" do
+      M.stubs(:load_dir)
       M.expects(:gem).twice
       start(:gems=>%w{one two})
     end
 
     it "rescues nonexistent gem" do
-      M.stubs(:load_file)
+      M.stubs(:load_dir)
       M.expects(:gem).raises(LoadError)
       should.not.raise { start(:gems=>%w{blah}) }
     end
 
     it "rescues nonexistent method 'gem'" do
-      M.stubs(:load_file)
+      M.stubs(:load_dir)
       M.expects(:gem).raises(NoMethodError)
       should.not.raise { start(:gems=>%w{blah}) }
     end
 
     it "prints error if gem completion not found" do
-      M.stubs(:load_file)
+      M.stubs(:load_dir)
       M.expects(:find_gem_file).returns(nil)
       capture_stderr { start(:gems=>%w{invalid}) }.should =~ /No completions.*'invalid'/
     end
 
     it "loads gem completion file" do
-      File.expects(:read).returns('')
-      File.expects(:read).returns('')
-      File.expects(:read).with(File.join($:[0], 'bond', 'completions', 'awesome.rb')).returns('')
+      M.expects(:load_dir)
+      M.expects(:load_dir).with(File.join($:[0], 'awesome', '..', 'bond'))
+      M.expects(:load_dir)
       M.expects(:gem)
       start(:gems=>%w{awesome})
     end
