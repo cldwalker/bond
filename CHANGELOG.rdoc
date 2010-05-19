@@ -1,3 +1,13 @@
+== 0.2.1
+* Added Bond.load_yard_gems which generates argument completions from yard documentation.
+* Added Bond.load_gems which loads completions from gem's directory.
+* Added compatibility within emacs' inf-ruby mode (thanks to @pd).
+* Added :eval_debug to Bond.config for debugging completions.
+* Doesn't build or load c extension for ruby 1.9.2.
+* Fixed argument completion of object containing method names bug.
+* Fixed nested constants completion bug.
+* Updated completions for Kernel#system, Module#public, Module#protected and Module#private.
+
 == 0.2.0
 * Added comprehensive argument completion per module, method and argument.
 * Added 60+ default method argument completions.

@@ -6,7 +6,8 @@ Bond is on a mission to improve irb's autocompletion. Aside from doing everythin
 Bond can autocomplete argument(s) to methods, uniquely completing per module, per method and per argument. Bond brings
 irb's completion closer to bash/zsh as it provides a configuration system and a DSL for creating custom completions
 and completion rules. With this configuration system, users can customize their irb autocompletions and share
-it with others. Bond is able to offer more than irb's completion since it uses a Readline C extension to get the full
+it with others. Bond can also generate completions from yard documentation and load completions that ship with gems.
+Bond is able to offer more than irb's completion since it uses a Readline C extension to get the full
 line of input when completing as opposed to irb's last-word approach.
 
 == Install
@@ -202,10 +203,9 @@ If on a Mac and using Editline as a Readline replacement (Readline::VERSION =~ /
 has good instructions for reinstalling ruby with the official Readline.
 
 == Credits
-Thanks to Csaba Hank for {providing the C extension}[http://www.creo.hu/~csaba/ruby/irb-enhancements/doc/files/README.html]
-which Bond uses to read Readline's full buffer. Thanks also goes out to Takao Kouji for {recently
-commiting}[http://svn.ruby-lang.org/cgi-bin/viewvc.cgi/trunk/ext/readline/readline.c?view=diff&r1=24018&r2=24019]
-this Readline enhancement to ruby.
+* Csaba Hank for {providing the C extension}[http://www.creo.hu/~csaba/ruby/irb-enhancements/doc/files/README.html] which Bond uses to read Readline's full buffer.
+* Takao Kouji for {recently commiting}[http://svn.ruby-lang.org/cgi-bin/viewvc.cgi/trunk/ext/readline/readline.c?view=diff&r1=24018&r2=24019] this Readline enhancement to ruby.
+* pd for compatibility with emacs' inf-ruby mode.
 
 == Links
 * http://tagaholic.me/2009/07/16/bond-from-irb-with-completion-love.html
