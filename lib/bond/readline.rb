@@ -24,24 +24,7 @@ module Bond
     def load_extension
       require 'readline_line_buffer'
     rescue LoadError
-      $stderr.puts "Bond Error: Failed to load readline_line_buffer extension. Falling back on RubyInline extension."
-      require 'inline'
-      eval %[
-        module ::Readline
-          inline do |builder|
-            %w(<errno.h> <stdio.h> <readline/readline.h>).each{|h| builder.include h }
-            builder.c_raw_singleton <<-EOC
-        static VALUE line_buffer(VALUE self)
-        {
-          rb_secure(4);
-          if (rl_line_buffer == NULL)
-        return Qnil;
-          return rb_tainted_str_new2(rl_line_buffer);
-        }
-        EOC
-          end
-        end
-      ]
+      $stderr.puts "Bond Error: Failed to load readline_line_buffer.bundle. Ensure that it exists and was built correctly."
     end
 
     # Returns full line of what the user has typed.
