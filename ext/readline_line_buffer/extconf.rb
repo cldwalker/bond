@@ -12,11 +12,8 @@ if RUBY_VERSION < '1.9.2'
   end
   create_makefile 'readline_line_buffer'
 else
-  # Do nothing.  But, since rubygems will complain if it can't run `make install` next, output a fake Makefile that does nothing.
-  f = File.open(File.join(File.dirname(__FILE__), "Makefile"), "w")
-  f.puts <<-EOF
-install:
-\techo "Bond does not require the assistance of this extension with ruby 1.9.2"
-EOF
-  f.close
+  # Create dummy Makefile to placate rubygems when running `make install`.
+  File.open(File.join(File.dirname(__FILE__), "Makefile"), "w") {|f|
+    f.puts %[install:\n\techo "This is a dummy extension"]
+  }
 end
