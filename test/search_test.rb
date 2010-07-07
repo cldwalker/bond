@@ -38,6 +38,14 @@ describe "Search" do
     tab("blah i").should == ["include?", "instance_variable_defined?", "include_and_exclude?"]
   end
 
+  it "underscore search autocompletes strings starting with __" do
+    completions = ["include?", "__id__", "__send__"]
+    complete(:on=>/blah/, :search=>:underscore) { completions }
+    tab('blah _').should == ["__id__", "__send__"]
+    tab('blah __').should == ["__id__", "__send__"]
+    tab('blah __i').should == ["__id__"]
+  end
+
   it "underscore search can match first unique strings of each underscored word" do
     completions = %w{so_long so_larger so_louder}
     complete(:on=>/blah/, :search=>:underscore) { completions }
