@@ -17,5 +17,5 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mocha-on-bacon'
   s.files = Dir.glob(%w[{lib,test}/**/*.rb bin/* [A-Z]*.{txt,rdoc} ext/**/*.{rb,c}]) + %w{Rakefile gemspec}
   s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
-  s.extensions = RUBY_VERSION < '1.9.2' ? ["ext/readline_line_buffer/extconf.rb"] : []
+  s.extensions = ["ext/readline_line_buffer/extconf.rb"]
 end
