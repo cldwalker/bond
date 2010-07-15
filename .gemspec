@@ -15,7 +15,8 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'bacon'
   s.add_development_dependency 'mocha'
   s.add_development_dependency 'mocha-on-bacon'
-  s.files = Dir.glob(%w[{lib,test}/**/*.rb bin/* [A-Z]*.{txt,rdoc} ext/**/*.{rb,c}]) + %w{Rakefile gemspec}
+  s.files = Dir.glob(%w[{lib,test}/**/*.rb bin/* [A-Z]*.{txt,rdoc} ext/**/*.{rb,c}]) + %w{Rakefile .gemspec}
   s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
   s.extensions = ["ext/readline_line_buffer/extconf.rb"]
+  s.license = 'MIT'
 end
