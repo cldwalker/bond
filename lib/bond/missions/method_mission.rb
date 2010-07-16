@@ -152,7 +152,11 @@ module Bond
   OBJECTS = Mission::OBJECTS + %w{\S*?}
   CONDITION = %q{(OBJECTS)\.?(METHODS)(?:\s+|\()(['":])?(.*)$}
 
-  #:stopdoc:
+  def match_message #@private
+    "Matches completion for method '#{@meth}' in '#{MethodMission.last_class}'."
+  end
+
+  protected
   def do_match(input)
     (@on = default_on) && super && eval_object(@matched[1] ? @matched[1] : 'self') &&
       MethodMission.find(@evaled_object, @meth = matched_method)
@@ -192,9 +196,5 @@ module Bond
     create_input typed, input_options
   end
 
-  def match_message
-    "Matches completion for method '#{@meth}' in '#{MethodMission.last_class}'."
-  end
-  #:startdoc:
   end
 end

@@ -126,7 +126,7 @@ module Bond
       create_input(input[/\S+$/])
     end
 
-    #:stopdoc:
+    private
     def condition_with_objects
       self.class.const_get(:CONDITION).sub('OBJECTS', self.class.const_get(:OBJECTS).join('|'))
     end
@@ -150,6 +150,5 @@ module Bond
     def create_input(input, options={})
       @input = Input.new(input, options.merge(:line=>@line, :matched=>@matched))
     end
-    #:startdoc:
   end
 end

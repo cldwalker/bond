@@ -11,15 +11,19 @@
 # ===== Example:
 #   Bond.complete(:object=>ActiveRecord::Base) {|input| input.object.class.instance_methods(false) }
 class Bond::ObjectMission < Bond::Mission
-  #:stopdoc:
   OBJECTS = %w<\S+> + Bond::Mission::OBJECTS
   CONDITION = '(OBJECTS)\.(\w*(?:\?|!)?)$'
-  def initialize(options={})
+  def initialize(options={}) #@private
     @object_condition = /^#{options[:object]}$/
     options[:on] ||= Regexp.new condition_with_objects
     super
   end
 
+  def match_message #@private
+    "Matches completion for object with ancestor matching #{@object_condition.inspect}."
+  end
+
+  protected
   def unique_id
     "#{@object_condition.inspect}+#{@on.inspect}"
   end
@@ -38,9 +42,4 @@ class Bond::ObjectMission < Bond::Mission
   def default_action(obj)
     obj.methods.map {|e| e.to_s} - OPERATORS
   end
-
-  def match_message
-    "Matches completion for object with ancestor matching #{@object_condition.inspect}."
-  end
-  #:startdoc:
 end

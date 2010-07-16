@@ -6,13 +6,11 @@ class Bond::DefaultMission < Bond::Mission
     "then", "true", "undef", "unless", "until", "when", "while", "yield"
   ]
 
-  #:stopdoc:
-  def initialize(options={})
+  def initialize(options={}) #@private
     options[:action] ||= method(:default)
     super
   end
-  def default_on; end
-  #:startdoc:
+  def default_on; end #@private
 
   # Default action which generates methods, private methods, reserved words, local variables and constants.
   def default(input)

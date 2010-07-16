@@ -4,7 +4,7 @@ module Bond
   module Yard
     extend self
 
-    # :stopdoc:
+    # Loads completions for yard gem(s)
     def load_yard_gems(*gems)
       @options = gems[-1].is_a?(Hash) ? gems.pop : {}
       require 'yard'
@@ -14,6 +14,7 @@ module Bond
       $stderr.puts "Bond Error: yard gem (version >= 0.5.2) not installed "
     end
 
+    protected
     def load_yard_gem(rubygem)
       raise("Unable to find gem.") unless (yardoc = find_yardoc(rubygem))
       completion_file = File.join(dir('yard_completions'), rubygem+'.rb')
@@ -68,6 +69,5 @@ module Bond
         %Q[complete(:method=>'#{meth}') {\n  #{options.inspect}\n}]
       end.join("\n")
     end
-    #:startdoc:
   end
 end
