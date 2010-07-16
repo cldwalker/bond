@@ -11,7 +11,7 @@ module Bond
     attr_accessor :argument, :arguments
     # The full line the user has typed.
     attr_reader :line
-    def initialize(str, options={}) #:nodoc:
+    def initialize(str, options={}) #@private
       super(str || '')
       @matched = options[:matched]
       @line = options[:line]
@@ -20,7 +20,7 @@ module Bond
       @arguments = options[:arguments] if options[:arguments]
     end
 
-    def inspect #:nodoc:
+    def inspect #@private
       "#<Bond::Input #{self.to_s.inspect} @matched=#{@matched.to_a.inspect} @line=#{@line.inspect} "+
       "@argument=#{@argument.inspect} @arguments=#{@arguments.inspect} @object=#{@object.inspect}>"
     end

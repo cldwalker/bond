@@ -5,7 +5,7 @@ module Bond
   class FailedMissionError < StandardError
     # Mission that failed
     attr_reader :mission
-    def initialize(mission); @mission = mission; end #:nodoc:
+    def initialize(mission); @mission = mission; end #@private
   end
 
   # Represents a completion rule, given a condition (:on) on which to match and an action
@@ -30,7 +30,7 @@ module Bond
         eval(string, ebinding)
       end
 
-      def eval_binding #:nodoc:
+      def eval_binding #@private
         @eval_binding || IRB.CurrentContext.workspace.binding rescue ::TOPLEVEL_BINDING
       end
     end

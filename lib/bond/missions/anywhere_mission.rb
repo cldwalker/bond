@@ -6,12 +6,12 @@
 # [*:anywhere*] A regexp string which generates the first capture group in the above regexp.
 # [*:prefix*] An optional string which prefixes the first capture group in the above regexp.
 class Bond::AnywhereMission < Bond::Mission
-  def initialize(options={}) #:nodoc:
+  def initialize(options={}) #@private
     options[:on] = Regexp.new("#{options[:prefix]}(#{options[:anywhere]})$")
     super
   end
 
-  def after_match(input) #:nodoc:
+  def after_match(input) #@private
     @completion_prefix = input.to_s.sub(/#{Regexp.escape(@matched[1])}$/, '')
     create_input @matched[1]
   end

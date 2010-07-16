@@ -97,23 +97,15 @@ module Bond
       @class_actions = {}
     end
 
-    def action_methods #:nodoc:
+    # Lists method names
+    def action_methods
       (actions.keys + class_actions.keys).uniq
     end
 
-    # Lists all methods that have argument completions.
+    # Lists full method names, prefixed with class/module
     def all_methods
       (class_actions.map {|m,h| h.map {|k,v| "#{k}.#{m}" } } +
         actions.map {|m,h| h.map {|k,v| "#{k}##{m}" } }).flatten.sort
-    end
-
-    def current_actions(meth) #:nodoc:
-      meth.include?('.') ? @class_actions : @actions
-    end
-
-    def split_method(meth) #:nodoc:
-      meth = "Kernel##{meth}" if !meth.to_s[/[.#]/]
-      meth.split(/[.#]/,2)
     end
 
     # Returns the first completion by looking up the object's ancestors and finding the closest
@@ -126,16 +118,6 @@ module Bond
       @last_find = last_find ? last_find[1] : last_find
     end
 
-    def find_with(obj, meth, find_meth, actions) #:nodoc:
-      (actions[meth] || {}).select {|k,v| get_class(k) }.
-        sort {|a,b| get_class(a[0]) <=> get_class(b[0]) || -1 }.
-        find {|k,v| obj.send(find_meth, get_class(k)) }
-    end
-
-    def get_class(klass) #:nodoc:
-      (@klasses ||= {})[klass] ||= any_const_get(klass)
-    end
-
     # Returns a constant like Module#const_get no matter what namespace it's nested in.
     # Returns nil if the constant is not found.
     def any_const_get(name)
@@ -145,6 +127,26 @@ module Bond
       klass
     rescue
        nil
+    end
+
+    protected
+    def current_actions(meth)
+      meth.include?('.') ? @class_actions : @actions
+    end
+
+    def split_method(meth)
+      meth = "Kernel##{meth}" if !meth.to_s[/[.#]/]
+      meth.split(/[.#]/,2)
+    end
+
+    def find_with(obj, meth, find_meth, actions)
+      (actions[meth] || {}).select {|k,v| get_class(k) }.
+        sort {|a,b| get_class(a[0]) <=> get_class(b[0]) || -1 }.
+        find {|k,v| obj.send(find_meth, get_class(k)) }
+    end
+
+    def get_class(klass)
+      (@klasses ||= {})[klass] ||= any_const_get(klass)
     end
   end
 
