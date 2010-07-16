@@ -3,7 +3,7 @@ module Bond
   module M
     extend self
 
-    # See Bond.complete
+    # See {Bond#complete}
     def complete(options={}, &block)
       if (result = agent.complete(options, &block)).is_a?(String)
         $stderr.puts "Bond Error: "+result
@@ -13,7 +13,7 @@ module Bond
       end
     end
 
-    # See Bond.recomplete
+    # See {Bond#recomplete}
     def recomplete(options={}, &block)
       if (result = agent.recomplete(options, &block)).is_a?(String)
         $stderr.puts "Bond Error: "+result
@@ -23,12 +23,12 @@ module Bond
       end
     end
 
-    # See Bond.agent
+    # See {Bond#agent}
     def agent
       @agent ||= Agent.new(config)
     end
 
-    # See Bond.config
+    # See {Bond#config}
     def config
       @config ||= {:readline_plugin=>Bond::Readline, :debug=>false, :default_search=>:underscore}
     end
@@ -39,7 +39,7 @@ module Bond
       @agent = nil
     end
 
-    # See Bond.spy
+    # See {Bond#spy}
     def spy(input)
       agent.spy(input)
     end
@@ -54,7 +54,7 @@ module Bond
       end
     end
 
-    # See Bond.start
+    # See {Bond#start}
     def start(options={}, &block)
       debrief options
       load_completions

@@ -18,9 +18,9 @@ module Bond
   module Rc
     extend self, Search
 
-    # See Bond.complete
+    # See {Bond#complete}
     def complete(*args, &block); M.complete(*args, &block); end
-    # See Bond.recomplete
+    # See {Bond#recomplete}
     def recomplete(*args, &block); M.recomplete(*args, &block); end
 
     # Action method with search which returns array of files that match current input.

@@ -25,14 +25,14 @@ module Bond
   # or turned off per mission with :search. If turned off, the action must also handle searching.
   # ====Options:
   # [*:on*] Regular expression which matches the full line of input to create a Mission object.
-  # [*:method*, *:methods*, *:class*] See MethodMission.
-  # [*:anywhere*, *:prefix*] See AnywhereMission.
-  # [*:object*] See ObjectMission.
+  # [*:method*, *:methods*, *:class*] See {MethodMission}.
+  # [*:anywhere*, *:prefix*] See {AnywhereMission}.
+  # [*:object*] See {ObjectMission}.
   # [*:search*] A symbol or false which determines how completions are searched. Defaults to
   #             Search.default_search. If false, search is turned off and assumed to be done in the action.
   #             Possible symbols are :anywhere, :ignore_case, :underscore, :normal, :files and :modules.
-  #             See Search for more info.
-  # [*:action*] Rc method name that takes an Input and returns possible completions. See MethodMission for
+  #             See {Search} for more info.
+  # [*:action*] Rc method name that takes an Input and returns possible completions. See {MethodMission} for
   #             specific behavior with :method(s).
   # [*:place*] A number or :last which indicates where a mission is inserted amongst existing missions.
   #            If the symbol :last, places the mission at the end regardless of missions defined after
@@ -66,7 +66,7 @@ module Bond
   # [*:default_mission*] A proc or name of an Rc method to use as the default completion when no
   #                      missions match.
   # [*:default_search*] Name of a *_search method in Rc to use as the default search in completions.
-  #                     Default is :underscore. See Bond.complete's :search option for valid values.
+  #                     Default is :underscore. See {Bond#complete}'s :search option for valid values.
   # [*:eval_binding*] Specifies a binding to use when evaluating objects in ObjectMission and MethodMission.
   #                   When in irb, defaults to irb's current binding. Otherwise defaults to TOPLEVEL_BINDING.
   # [*:debug*]  Boolean to show the stacktrace when autocompletion fails and raise exceptions in Rc.eval.
@@ -78,9 +78,9 @@ module Bond
   # Starts Bond with a default set of completions that replace and improve irb's completion. Loads completions
   # in this order: lib/bond/completion.rb, lib/bond/completions/*.rb and the following optional completions:
   # completions from :gems, completions from :yard_gems, ~/.bondrc, ~/.bond/completions/*.rb and from block. See
-  # Rc for the DSL to use in completion files and in the block. Valid options are Bond.config keys and the following:
+  # {Rc} for the DSL to use in completion files and in the block. Valid options are Bond.config keys and the following:
   # [*:gems*] Array of gems which have their completions loaded from lib/bond/completions/*.rb.
-  # [*:yard_gems*] Array of gems using yard documentation to generate completions. See Yard.
+  # [*:yard_gems*] Array of gems using yard documentation to generate completions. See {Yard}.
   # ==== Examples:
   #   Bond.start :gems=>%w{hirb}
   #   Bond.start(:default_search=>:ignore_case) do
