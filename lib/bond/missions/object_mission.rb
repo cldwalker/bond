@@ -9,7 +9,7 @@
 #             non-operator methods.
 #
 # ===== Example:
-#   Bond.complete(:object=>ActiveRecord::Base) {|input| input.object.class.instance_methods(false) }
+#   Bond.complete(:object=>'ActiveRecord::Base') {|input| input.object.class.instance_methods(false) }
 class Bond::ObjectMission < Bond::Mission
   OBJECTS = %w<\S+> + Bond::Mission::OBJECTS
   CONDITION = '(OBJECTS)\.(\w*(?:\?|!)?)$'
