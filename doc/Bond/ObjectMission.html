@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
+<title>Class: Bond::ObjectMission</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (O)</a> &raquo; 
+    <span class='title'><a href="../Bond.html" title="Bond (module)">Bond</a></span>
+     &raquo; 
+    <span class="title">ObjectMission</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Class: Bond::ObjectMission
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+    <dt class="r1">Inherits:</dt>
+    <dd class="r1">
+      <span class="inheritName"><a href="Mission.html" title="Bond::Mission (class)">Mission</a></span>
+      
+        <ul class="fullTree">
+          <li>Object</li>
+          
+            <li class="next"><a href="Mission.html" title="Bond::Mission (class)">Mission</a></li>
+          
+            <li class="next">Bond::ObjectMission</li>
+          
+        </ul>
+        <a href="#" class="inheritanceTree">show all</a>
+      
+      </dd>
+    
+  
+  
+    
+  
+    
+  
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/bond/missions/object_mission.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+A mission which completes an object&#8217;s methods. For this mission to
+match, the condition must match and the current object must have an
+ancestor that matches :object. Note: To access to the current object being
+completed on within an action, use the input&#8217;s object attribute.
+</p>
+<h4>Bond.complete Options:</h4>
+<dl>
+<dt>:action</dt><dd><p>
+If an action is not specified, the default action is to complete an
+object&#8217;s
+</p>
+<pre class="code">
+  <span class='non identifier id'>non</span><span class='minus op'>-</span><span class='operator identifier id'>operator</span> <span class='methods identifier id'>methods</span><span class='dot token'>.</span>
+</pre>
+</dd>
+</dl>
+<h5>Example:</h5>
+<pre class="code">
+  <span class='Bond constant id'>Bond</span><span class='dot token'>.</span><span class='complete identifier id'>complete</span><span class='lparen token'>(</span><span class='symbol val'>:object=</span><span class='gt op'>&gt;</span><span class='string val'>'ActiveRecord::Base'</span><span class='rparen token'>)</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='input identifier id'>input</span><span class='bitor op'>|</span> <span class='input identifier id'>input</span><span class='dot token'>.</span><span class='object identifier id'>object</span><span class='dot token'>.</span><span class='class identifier id'>class</span><span class='dot token'>.</span><span class='instance_methods identifier id'>instance_methods</span><span class='lparen token'>(</span><span class='false false kw'>false</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span>
+</pre>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+  <h2>Constant Summary</h2>
+  
+    <dl class="constants">
+      
+        <dt id="OBJECTS-constant" class="">OBJECTS =
+          
+        </dt>
+        <dd><pre class="code"><span class='dstring node'>%w&lt;\S+&gt;</span> <span class='plus op'>+</span> <span class='Bond constant id'>Bond</span><span class='colon2 op'>::</span><span class='Mission constant id'>Mission</span><span class='colon2 op'>::</span><span class='OBJECTS constant id'>OBJECTS</span>
+</pre></dd>
+      
+        <dt id="CONDITION-constant" class="">CONDITION =
+          
+        </dt>
+        <dd><pre class="code"><span class='string val'>'(OBJECTS)\.(\w*(?:\?|!)?)$'</span>
+</pre></dd>
+      
+    </dl>
+  
+
+
+  
+  
+  
+  
+  <h3 class="inherited">Constants inherited from <a href="Mission.html" title="Bond::Mission (class)">Mission</a></h3>
+  <p class="inherited"><a href="Mission.html#OBJECTS-constant" title="Bond::Mission::OBJECTS (constant)">OBJECTS</a>, <a href="Mission.html#OPERATORS-constant" title="Bond::Mission::OPERATORS (constant)">OPERATORS</a></p>
+
+
+
+  
+  
+  
+  
+  
+  <h2>Method Summary</h2>
+  
+  <h3 class="inherited">Methods inherited from <a href="Mission.html" title="Bond::Mission (class)">Mission</a></h3>
+  <p class="inherited"><a href="Mission.html#call_action-instance_method" title="Bond::Mission#call_action (method)">#call_action</a>, <a href="Mission.html#call_search-instance_method" title="Bond::Mission#call_search (method)">#call_search</a>, <a href="Mission.html#condition-instance_method" title="Bond::Mission#condition (method)">#condition</a>, <a href="Mission.html#create-class_method" title="Bond::Mission.create (method)">create</a>, <a href="Mission.html#current_eval-class_method" title="Bond::Mission.current_eval (method)">current_eval</a>, <a href="Mission.html#execute-instance_method" title="Bond::Mission#execute (method)">#execute</a>, <a href="Mission.html#matches%3F-instance_method" title="Bond::Mission#matches? (method)">#matches?</a>, <a href="Mission.html#name-instance_method" title="Bond::Mission#name (method)">#name</a></p>
+
+
+</div>
+    
+    <div id="footer">
+  Generated on Sat Jul 17 07:21:09 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.8 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>
