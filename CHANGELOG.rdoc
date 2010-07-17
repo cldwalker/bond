@@ -1,3 +1,8 @@
+== 0.2.2
+* Moved documentation to yard.
+* Better extconf.rb thanks to @timcharper
+* Better error when failing to require extension.
+
 == 0.2.1
 * Added Bond.load_yard_gems which generates argument completions from yard documentation.
 * Added Bond.load_gems which loads completions from gem's directory.
