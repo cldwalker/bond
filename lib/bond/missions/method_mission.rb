@@ -5,12 +5,7 @@ module Bond
   # has two ancestors that have completions for the same method, the ancestor closer to the object is
   # picked. For example, if Array#collect and Enumerable#collect have completions, argument completion on
   # '[].collect ' would use Array#collect.
-  #--
-  # Unlike other missions, creating these missions with Bond.complete doesn't add more completion rules
-  # for an Agent to look through. Instead, all :method(s) completions are handled by one MethodMission
-  # object which looks them up with its own hashes. In the same way, all operator methods are
-  # handled by one OperatorMethodMission object.
-  #++
+  #
   # ==== Bond.complete Options:
   # [:action] If a string, value is assumed to be a :method and that method's action is copied.
   #           Otherwise defaults to normal :action behavior.
@@ -48,6 +43,12 @@ module Bond
   #   >> FileUtils.chown 'root', 'admin', 'some_file', :v[TAB]
   #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose
   #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose=>true
+  #
+  # ==== Developer Notes
+  # Unlike other missions, creating these missions with Bond.complete doesn't add more completion rules
+  # for an Agent to look through. Instead, all :method(s) completions are handled by one MethodMission
+  # object which looks them up with its own hashes. In the same way, all operator methods are
+  # handled by one OperatorMethodMission object.
   class MethodMission < Bond::Mission
   class<<self
     # Hash of instance method completions which maps methods to hashes of modules to arrays ([action, search])
