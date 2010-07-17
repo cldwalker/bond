@@ -1,0 +1,753 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml" xml:lang="en" lang="en">
+  <head>
+    <meta name="Content-Type" content="text/html; charset=utf-8" />
+<title>Module: Bond::Search</title>
+<link rel="stylesheet" href="../css/style.css" type="text/css" media="screen" charset="utf-8" />
+<link rel="stylesheet" href="../css/common.css" type="text/css" media="screen" charset="utf-8" />
+
+<script type="text/javascript" charset="utf-8">
+  relpath = '..';
+  if (relpath != '') relpath += '/';
+</script>
+<script type="text/javascript" charset="utf-8" src="../js/jquery.js"></script>
+<script type="text/javascript" charset="utf-8" src="../js/app.js"></script>
+
+  </head>
+  <body>
+    <script type="text/javascript" charset="utf-8">
+      if (window.top.frames.main) document.body.className = 'frames';
+    </script>
+    
+    <div id="header">
+      <div id="menu">
+  
+    <a href="../_index.html">Index (S)</a> &raquo; 
+    <span class='title'><a href="../Bond.html" title="Bond (module)">Bond</a></span>
+     &raquo; 
+    <span class="title">Search</span>
+  
+  
+  <div class="noframes"><span class="title">(</span><a href="." target="_top">no frames</a><span class="title">)</span></div>
+</div>
+
+      <div id="search">
+  <a id="class_list_link" href="#">Class List</a>
+  <a id="method_list_link" href="#">Method List</a>
+  <a id ="file_list_link" href="#">File List</a>
+</div>
+
+      <div class="clear"></div>
+    </div>
+    
+    <iframe id="search_frame"></iframe>
+    
+    <div id="content"><h1>Module: Bond::Search
+  
+  
+  
+</h1>
+
+<dl class="box">
+  
+  
+    
+  
+    
+  
+  
+    <dt class="r1">Included in:</dt>
+    <dd class="r1"><a href="Rc.html" title="Bond::Rc (module)">Rc</a></dd>
+    
+  
+  
+    <dt class="r2 last">Defined in:</dt>
+    <dd class="r2 last">lib/bond/search.rb</dd>
+  
+</dl>
+<div class="clear"></div>
+
+<h2>Overview</h2><div class="docstring">
+  <div class="discussion">
+    <p>
+Contains search methods used to filter possible completions given what the
+user has typed for that completion. For a search method to be used by
+Bond.complete it must end in &#8216;_search&#8217; and take two arguments:
+the Input string and an array of possible completions.
+</p>
+<h4>Creating a search method</h4>
+<p>
+Say you want to create a custom search which ignores completions containing
+&#8217;-&#8217;. In a completion file under Rc namespace, define this
+method:
+</p>
+<pre class="code">
+  <span class='def def kw'>def</span> <span class='ignore_hyphen_search identifier id'>ignore_hyphen_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span>
+    <span class='normal_search identifier id'>normal_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='dot token'>.</span><span class='select identifier id'>select</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='e identifier id'>e</span><span class='bitor op'>|</span> <span class='e identifier id'>e</span> <span class='nmatch op'>!~</span> <span class='regexp val'>/-/</span> <span class='rbrace token'>}</span><span class='rparen token'>)</span>
+  <span class='end end kw'>end</span>
+</pre>
+<p>
+Now you can pass this custom search to any complete() as
+:search=>:ignore_hyphen
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div>
+
+  <h2>Class Attribute Summary <small>(<a href="#" class="summary_toggle">collapse</a>)</small></h2>
+  <ul class="summary">
+    
+      <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#default_search-class_method" title="default_search (class method)">+ (Object) <strong>default_search</strong> </a>
+    
+
+    
+  </span>
+  
+  
+    
+    
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Default search used across missions, set by Bond.config[:default_search].
+</p>
+</div></span>
+  
+</li>
+
+    
+  </ul>
+
+
+  
+    <h2>
+      Instance Method Summary
+      <small>(<a href="#" class="summary_toggle">collapse</a>)</small>
+    </h2>
+
+    <ul class="summary">
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#anywhere_search-instance_method" title="#anywhere_search (instance method)">- (Object) <strong>anywhere_search</strong>(input, list) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Searches completions anywhere in the string.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#default_search-instance_method" title="#default_search (instance method)">- (Object) <strong>default_search</strong>(input, list) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Default search across missions to be invoked by a search that wrap another
+search i.e.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#files_search-instance_method" title="#files_search (instance method)">- (Object) <strong>files_search</strong>(input, list) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Does default_search on the given paths but only returns ones that match the
+input&#8217;s current directory depth, determined by &#8217;/&#8217;.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#ignore_case_search-instance_method" title="#ignore_case_search (instance method)">- (Object) <strong>ignore_case_search</strong>(input, list) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Searches completions from the beginning and ignores case.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#incremental_filter-instance_method" title="#incremental_filter (instance method)">- (Object) <strong>incremental_filter</strong>(input, list, delim) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Used by files_search and modules_search.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#modules_search-instance_method" title="#modules_search (instance method)">- (Object) <strong>modules_search</strong>(input, list) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Does the same as files_search but for modules.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#normal_search-instance_method" title="#normal_search (instance method)">- (Object) <strong>normal_search</strong>(input, list) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+Searches completions from the beginning of the string.
+</p>
+</div></span>
+  
+</li>
+
+      
+        <li class="public ">
+  <span class="summary_signature">
+    
+      <a href="#underscore_search-instance_method" title="#underscore_search (instance method)">- (Object) <strong>underscore_search</strong>(input, list) </a>
+    
+
+    
+  </span>
+  
+  
+  
+  
+  
+  
+
+  
+    <span class="summary_desc"><div class='inline'><p>
+A normal_search which also provides aliasing of underscored words.
+</p>
+</div></span>
+  
+</li>
+
+      
+    </ul>
+  
+
+
+  <div id="class_attr_details" class="attr_details">
+    <h2>Class Attribute Details</h2>
+    
+      
+      <span id="default_search=-class_method"></span>
+      <span id="default_search-class_method"></span>
+      <div class="method_details first">
+  <p class="signature first" id="default_search-class_method">
+  
+    + (<tt>Object</tt>) <strong>default_search</strong> 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Default search used across missions, set by Bond.config[:default_search]
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+17
+18
+19</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/bond/search.rb', line 17</span>
+
+<span class='def def kw'>def</span> <span class='default_search identifier id'>default_search</span>
+  <span class='@default_search ivar id'>@default_search</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+
+  <div id="instance_method_details" class="method_details_list">
+    <h2>Instance Method Details</h2>
+    
+    
+      <div class="method_details first">
+  <p class="signature first" id="anywhere_search-instance_method">
+  
+    - (<tt>Object</tt>) <strong>anywhere_search</strong>(input, list) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Searches completions anywhere in the string.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+26
+27
+28</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/bond/search.rb', line 26</span>
+
+<span class='def def kw'>def</span> <span class='anywhere_search identifier id'>anywhere_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span>
+  <span class='list identifier id'>list</span><span class='dot token'>.</span><span class='grep identifier id'>grep</span><span class='lparen token'>(</span><span class='dregexp node'>/#{Regexp.escape(input)}/</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="default_search-instance_method">
+  
+    - (<tt>Object</tt>) <strong>default_search</strong>(input, list) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Default search across missions to be invoked by a search that wrap another
+search i.e. files_search.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+49
+50
+51</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/bond/search.rb', line 49</span>
+
+<span class='def def kw'>def</span> <span class='default_search identifier id'>default_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span>
+  <span class='send identifier id'>send</span><span class='lparen token'>(</span><span class='dstring node'>&quot;#{Search.default_search}_search&quot;</span><span class='comma token'>,</span> <span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="files_search-instance_method">
+  
+    - (<tt>Object</tt>) <strong>files_search</strong>(input, list) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Does default_search on the given paths but only returns ones that match the
+input&#8217;s current directory depth, determined by &#8217;/&#8217;. For
+example if a user has typed &#8216;irb/c&#8217;, this search returns
+matching paths that are one directory deep i.e. &#8216;irb/cmd/
+irb/completion.rb irb/context.rb&#8217;.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+56
+57
+58</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/bond/search.rb', line 56</span>
+
+<span class='def def kw'>def</span> <span class='files_search identifier id'>files_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span>
+  <span class='incremental_filter identifier id'>incremental_filter</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='comma token'>,</span> <span class='string val'>'/'</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="ignore_case_search-instance_method">
+  
+    - (<tt>Object</tt>) <strong>ignore_case_search</strong>(input, list) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Searches completions from the beginning and ignores case.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+31
+32
+33</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/bond/search.rb', line 31</span>
+
+<span class='def def kw'>def</span> <span class='ignore_case_search identifier id'>ignore_case_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span>
+  <span class='list identifier id'>list</span><span class='dot token'>.</span><span class='grep identifier id'>grep</span><span class='lparen token'>(</span><span class='dregexp node'>/^#{Regexp.escape(input)}/i</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="incremental_filter-instance_method">
+  
+    - (<tt>Object</tt>) <strong>incremental_filter</strong>(input, list, delim) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Used by files_search and modules_search.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+66
+67
+68
+69
+70
+71
+72</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/bond/search.rb', line 66</span>
+
+<span class='def def kw'>def</span> <span class='incremental_filter identifier id'>incremental_filter</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='comma token'>,</span> <span class='delim identifier id'>delim</span><span class='rparen token'>)</span>
+  <span class='i identifier id'>i</span> <span class='assign token'>=</span> <span class='integer val'>0</span><span class='semicolon token'>;</span> <span class='input identifier id'>input</span><span class='dot token'>.</span><span class='gsub identifier id'>gsub</span><span class='lparen token'>(</span><span class='delim identifier id'>delim</span><span class='rparen token'>)</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='e identifier id'>e</span><span class='bitor op'>|</span> <span class='i identifier id'>i</span><span class='opasgn op'>+=</span> <span class='integer val'>1</span> <span class='rbrace token'>}</span>
+  <span class='delim_chars identifier id'>delim_chars</span> <span class='assign token'>=</span> <span class='delim identifier id'>delim</span><span class='dot token'>.</span><span class='split identifier id'>split</span><span class='lparen token'>(</span><span class='string val'>''</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='uniq identifier id'>uniq</span><span class='dot token'>.</span><span class='join identifier id'>join</span><span class='lparen token'>(</span><span class='string val'>''</span><span class='rparen token'>)</span>
+  <span class='current_matches identifier id'>current_matches</span><span class='comma token'>,</span> <span class='future_matches identifier id'>future_matches</span> <span class='assign token'>=</span> <span class='default_search identifier id'>default_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='partition identifier id'>partition</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='e identifier id'>e</span><span class='bitor op'>|</span>
+    <span class='e identifier id'>e</span><span class='lbrack token'>[</span><span class='dregexp node'>/^[^#{delim_chars}]*(#{delim}[^#{delim_chars}]+){0,#{i}}$/</span><span class='rbrack token'>]</span> <span class='rbrace token'>}</span>
+  <span class='lparen token'>(</span><span class='current_matches identifier id'>current_matches</span> <span class='plus op'>+</span> <span class='future_matches identifier id'>future_matches</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='e identifier id'>e</span><span class='bitor op'>|</span> <span class='e identifier id'>e</span><span class='lbrack token'>[</span><span class='dregexp node'>/^(([^#{delim_chars}]*#{delim}){0,#{i+1}})/</span><span class='comma token'>,</span> <span class='integer val'>1</span><span class='rbrack token'>]</span> <span class='rbrace token'>}</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='uniq identifier id'>uniq</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="modules_search-instance_method">
+  
+    - (<tt>Object</tt>) <strong>modules_search</strong>(input, list) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Does the same as files_search but for modules. A module depth is delimited
+by &#8217;::&#8217;.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+61
+62
+63</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/bond/search.rb', line 61</span>
+
+<span class='def def kw'>def</span> <span class='modules_search identifier id'>modules_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span>
+  <span class='incremental_filter identifier id'>incremental_filter</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='comma token'>,</span> <span class='string val'>'::'</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="normal_search-instance_method">
+  
+    - (<tt>Object</tt>) <strong>normal_search</strong>(input, list) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+Searches completions from the beginning of the string.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+21
+22
+23</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/bond/search.rb', line 21</span>
+
+<span class='def def kw'>def</span> <span class='normal_search identifier id'>normal_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span>
+  <span class='list identifier id'>list</span><span class='dot token'>.</span><span class='grep identifier id'>grep</span><span class='lparen token'>(</span><span class='dregexp node'>/^#{Regexp.escape(input)}/</span><span class='rparen token'>)</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+      <div class="method_details ">
+  <p class="signature " id="underscore_search-instance_method">
+  
+    - (<tt>Object</tt>) <strong>underscore_search</strong>(input, list) 
+  
+
+  
+</p><div class="docstring">
+  <div class="discussion">
+    <p>
+A normal_search which also provides aliasing of underscored words. For
+example &#8216;some_dang_long_word&#8217; can be specified as
+&#8216;s_d_l_w&#8217;. Aliases can be any unique string at the beginning of
+an underscored word. For example, to choose the first completion between
+&#8216;so_long&#8217; and &#8216;so_larger&#8217;, type &#8216;s_lo&#8217;.
+</p>
+
+
+  </div>
+</div>
+<div class="tags">
+  
+</div><table class="source_code">
+  <tr>
+    <td>
+      <pre class="lines">
+
+
+39
+40
+41
+42
+43
+44
+45
+46</pre>
+    </td>
+    <td>
+      <pre class="code"><span class="info file"># File 'lib/bond/search.rb', line 39</span>
+
+<span class='def def kw'>def</span> <span class='underscore_search identifier id'>underscore_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span>
+  <span class='if if kw'>if</span> <span class='input identifier id'>input</span><span class='lbrack token'>[</span><span class='regexp val'>/_([^_]+)$/</span><span class='rbrack token'>]</span>
+    <span class='regex identifier id'>regex</span> <span class='assign token'>=</span> <span class='input identifier id'>input</span><span class='dot token'>.</span><span class='split identifier id'>split</span><span class='lparen token'>(</span><span class='string val'>'_'</span><span class='rparen token'>)</span><span class='dot token'>.</span><span class='map identifier id'>map</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='e identifier id'>e</span><span class='bitor op'>|</span> <span class='Regexp constant id'>Regexp</span><span class='dot token'>.</span><span class='escape identifier id'>escape</span><span class='lparen token'>(</span><span class='e identifier id'>e</span><span class='rparen token'>)</span> <span class='rbrace token'>}</span><span class='dot token'>.</span><span class='join identifier id'>join</span><span class='lparen token'>(</span><span class='string val'>&quot;([^_]+)?_&quot;</span><span class='rparen token'>)</span>
+    <span class='list identifier id'>list</span><span class='dot token'>.</span><span class='select identifier id'>select</span> <span class='lbrace token'>{</span><span class='bitor op'>|</span><span class='e identifier id'>e</span><span class='bitor op'>|</span> <span class='e identifier id'>e</span> <span class='match op'>=~</span> <span class='dregexp node'>/^#{regex}/</span> <span class='rbrace token'>}</span>
+  <span class='else else kw'>else</span>
+    <span class='normal_search identifier id'>normal_search</span><span class='lparen token'>(</span><span class='input identifier id'>input</span><span class='comma token'>,</span> <span class='list identifier id'>list</span><span class='rparen token'>)</span>
+  <span class='end end kw'>end</span>
+<span class='end end kw'>end</span>
+</pre>
+    </td>
+  </tr>
+</table>
+</div>
+    
+  </div>
+
+</div>
+    
+    <div id="footer">
+  Generated on Sat Jul 17 07:21:10 2010 by 
+  <a href="http://yardoc.org" title="Yay! A Ruby Documentation Tool">yard</a>
+  0.5.8 (ruby-1.8.7).
+</div>
+
+  </body>
+</html>
