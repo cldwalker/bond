@@ -44,13 +44,13 @@ module Bond
     # Generates array of possible completions and searches them if search is disabled. Any values
     # that aren't strings are automatically converted with to_s.
     attr_reader :action
-    # See Bond.complete's :place.
+    # See {Bond#complete}'s :place.
     attr_reader :place
     # A MatchData object generated from matching the user input with the condition.
     attr_reader :matched
     # Regexp condition
     attr_reader :on
-    # Takes same options as Bond.complete.
+    # Takes same options as {Bond#complete}.
     def initialize(options)
       raise InvalidMissionError, ":action" unless (options[:action] || respond_to?(:default_action))
       raise InvalidMissionError, ":on" unless (options[:on] && options[:on].is_a?(Regexp)) || respond_to?(:default_on)
