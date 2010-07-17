@@ -17,9 +17,9 @@ require 'bond/yard'
 module Bond
   extend self
 
-  # Defines a completion rule (Mission). A valid Mission consists of a condition and an action. A
+  # Creates a completion rule (Mission). A valid Mission consists of a condition and an action. A
   # condition is specified with one of the following options: :on, :object, :anywhere or :method(s). Each
-  # of these options creates a different Mission class. An action is either this method's block or :action.
+  # of these options creates a different Mission class. An action is either the method's block or :action.
   # An action takes what the user has typed (Input) and returns an array of possible completions. Bond
   # searches these completions and returns matching completions. This searching behavior can be configured
   # or turned off per mission with :search. If turned off, the action must also handle searching.
@@ -31,16 +31,25 @@ module Bond
   #  Bond.complete(:method=>'you', :search=>proc {|input, list| list.grep(/#{input}/i)} ) {|input| %w{Only Live Twice} }
   #  Bond.complete(:method=>'system', :action=>:shell_commands)
   #
-  # @param [Hash] options
-  # @option options [Regexp] :on Matches the full line of input to create a Mission object.
-  # @option options [String] :method See {MethodMission}
-  # @option options [Array<String>] :methods See {MethodMission}
-  # @option options [String] :class See {MethodMission}
+  # @param [Hash] options When using :method(s) or :object, some hash keys may have different behavior. See
+  #   Bond.complete sections of {MethodMission} and {ObjectMission} respectively.
+  # @option options [Regexp] :on Matches the full line of input to create a {Mission} object.
+  # @option options [String] :method An instance (Class#method) or class method (Class.method). Creates
+  #   {MethodMission} object. A method's class can be set by :class or detected automatically if '#' or '.' is
+  #   present. If no class is detected, 'Kernel#' is assumed.
+  # @option options [Array<String>] :methods Instance or class method(s) in the format of :method. Creates
+  #   {MethodMission} objects.
+  # @option options [String] :class Optionally used with :method or :methods to represent module/class.
+  #   Must end in '#' or '.' to indicate instance/class method. Suggested for use with :methods.
+  # @option options [String] :object Module or class of an object whose methods are completed. Creates
+  #   {ObjectMission} object.
+  # @option options [String] :anywhere String representing a regular expression to match a mission. Creates
+  #   {AnywhereMission} object.
+  # @option options [String] :prefix Optional string to prefix :anywhere.
   # @option options [Symbol,false] :search Determines how completions are searched. Defaults to
   #   Search.default_search. If false, search is turned off and assumed to be done in the action.
   #   Possible symbols are :anywhere, :ignore_case, :underscore, :normal, :files and :modules.
   #   See {Search} for more info.
-  # @option options [String] :object See {ObjectMission}
   # @option options [String,Symbol] :action Rc method name that takes an Input and returns possible completions.
   #   See {MethodMission} for specific behavior with :method(s).
   # @option options [Integer,:last] :place Indicates where a mission is inserted amongst existing
@@ -48,8 +57,6 @@ module Bond
   #   after it. Multiple declarations of :last are kept last in the order they are defined.
   # @option options [Symbol,String] :name Unique id for a mission which can be passed by
   #   Bond.recomplete to identify and replace the mission.
-  # @option options [String] :anywhere See {AnywhereMission}
-  # @option options [String] :prefix See {AnywhereMission}
   def complete(options={}, &block); M.complete(options, &block); end
 
   # Redefines an existing completion mission to have a different action. The condition can only be varied if :name is
@@ -83,8 +90,8 @@ module Bond
   # @option options [Array<String>] :gems Gems which have their completions loaded from
   #   @gem_source/lib/bond/completions/*.rb.
   # @option options [Array<String>] :yard_gems Gems using yard documentation to generate completions. See {Yard}.
-  # @option options [Module] :readline_plugin (Readline) Specifies a Bond plugin to interface with a Readline-like
-  #   library. Available plugins are Readline and Rawline.
+  # @option options [Module] :readline_plugin (Bond::Readline) Specifies a Bond plugin to interface with a Readline-like
+  #   library. Available plugins are Bond::Readline and Bond::Rawline.
   # @option options [Proc] :default_mission (DefaultMission) Sets default completion to use when no missions match.
   #  See {Agent#default_mission}.
   # @option options [Symbol] :default_search (:underscore) Name of a *_search method in Rc to use as the default

@@ -12,17 +12,11 @@ module Bond
   # handled by one OperatorMethodMission object.
   #++
   # ==== Bond.complete Options:
-  # [*:method*] String representing an instance (Class#method) or class method (Class.method). Gets
-  #             its class from :class or from substring prefixing '#' or '.'. If no class is given,
-  #             'Kernel#' is assumed.
-  # [*:methods*] Array of instance and/or class methods in the format of :method.
-  # [*:class*] Optional string representing module/class of :method(s). Must end in '#' or '.' to
-  #            indicate instance/class method. Suggested for use with :methods.
-  # [*:action*] If a string, value is assumed to be a :method and that method's action is copied.
-  #             Otherwise defaults to normal :action behavior.
-  # [*:search*] If :action is a :method string, defaults to copying its search.
-  #             Otherwise defaults to normal :search behavior.
-  # [*:name*, *:place*] These options aren't supported by a MethodMission/OperatorMethodMission completion.
+  # [:action] If a string, value is assumed to be a :method and that method's action is copied.
+  #           Otherwise defaults to normal :action behavior.
+  # [:search] If :action is a :method string, defaults to copying its search.
+  #           Otherwise defaults to normal :search behavior.
+  # [:name, :place] These options aren't supported by a MethodMission/OperatorMethodMission completion.
   # ==== Examples:
   #   Bond.complete(:methods=>%w{delete index rindex}, :class=>"Array#") {|e| e.object }
   #   Bond.complete(:method=>"Hash#index") {|e| e.object.values }

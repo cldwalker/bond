@@ -4,8 +4,7 @@
 # object attribute.
 #
 # ==== Bond.complete Options:
-# [*:object*] String representing a module/class of object whose methods are completed.
-# [*:action*] If an action is not specified, the default action is to complete an object's
+# [:action] If an action is not specified, the default action is to complete an object's
 #             non-operator methods.
 #
 # ===== Example:
