@@ -63,7 +63,7 @@ module Bond
 
     # Returns a boolean indicating if a mission matches the given Input and should be executed for completion.
     def matches?(input)
-      @matched = @input = @completion_prefix = @eval_binding = nil
+      @matched = @input = @completion_prefix = nil
       (match = do_match(input)) && after_match(@line = input)
       !!match
     end
@@ -133,15 +133,11 @@ module Bond
     end
 
     def eval_object(obj)
-      @evaled_object = self.class.current_eval(obj, eval_binding)
+      @evaled_object = self.class.current_eval(obj)
       true
     rescue Exception
       raise FailedMissionError.new(self), "Match failed during eval of '#{obj}'." if Bond.config[:eval_debug]
       false
-    end
-
-    def eval_binding
-      @eval_binding ||= self.class.eval_binding
     end
 
     def unique_id
