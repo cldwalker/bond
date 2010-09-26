@@ -35,6 +35,13 @@ describe "Bond" do
       tab('blah all').should == ["all_quiet"]
     end
 
+    it "sets proc eval_binding" do
+      bdg = binding
+      start :eval_binding => lambda { bdg }
+      Mission.expects(:eval).with(anything, bdg).returns([])
+      tab("'blah'.").should == []
+    end
+
     after_all { M.debrief :readline_plugin=>valid_readline_plugin; M.reset }
   end
 

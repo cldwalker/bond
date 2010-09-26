@@ -96,8 +96,9 @@ module Bond
   #  See {Agent#default_mission}.
   # @option options [Symbol] :default_search (:underscore) Name of a *_search method in Rc to use as the default
   #   search in completions. See {#complete}'s :search option for valid values.
-  # @option options [Binding] :eval_binding (TOPLEVEL_BINDING) Binding to use when evaluating objects in
-  #   ObjectMission and MethodMission. When in irb, defaults to irb's current binding.
+  # @option options [Binding, Proc] :eval_binding (TOPLEVEL_BINDING) Binding to use when evaluating objects in
+  #   ObjectMission and MethodMission. When in irb, defaults to irb's current binding. When proc,
+  #   binding is evaluated each time by calling proc.
   # @option options [Boolean] :debug (false) Shows the stacktrace when autocompletion fails and raises exceptions
   #   in Rc.eval.
   # @option options [Boolean] :eval_debug (false) Raises eval errors occuring when finding a matching completion.
