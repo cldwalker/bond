@@ -61,7 +61,7 @@ describe "Agent" do
 
     it 'for completion action failing with Rc.eval and debug completes error' do
       complete(:on=>/blah/) { Rc.eval('{[}') || [] }
-      tab('blah').should complete_error(/Bond Error: Failed.*action.*syntax/m)
+      tab('blah').should complete_error(/Bond Error: Failed.*action.*(syntax|expect)/m)
     end
 
     it "for completion action raising SyntaxError in eval completes error" do

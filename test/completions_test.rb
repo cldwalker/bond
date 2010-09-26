@@ -43,7 +43,9 @@ describe "completions for" do
 
   describe "Object" do
     it "#instance_of?" do
-      tab("[].instance_of? Arr").should == ['Array']
+      expectations = ['Array']
+      expectations = ["Array", "Array::"] if RUBY_DESCRIPTION[/rubinius/i]
+      tab("[].instance_of? Arr").should == expectations
     end
 
     it "#is_a?" do
@@ -51,7 +53,7 @@ describe "completions for" do
     end
 
     it "#send" do
-      tab("Object.send :super").should == [':superclass']
+      tab("Object.send :ne").should == [':new']
     end
 
     it "#send and additional arguments" do
