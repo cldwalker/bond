@@ -6,14 +6,16 @@ class Bond::DefaultMission < Bond::Mission
     "then", "true", "undef", "unless", "until", "when", "while", "yield"
   ]
 
+
+  # Default action which generates methods, private methods, reserved words, local variables and constants.
+  def self.completions(input=nil)
+    Bond::Mission.current_eval("methods | private_methods | local_variables | " +
+                               "self.class.constants | instance_variables") | ReservedWords
+  end
+
   def initialize(options={}) #@private
-    options[:action] ||= method(:default)
+    options[:action] ||= self.class.method(:completions)
     super
   end
   def default_on; end #@private
-
-  # Default action which generates methods, private methods, reserved words, local variables and constants.
-  def default(input)
-    Bond::Mission.current_eval("methods | private_methods | local_variables | self.class.constants") | ReservedWords
-  end
 end
