@@ -26,7 +26,7 @@ module Bond
       end
 
       # Calls eval with either the irb's current workspace binding or TOPLEVEL_BINDING.
-      def current_eval(string, ebinding=eval_binding)
+      def current_eval(string, ebinding=Mission.eval_binding)
         ebinding = ebinding.call if ebinding.is_a?(Proc)
         eval(string, ebinding)
       end
