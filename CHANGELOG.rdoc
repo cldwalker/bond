@@ -1,3 +1,10 @@
+== 0.3.0
+* Fixes for tests to pass in rubinius and 1.9.2.
+* Add support for a proc :eval_binding.
+* Add instance variables to default completion.
+* Add DefaultMission.completions to make default completions reusable
+* Remove unused Mission#eval_binding.
+
 == 0.2.2
 * Moved documentation to yard.
 * Better extconf.rb thanks to @timcharper
