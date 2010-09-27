@@ -75,6 +75,8 @@ describe 'Bond.load_yard_gems' do
       M.expects(:load_file)
     }
 
+    # rubinius implements Kernel#require with File.exists? which is different than MRI
+    unless RUBY_DESCRIPTION[/rubinius/i]
     it "with :reload option" do
       File.expects(:exists?).returns(true)
       Yard.expects(:create_completion_file)
@@ -85,6 +87,7 @@ describe 'Bond.load_yard_gems' do
       File.expects(:exists?).returns(false)
       Yard.expects(:create_completion_file)
       load_yard_gems
+    end
     end
 
     describe 'which has' do
