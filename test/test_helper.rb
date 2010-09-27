@@ -3,6 +3,7 @@ require 'bacon/bits'
 require 'mocha'
 require 'mocha-on-bacon'
 require 'bond'
+require 'rbconfig'
 
 module TestHelpers
   extend self
