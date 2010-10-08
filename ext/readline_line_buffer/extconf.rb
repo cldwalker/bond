@@ -1,19 +1,21 @@
 require "mkmf"
 
-if RUBY_VERSION < '1.9.2'
-  dir_config("readline")
-  unless have_header('readline/readline.h')
-    $stderr.puts "-" * 80
-    $stderr.puts "Error! Cannot find readline/readline.h."
-    $stderr.puts "Readline was probably installed in a non-standard directory.",
-      "Try `gem install bond -- --with-readline-dir=/path/to/readline`."
-    $stderr.puts "-" * 80
-    exit 1
-  end
-  create_makefile 'readline_line_buffer'
-else
-  # Create dummy Makefile to placate rubygems when running `make install`.
+# placate rubygems when running `make install`
+def dummy_makefile
   File.open(File.join(File.dirname(__FILE__), "Makefile"), "w") {|f|
     f.puts %[install:\n\techo "This is a dummy extension"]
   }
+end
+
+if RUBY_VERSION < '1.9.2'
+  dir_config("readline")
+  if !have_header('readline/readline.h')
+    puts "Bond was built without readline. To use it with readline: gem install bond" +
+      " -- --with-readline-dir=/path/to/readline"
+    dummy_makefile
+  else
+    create_makefile 'readline_line_buffer'
+  end
+else
+  dummy_makefile
 end
