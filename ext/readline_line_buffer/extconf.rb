@@ -9,6 +9,7 @@ end
 
 if RUBY_VERSION < '1.9.2'
   dir_config("readline")
+  have_library('readline')
   if !have_header('readline/readline.h')
     puts "Bond was built without readline. To use it with readline: gem install bond" +
       " -- --with-readline-dir=/path/to/readline"
