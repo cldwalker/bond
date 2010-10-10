@@ -1,3 +1,7 @@
+== 0.3.1
+* Fix install for non-readline platforms
+* Fix install for rubinius
+
 == 0.3.0
 * Fixes for tests to pass in rubinius and 1.9.2.
 * Add support for a proc :eval_binding.
