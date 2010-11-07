@@ -6,7 +6,7 @@ describe "Bond" do
       Bond.start({:readline_plugin=>valid_readline_plugin}.merge(options), &block)
     end
 
-    before { M.instance_eval("@agent = @config = nil"); M.expects(:load_completions) }
+    before { M.instance_eval("@started = @agent = @config = nil"); M.expects(:load_completions) }
     it "prints error if readline_plugin is not a module" do
       capture_stderr { start :readline_plugin=>false }.should =~ /Invalid/
     end
@@ -40,6 +40,12 @@ describe "Bond" do
       start :eval_binding => lambda { bdg }
       Mission.expects(:eval).with(anything, bdg).returns([])
       tab("'blah'.").should == []
+    end
+
+    it "status can be checked with started?" do
+      Bond.started?.should == false
+      start
+      Bond.started?.should == true
     end
 
     after_all { M.debrief :readline_plugin=>valid_readline_plugin; M.reset }

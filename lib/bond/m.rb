@@ -57,9 +57,15 @@ module Bond
     # See {Bond#start}
     def start(options={}, &block)
       debrief options
+      @started = true
       load_completions
       Rc.module_eval(&block) if block
       true
+    end
+
+    # See {Bond#started?}
+    def started?
+      !!@started
     end
 
     # Finds the full path to a gem's file relative it's load path directory. Returns nil if not found.

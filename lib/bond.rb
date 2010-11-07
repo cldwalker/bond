@@ -105,6 +105,9 @@ module Bond
   #   Useful to debug an incorrect completion.
   def start(options={}, &block); M.start(options, &block); end
 
+  # Indicates if Bond has already started
+  def started?; M.started?; end
+
   # Loads completions for gems that ship with them under lib/bond/completions/, relative to the gem's base directory.
   def load_gems(*gems); M.load_gems(*gems); end
 
