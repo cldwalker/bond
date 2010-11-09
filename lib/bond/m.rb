@@ -33,10 +33,10 @@ module Bond
       @config ||= {:readline_plugin=>Bond::Readline, :debug=>false, :default_search=>:underscore}
     end
 
-    # Resets M by deleting all missions.
+    # Resets M's missions and config
     def reset
       MethodMission.reset
-      @agent = nil
+      @config = @agent = nil
     end
 
     # See {Bond#spy}
@@ -52,6 +52,12 @@ module Bond
         plugin_methods.all? {|e| config[:readline_plugin].instance_methods.map {|f| f.to_s}.include?(e)}
         $stderr.puts "Bond Error: Invalid readline plugin given."
       end
+    end
+
+    # See {Bond#restart}
+    def restart(options={}, &block)
+      reset
+      start(options, &block)
     end
 
     # See {Bond#start}

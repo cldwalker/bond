@@ -108,4 +108,25 @@ describe "Bond" do
     M.reset
     Bond.agent.missions.size.should == 0
   end
+
+  describe "restart" do
+    def start(options={}, &block)
+      Bond.start({:readline_plugin=>valid_readline_plugin}.merge(options), &block)
+    end
+
+    it "deletes previous config" do
+      start :blah=>''
+      Bond.config[:blah].should.not == nil
+      Bond.restart({:readline_plugin=>valid_readline_plugin})
+      Bond.config[:blah].should == nil
+    end
+
+    it "deletes previous method completions" do
+      start
+      complete(:method=>'blah') { [] }
+      MethodMission.actions['blah'].should.not == nil
+      Bond.restart({:readline_plugin=>valid_readline_plugin})
+      MethodMission.actions['blah'].should == nil
+    end
+  end
 end

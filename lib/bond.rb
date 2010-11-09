@@ -105,6 +105,10 @@ module Bond
   #   Useful to debug an incorrect completion.
   def start(options={}, &block); M.start(options, &block); end
 
+  # Restarts completions with given options, ensuring to delete current completions.
+  # Takes same options as Bond#start.
+  def restart(options={}, &block); M.restart(options, &block); end
+
   # Indicates if Bond has already started
   def started?; M.started?; end
 
