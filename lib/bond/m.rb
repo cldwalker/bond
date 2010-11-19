@@ -77,7 +77,10 @@ module Bond
     # Finds the full path to a gem's file relative it's load path directory. Returns nil if not found.
     def find_gem_file(rubygem, file)
       begin gem(rubygem); rescue Exception; end
-      (dir = $:.find {|e| File.exists?(File.join(e, file)) }) && File.join(dir, file)
+      spec = Gem.source_index.find_name(rubygem).last
+      # spec.require_path
+      dir = File.join(spec.full_gem_path, spec.require_paths.last) # ?? 'lib'
+      dir && File.join(dir, file)
     end
 
     # Loads a completion file in Rc namespace.
@@ -105,7 +108,7 @@ module Bond
 
     protected
     def load_gem_completion(rubygem)
-      (dir = find_gem_file(rubygem, File.join(rubygem, '..', 'bond'))) ?
+      (dir = find_gem_file(rubygem, 'bond')) ?
         load_dir(dir) : $stderr.puts("Bond Error: No completions found for gem '#{rubygem}'.")
     end
 
