@@ -91,7 +91,13 @@ module Bond
     def load_dir(base_dir)
       if File.exists?(dir = File.join(base_dir, 'completions'))
         Dir[dir + '/*.rb'].each {|file| load_file(file) }
+        true
       end
+    end
+
+    # Loads completions from gems
+    def load_gems(*gems)
+      gems.select {|e| load_gem_completion(e) }
     end
 
     # Find a user's home in a cross-platform way
@@ -105,12 +111,18 @@ module Bond
 
     protected
     def load_gem_completion(rubygem)
-      (dir = find_gem_file(rubygem, File.join(rubygem, '..', 'bond'))) ?
-        load_dir(dir) : $stderr.puts("Bond Error: No completions found for gem '#{rubygem}'.")
+      (dir = find_gem_file(rubygem, File.join(rubygem, '..', 'bond'))) ? load_dir(dir) :
+        rubygem[/\/|-/] ? load_plugin_file(rubygem) :
+        $stderr.puts("Bond Error: No completions found for gem '#{rubygem}'.")
     end
 
-    def load_gems(*gems)
-      gems.select {|e| load_gem_completion(e) }
+    def load_plugin_file(rubygem)
+      namespace, file = rubygem.split(/\/|-/, 2)
+      file += '.rb' unless file[/\.rb$/]
+      if (dir = $:.find {|e| File.exists?(File.join(e, namespace, 'completions', file)) })
+        load_file File.join(dir, namespace, 'completions', file)
+        true
+      end
     end
 
     def load_completions

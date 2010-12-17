@@ -88,7 +88,8 @@ module Bond
   #
   # @param [Hash] options Sets global keys in {#config}, some which specify what completions to load.
   # @option options [Array<String>] :gems Gems which have their completions loaded from
-  #   @gem_source/lib/bond/completions/*.rb.
+  #   @gem_source/lib/bond/completions/*.rb. If gem is a plugin gem i.e. ripl-plugin, completion will be loaded
+  #   from @gem_source/lib/ripl/completions/plugin.rb.
   # @option options [Array<String>] :yard_gems Gems using yard documentation to generate completions. See {Yard}.
   # @option options [Module] :readline_plugin (Bond::Readline) Specifies a Bond plugin to interface with a Readline-like
   #   library. Available plugins are Bond::Readline and Bond::Rawline.
