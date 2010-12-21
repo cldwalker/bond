@@ -14,7 +14,6 @@ Gem::Specification.new do |s|
   s.rubyforge_project = 'tagaholic'
   s.has_rdoc = 'yard'
   s.rdoc_options = ['--title', "Bond #{Bond::VERSION} Documentation"]
-  s.add_dependency 'ffi', '~> 0.6.0'
   s.add_development_dependency 'bacon', '>= 1.1.0'
   s.add_development_dependency 'mocha', '>= 0.9.8'
   s.add_development_dependency 'mocha-on-bacon'
