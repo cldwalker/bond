@@ -34,7 +34,9 @@ module Bond
       attach_variable :rl_line_buffer, :pointer
 
       def line_buffer
-        Readline.rl_line_buffer.get_string(0)
+        unless Readline.rl_line_buffer.null?
+          Readline.rl_line_buffer.get_string(0)
+        end
       end
     end
   end
