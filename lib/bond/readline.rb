@@ -24,7 +24,7 @@ module Bond
     def load_extension
       require 'readline_line_buffer'
     rescue LoadError
-      $stderr.puts "Bond Error: Failed to load readline_line_buffer.bundle. Ensure that it exists and was built correctly."
+      $stderr.puts "Bond Error: Failed to load readline_line_buffer. Ensure that it exists and was built correctly."
     end
 
     # Returns full line of what the user has typed.
