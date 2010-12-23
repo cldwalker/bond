@@ -14,8 +14,8 @@ describe "Completion" do
   end
 
   it "completes absolute constants anywhere" do
-    tab("blah ::Arr").should == ["::Array"]
-    tab("h[::Arr").should == ["h[::Array"]
+    tab("blah ::Has").should == ["::Hash"]
+    tab("h[::Has").should == ["h[::Hash"]
   end
 
   it "completes invalid constants safely" do
