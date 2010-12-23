@@ -7,7 +7,9 @@ module Bond
     # Loads the readline-like library and sets the completion_proc to the given agent.
     def setup(agent)
       require 'readline'
-      load_extension unless ::Readline.respond_to?(:line_buffer)
+      unless ::Readline.respond_to?(:line_buffer)
+        RUBY_PLATFORM =~ /java/ ? load_jruby_extension : load_extension
+      end
 
       # Reinforcing irb defaults
       ::Readline.completion_append_character = nil
@@ -18,6 +20,17 @@ module Bond
       ::Readline.completion_proc = agent
       if (::Readline::VERSION rescue nil).to_s[/editline/i]
         puts "Bond has detected EditLine and may not work with it. See the README's Limitations section."
+      end
+    end
+
+    def load_jruby_extension
+      require 'jruby'
+
+      class << Readline
+        ReadlineExt = org.jruby.ext.Readline
+        def line_buffer
+          ReadlineExt.s_get_line_buffer(JRuby.runtime.current_context, JRuby.reference(self))
+        end
       end
     end
 

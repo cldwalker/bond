@@ -7,7 +7,7 @@ def dummy_makefile
   }
 end
 
-if RUBY_VERSION < '1.9.2'
+if RUBY_VERSION < '1.9.2' && RUBY_PLATFORM !~ /java/
   dir_config("readline")
   have_library('readline')
   if !have_header('readline/readline.h')
