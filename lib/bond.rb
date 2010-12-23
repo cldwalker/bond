@@ -103,7 +103,9 @@ module Bond
   # @option options [Boolean] :debug (false) Shows the stacktrace when autocompletion fails and raises exceptions
   #   in Rc.eval.
   # @option options [Boolean] :eval_debug (false) Raises eval errors occuring when finding a matching completion.
-  #   Useful to debug an incorrect completion.
+  #   Useful to debug an incorrect completion
+  # @option options [Boolean] :bare (false) Doesn't load default ruby completions and completions in
+  #   ~/.bond*. Useful for non-ruby completions
   def start(options={}, &block); M.start(options, &block); end
 
   # Restarts completions with given options, ensuring to delete current completions.

@@ -126,12 +126,12 @@ module Bond
     end
 
     def load_completions
-      load_file File.join(File.dirname(__FILE__), 'completion.rb')
-      load_dir File.dirname(__FILE__)
+      load_file File.join(File.dirname(__FILE__), 'completion.rb') unless config[:bare]
+      load_dir File.dirname(__FILE__) unless config[:bare]
       load_gems *config[:gems] if config[:gems]
       Yard.load_yard_gems *config[:yard_gems] if config[:yard_gems]
-      load_file(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc'))
-      load_dir File.join(home, '.bond')
+      load_file(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc')) && !config[:bare]
+      load_dir File.join(home, '.bond') unless config[:bare]
     end
   end
 end
