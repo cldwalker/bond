@@ -12,7 +12,6 @@ require 'bond/missions/method_mission'
 require 'bond/missions/object_mission'
 require 'bond/missions/anywhere_mission'
 require 'bond/missions/operator_method_mission'
-require 'bond/yard'
 
 module Bond
   extend self
@@ -77,7 +76,7 @@ module Bond
 
   # Starts Bond with a default set of completions that replace and improve irb's completion. Loads completions
   # in this order: lib/bond/completion.rb, lib/bond/completions/*.rb and the following optional completions:
-  # completions from :gems, completions from :yard_gems, ~/.bondrc, ~/.bond/completions/*.rb and from block. See
+  # completions from :gems, ~/.bondrc, ~/.bond/completions/*.rb and from block. See
   # {Rc} for the DSL to use in completion files and in the block.
   #
   # ==== Examples:
@@ -90,7 +89,6 @@ module Bond
   # @option options [Array<String>] :gems Gems which have their completions loaded from
   #   @gem_source/lib/bond/completions/*.rb. If gem is a plugin gem i.e. ripl-plugin, completion will be loaded
   #   from @gem_source/lib/ripl/completions/plugin.rb.
-  # @option options [Array<String>] :yard_gems Gems using yard documentation to generate completions. See {Yard}.
   # @option options [Module] :readline_plugin (Bond::Readline) Specifies a Bond plugin to interface with a Readline-like
   #   library. Available plugins are Bond::Readline and Bond::Rawline.
   # @option options [Proc] :default_mission (DefaultMission) Sets default completion to use when no missions match.
@@ -117,12 +115,6 @@ module Bond
 
   # Loads completions for gems that ship with them under lib/bond/completions/, relative to the gem's base directory.
   def load_gems(*gems); M.load_gems(*gems); end
-
-  # Generates and loads completions for yardoc documented gems.
-  # @param *gems Gem(s) with optional options hash at the end
-  # @option *gems :verbose[Boolean] (false) Displays additional information when building yardoc.
-  # @option *gems :reload[Boolean] (false) Rebuilds yard databases. Use when gems have changed versions.
-  def load_yard_gems(*gems); Yard.load_yard_gems(*gems); end
 
   # An Agent who saves all Bond.complete missions and executes the correct one when a completion is called.
   def agent; M.agent; end
