@@ -2,7 +2,7 @@ Note: To read a linked version of this README, {click here}[http://tagaholic.me/
 
 == Description
 
-Bond is on a mission to improve autocompletion in ruby, especially for irb. Aside from doing
+Bond is on a mission to improve autocompletion in ruby, especially for ripl/irb. Aside from doing
 everything irb's can do and fixing its quirks, Bond can autocomplete argument(s) to methods,
 uniquely completing per module, per method and per argument. Bond brings irb's completion closer to
 bash/zsh as it provides a configuration system and a DSL for creating custom completions and
