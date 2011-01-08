@@ -6,9 +6,13 @@ module Bond
 
     # Loads the readline-like library and sets the completion_proc to the given agent.
     def setup(agent)
-      require 'readline'
-      unless ::Readline.respond_to?(:line_buffer)
-        RUBY_PLATFORM =~ /java/ ? load_jruby_extension : load_extension
+      if RUBY_PLATFORM[/mswin|mingw|bccwin|wince/i]
+        require 'rb-readline'
+      else
+        require 'readline'
+        unless ::Readline.respond_to?(:line_buffer)
+            RUBY_PLATFORM =~ /java/i ? load_jruby_extension : load_extension
+        end
       end
 
       # Reinforcing irb defaults
@@ -26,7 +30,7 @@ module Bond
     def load_jruby_extension
       require 'jruby'
 
-      class << Readline
+      class << ::Readline
         ReadlineExt = org.jruby.ext.Readline
         def line_buffer
           ReadlineExt.s_get_line_buffer(JRuby.runtime.current_context, JRuby.reference(self))
