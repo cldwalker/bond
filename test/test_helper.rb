@@ -51,7 +51,12 @@ module TestHelpers
   end
 
   def valid_readline_plugin
-    Module.new{ def setup(arg); end; def line_buffer; end }
+    Class.new { def self.setup(arg); end; def self.line_buffer; end }
+  end
+
+  def reset
+    M.reset
+    M.debrief :readline_plugin => TestHelpers.valid_readline_plugin
   end
 end
 

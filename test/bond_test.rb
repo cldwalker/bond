@@ -48,7 +48,7 @@ describe "Bond" do
       Bond.started?.should == true
     end
 
-    after_all { M.debrief :readline_plugin=>valid_readline_plugin; M.reset }
+    after_all { reset }
   end
 
   describe "start with :gems" do
@@ -88,7 +88,7 @@ describe "Bond" do
       M.expects(:gem)
       start(:gems=>%w{awesome})
     end
-    after_all { M.debrief :readline_plugin=>valid_readline_plugin; M.reset }
+    after_all { reset }
   end
 
   it "prints error if Readline setup fails" do
@@ -105,7 +105,7 @@ describe "Bond" do
   it "reset clears existing missions" do
     complete(:on=>/blah/) {[]}
     Bond.agent.missions.size.should.not == 0
-    M.reset
+    reset
     Bond.agent.missions.size.should == 0
   end
 

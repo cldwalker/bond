@@ -47,9 +47,7 @@ module Bond
     # Validates and sets values in M.config.
     def debrief(options={})
       config.merge! options
-      plugin_methods = %w{setup line_buffer}
-      unless config[:readline_plugin].is_a?(Module) &&
-        plugin_methods.all? {|e| config[:readline_plugin].instance_methods.map {|f| f.to_s}.include?(e)}
+      unless %w{setup line_buffer}.all? {|e| config[:readline_plugin].respond_to?(e) }
         $stderr.puts "Bond Error: Invalid readline plugin given."
       end
     end

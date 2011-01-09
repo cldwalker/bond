@@ -1,11 +1,11 @@
 module Bond
   # This is the default readline plugin for Bond. A valid plugin must be a module that defines methods setup
   # and line_buffer as described below.
-  module Readline
+  class Readline
     DefaultBreakCharacters = " \t\n\"\\'`><=;|&{("
 
     # Loads the readline-like library and sets the completion_proc to the given agent.
-    def setup(agent)
+    def self.setup(agent)
       if RUBY_PLATFORM[/mswin|mingw|bccwin|wince/i]
         require 'rb-readline'
       else
@@ -27,7 +27,7 @@ module Bond
       end
     end
 
-    def load_jruby_extension
+    def self.load_jruby_extension
       require 'jruby'
 
       class << ::Readline
@@ -38,14 +38,14 @@ module Bond
       end
     end
 
-    def load_extension
+    def self.load_extension
       require 'readline_line_buffer'
     rescue LoadError
       $stderr.puts "Bond Error: Failed to load readline_line_buffer. Ensure that it exists and was built correctly."
     end
 
     # Returns full line of what the user has typed.
-    def line_buffer
+    def self.line_buffer
       ::Readline.line_buffer
     end
   end

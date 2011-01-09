@@ -79,8 +79,7 @@ module Bond
 
     protected
     def setup_readline_plugin(plugin)
-      raise ArgumentError unless plugin.is_a?(Module)
-      @weapon = plugin.extend(plugin)
+      @weapon = plugin
       @weapon.setup(self)
     rescue
       $stderr.puts "Bond Error: Failed #{plugin.to_s[/[^:]+$/]} setup with '#{$!.message}'"

@@ -2,7 +2,7 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 
 describe "Completion" do
   before_all {
-    M.reset
+    reset
     M.load_file File.dirname(__FILE__) + '/../lib/bond/completion.rb'
     M.load_dir File.dirname(__FILE__) + '/../lib/bond'
   }
