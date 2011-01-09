@@ -1,4 +1,3 @@
-# RUBY_PLATFORM[/java/i]
 class Bond::Jruby < Bond::Readline
   def self.readline_setup
     require 'readline'

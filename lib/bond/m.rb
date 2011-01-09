@@ -30,7 +30,7 @@ module Bond
 
     # See {Bond#config}
     def config
-      @config ||= {:readline_plugin=>Bond::Readline, :debug=>false, :default_search=>:underscore}
+      @config ||= {:debug=>false, :default_search=>:underscore}
     end
 
     # Resets M's missions and config
@@ -47,6 +47,7 @@ module Bond
     # Validates and sets values in M.config.
     def debrief(options={})
       config.merge! options
+      config[:readline_plugin] ||= default_readline_plugin
       unless %w{setup line_buffer}.all? {|e| config[:readline_plugin].respond_to?(e) }
         $stderr.puts "Bond Error: Invalid readline plugin given."
       end
@@ -108,6 +109,11 @@ module Bond
     end
 
     protected
+    def default_readline_plugin
+      RUBY_PLATFORM[/mswin|mingw|bccwin|wince/i] ? Ruby :
+        RUBY_PLATFORM[/java/i] ? Jruby : Bond::Readline
+    end
+
     def load_gem_completion(rubygem)
       (dir = find_gem_file(rubygem, File.join(rubygem, '..', 'bond'))) ? load_dir(dir) :
         rubygem[/\/|-/] ? load_plugin_file(rubygem) :

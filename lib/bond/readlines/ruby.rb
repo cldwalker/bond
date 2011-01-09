@@ -1,4 +1,3 @@
-# RUBY_PLATFORM[/mswin|mingw|bccwin|wince/i]
 class Bond::Ruby < Bond::Readline
   def self.readline_setup
     require 'rb-readline'
