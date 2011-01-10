@@ -1,6 +1,7 @@
 module Bond
-  # Every time a completion is attempted, the Agent searches its missions for the first one that matches the user input.
-  # Using either the found mission or Agent.default_mission, the Agent executes the mission's action.
+  # Every time a completion is attempted, the Agent searches its missions for
+  # the first one that matches the user input.  Using either the found mission
+  # or Agent.default_mission, the Agent executes the mission's action.
   class Agent
     # The array of missions that will be searched when a completion occurs.
     attr_reader :missions
@@ -37,20 +38,21 @@ module Bond
       mission
     end
 
-    # This is where the action starts when a completion is initiated. Optional line_buffer
-    # overrides line buffer from readline plugin.
+    # This is where the action starts when a completion is initiated. Optional
+    # line_buffer overrides line buffer from readline plugin.
     def call(input, line_buffer=nil)
       mission_input = line_buffer || @weapon.line_buffer
       mission_input = $1 if mission_input !~ /#{Regexp.escape(input)}$/ && mission_input =~ /^(.*#{Regexp.escape(input)})/
       (mission = find_mission(mission_input)) ? mission.execute : default_mission.execute(Input.new(input))
-    rescue FailedMissionError=>e
+    rescue FailedMissionError => e
       completion_error(e.message, "Completion Info: #{e.mission.match_message}")
     rescue
       completion_error "Failed internally with '#{$!.message}'.",
         "Please report this issue with debug on: Bond.config[:debug] = true."
     end
 
-    # Given a hypothetical user input, reports back what mission it would have found and executed.
+    # Given a hypothetical user input, reports back what mission it would have
+    # found and executed.
     def spy(input)
       if (mission = find_mission(input))
         puts mission.match_message, "Possible completions: #{mission.execute.inspect}",
@@ -58,7 +60,7 @@ module Bond
       else
         puts "Doesn't match a completion."
       end
-    rescue FailedMissionError=>e
+    rescue FailedMissionError => e
       puts e.mission.match_message, e.message,
         "Matches for #{e.mission.condition.inspect} are #{e.mission.matched.to_a.inspect}"
     end
@@ -69,7 +71,7 @@ module Bond
 
     # Default mission used by agent. An instance of DefaultMission.
     def default_mission
-      @default_mission ||= DefaultMission.new(:action=>@default_mission_action)
+      @default_mission ||= DefaultMission.new(:action => @default_mission_action)
     end
 
     # Resets an agent's missions
@@ -86,7 +88,7 @@ module Bond
     end
 
     def create_mission(options, &block)
-      Mission.create options.merge!(:action=>options[:action] || block)
+      Mission.create options.merge!(:action => options[:action] || block)
     rescue InvalidMissionError
       "Invalid #{$!.message} for completion with options: #{options.inspect}"
     rescue

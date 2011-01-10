@@ -10,7 +10,7 @@ module Bond
   #     normal_search(input, list.select {|e| e !~ /-/ })
   #   end
   #
-  # Now you can pass this custom search to any complete() as :search=>:ignore_hyphen
+  # Now you can pass this custom search to any complete() as :search => :ignore_hyphen
   module Search
     class<<self
       # Default search used across missions, set by Bond.config[:default_search]

@@ -145,7 +145,7 @@ module Bond
     end
 
     def create_input(input, options={})
-      @input = Input.new(input, options.merge(:line=>@line, :matched=>@matched))
+      @input = Input.new(input, options.merge(:line => @line, :matched => @matched))
     end
   end
 end

@@ -15,7 +15,7 @@ module TestHelpers
           module InputCompletor; CompletionProc = lambda {|e| [] }; end
         end
       ]
-      ::IRB.CurrentContext = stub(:workspace=>stub(:binding=>binding))
+      ::IRB.CurrentContext = stub(:workspace => stub(:binding => binding))
     end
   end
 
@@ -65,5 +65,5 @@ class Bacon::Context
 end
 
 # Default settings
-Bond::M.debrief(:readline=>TestHelpers.valid_readline, :debug=>true)
+Bond::M.debrief(:readline => TestHelpers.valid_readline, :debug => true)
 include Bond

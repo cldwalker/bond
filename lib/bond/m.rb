@@ -1,5 +1,6 @@
 module Bond
-  # Takes international quagmires (a user's completion setup) and passes them on as missions to an Agent.
+  # Takes international quagmires (a user's completion setup) and passes them on
+  # as missions to an Agent.
   module M
     extend self
 
@@ -30,7 +31,7 @@ module Bond
 
     # See {Bond#config}
     def config
-      @config ||= {:debug=>false, :default_search=>:underscore}
+      @config ||= {:debug => false, :default_search => :underscore}
     end
 
     # Resets M's missions and config
@@ -77,7 +78,8 @@ module Bond
       !!@started
     end
 
-    # Finds the full path to a gem's file relative it's load path directory. Returns nil if not found.
+    # Finds the full path to a gem's file relative it's load path directory.
+    # Returns nil if not found.
     def find_gem_file(rubygem, file)
       begin gem(rubygem); rescue Exception; end
       (dir = $:.find {|e| File.exists?(File.join(e, file)) }) && File.join(dir, file)

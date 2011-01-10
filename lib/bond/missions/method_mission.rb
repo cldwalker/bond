@@ -13,13 +13,13 @@ module Bond
   #           Otherwise defaults to normal :search behavior.
   # [:name, :place] These options aren't supported by a MethodMission/OperatorMethodMission completion.
   # ==== Examples:
-  #   Bond.complete(:methods=>%w{delete index rindex}, :class=>"Array#") {|e| e.object }
-  #   Bond.complete(:method=>"Hash#index") {|e| e.object.values }
+  #   Bond.complete(:methods => %w{delete index rindex}, :class => "Array#") {|e| e.object }
+  #   Bond.complete(:method => "Hash#index") {|e| e.object.values }
   #
   # ==== Argument Format
   # All method arguments can autocomplete as symbols or strings and the first argument can be prefixed
   # with '(':
-  #   >> Bond.complete(:method=>'example') { %w{some example eh} }
+  #   >> Bond.complete(:method => 'example') { %w{some example eh} }
   #   => true
   #   >> example '[TAB]
   #   eh    example    some
@@ -33,7 +33,7 @@ module Bond
   # Every time a comma appears after a method, Bond starts a new completion. This allows a method to
   # complete multiple arguments as well as complete keys for a hash. *Each* argument can be have a unique
   # set of completions since a completion action is aware of what argument it is currently completing:
-  #   >> Bond.complete(:method=>'FileUtils.chown') {|e|
+  #   >> Bond.complete(:method => 'FileUtils.chown') {|e|
   #        e.argument > 3 ? %w{noop verbose} : %w{root admin me} }
   #   => true
   #   >> FileUtils.chown 'r[TAB]
@@ -42,7 +42,7 @@ module Bond
   #   >> FileUtils.chown 'root', 'admin'
   #   >> FileUtils.chown 'root', 'admin', 'some_file', :v[TAB]
   #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose
-  #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose=>true
+  #   >> FileUtils.chown 'root', 'admin', 'some_file', :verbose => true
   #
   # ==== Developer Notes
   # Unlike other missions, creating these missions with Bond.complete doesn't add more completion rules
@@ -183,8 +183,8 @@ module Bond
   def after_match(input)
     set_action_and_search
     @completion_prefix, typed = @matched[3], @matched[-1]
-    input_options = {:object=>@evaled_object, :argument=>1+typed.count(','),
-      :arguments=>(@completion_prefix.to_s+typed).split(/\s*,\s*/) }
+    input_options = {:object => @evaled_object, :argument => 1+typed.count(','),
+      :arguments => (@completion_prefix.to_s+typed).split(/\s*,\s*/) }
     if typed.to_s.include?(',') && (match = typed.match(/(.*?\s*)([^,]*)$/))
       typed = match[2]
       typed.sub!(/^(['":])/,'')

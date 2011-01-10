@@ -4,13 +4,13 @@ module Bond
   #
   # === Example ~/.bondrc
   #   # complete arguments for any object's :respond_to?
-  #   complete(:method=>"Object#respond_to?") {|e| e.object.methods }
+  #   complete(:method => "Object#respond_to?") {|e| e.object.methods }
   #   # complete arguments for any module's :public
-  #   complete(:method=>"Module#public") {|e| e.object.instance_methods }
+  #   complete(:method => "Module#public") {|e| e.object.instance_methods }
   #
   #   # Share generate_tags action across completions
-  #   complete(:method=>"edit_tags", :action=>:generate_tags)
-  #   complete(:method=>"delete_tags", :search=>false) {|e| generate_tags(e).grep(/#{e}/i) }
+  #   complete(:method => "edit_tags", :action => :generate_tags)
+  #   complete(:method => "delete_tags", :search => false) {|e| generate_tags(e).grep(/#{e}/i) }
   #
   #   def generate_tags(input)
   #    ...

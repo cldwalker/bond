@@ -26,11 +26,11 @@ module Bond
   # or turned off per mission with :search. If turned off, the action must also handle searching.
   #
   # ==== Examples:
-  #  Bond.complete(:method=>'shoot') {|input| %w{to kill} }
-  #  Bond.complete(:on=>/^((([a-z][^:.\(]*)+):)+/, :search=>false) {|input| Object.constants.grep(/#{input.matched[1]}/) }
-  #  Bond.complete(:object=>ActiveRecord::Base, :search=>:underscore, :place=>:last)
-  #  Bond.complete(:method=>'you', :search=>proc {|input, list| list.grep(/#{input}/i)} ) {|input| %w{Only Live Twice} }
-  #  Bond.complete(:method=>'system', :action=>:shell_commands)
+  #  Bond.complete(:method => 'shoot') {|input| %w{to kill} }
+  #  Bond.complete(:on => /^((([a-z][^:.\(]*)+):)+/, :search => false) {|input| Object.constants.grep(/#{input.matched[1]}/) }
+  #  Bond.complete(:object => ActiveRecord::Base, :search => :underscore, :place => :last)
+  #  Bond.complete(:method => 'you', :search => proc {|input, list| list.grep(/#{input}/i)} ) {|input| %w{Only Live Twice} }
+  #  Bond.complete(:method => 'system', :action => :shell_commands)
   #
   # @param [Hash] options When using :method(s) or :object, some hash keys may have different behavior. See
   #   Bond.complete sections of {MethodMission} and {ObjectMission} respectively.
@@ -63,7 +63,7 @@ module Bond
   # Redefines an existing completion mission to have a different action. The condition can only be varied if :name is
   # used to identify and replace a mission. Takes same options as {#complete}.
   # ==== Example:
-  #   Bond.recomplete(:on=>/man/, :name=>:count) { %w{4 5 6}}
+  #   Bond.recomplete(:on => /man/, :name => :count) { %w{4 5 6}}
   def recomplete(options={}, &block); M.recomplete(options, &block); end
 
   # Reports what completion mission matches for a given input. Helpful for debugging missions.
@@ -82,9 +82,9 @@ module Bond
   # {Rc} for the DSL to use in completion files and in the block.
   #
   # ==== Examples:
-  #   Bond.start :gems=>%w{hirb}
-  #   Bond.start(:default_search=>:ignore_case) do
-  #     complete(:method=>"Object#respond_to?") {|e| e.object.methods }
+  #   Bond.start :gems => %w{hirb}
+  #   Bond.start(:default_search => :ignore_case) do
+  #     complete(:method => "Object#respond_to?") {|e| e.object.methods }
   #   end
   #
   # @param [Hash] options Sets global keys in {#config}, some which specify what completions to load.
