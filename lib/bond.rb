@@ -91,8 +91,9 @@ module Bond
   # @option options [Array<String>] :gems Gems which have their completions loaded from
   #   @gem_source/lib/bond/completions/*.rb. If gem is a plugin gem i.e. ripl-plugin, completion will be loaded
   #   from @gem_source/lib/ripl/completions/plugin.rb.
-  # @option options [Module] :readline_plugin (Bond::Readline) Specifies a Bond plugin to interface with a Readline-like
-  #   library. Available plugins are Bond::Readline and Bond::Rawline.
+  # @option options [Module, Symbol] :readline_plugin (Bond::Readline) Specifies a Bond readline plugin.
+  #   A symbol points to a capitalized Bond constant i.e. :ruby -> Bond::Ruby.
+  #   Available plugins are Bond::Readline, Bond::Ruby, Bond::Jruby and Bond::Rawline.
   # @option options [Proc] :default_mission (DefaultMission) Sets default completion to use when no missions match.
   #  See {Agent#default_mission}.
   # @option options [Symbol] :default_search (:underscore) Name of a *_search method in Rc to use as the default

@@ -13,8 +13,19 @@ describe "Bond" do
       }.should =~ /Invalid/
     end
 
+    it "prints error if readline_plugin symbol is invalid" do
+      capture_stderr {
+        start :readline_plugin => :blah
+      }.should =~ /Invalid.*'blah'/
+    end
+
     it "prints no error if valid readline_plugin" do
       capture_stderr { start }.should == ''
+    end
+
+    it 'prints no error if valid readline_plugin symbol' do
+      capture_stderr { start :readline_plugin => :ruby }.should == ''
+      Bond.config[:readline_plugin].should == Bond::Ruby
     end
 
     it "sets default mission" do

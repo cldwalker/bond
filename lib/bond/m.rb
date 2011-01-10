@@ -48,8 +48,13 @@ module Bond
     def debrief(options={})
       config.merge! options
       config[:readline_plugin] ||= default_readline_plugin
+      if !config[:readline_plugin].is_a?(Module) &&
+        Bond.const_defined?(config[:readline_plugin].to_s.capitalize)
+        config[:readline_plugin] = Bond.const_get(
+          config[:readline_plugin].to_s.capitalize)
+      end
       unless %w{setup line_buffer}.all? {|e| config[:readline_plugin].respond_to?(e) }
-        $stderr.puts "Bond Error: Invalid readline plugin given."
+        $stderr.puts "Bond Error: Invalid readline plugin '#{config[:readline_plugin]}'."
       end
     end
 
