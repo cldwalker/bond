@@ -3,29 +3,29 @@ require File.join(File.dirname(__FILE__), 'test_helper')
 describe "Bond" do
   describe "start" do
     def start(options={}, &block)
-      Bond.start({:readline_plugin=>valid_readline_plugin}.merge(options), &block)
+      Bond.start({:readline=>valid_readline}.merge(options), &block)
     end
 
     before { M.instance_eval("@started = @agent = @config = nil"); M.expects(:load_completions) }
-    it "prints error if readline_plugin doesn't have all required methods" do
+    it "prints error if readline doesn't have all required methods" do
       capture_stderr {
-        start :readline_plugin=>Module.new{ def self.setup(arg); end }
+        start :readline=>Module.new{ def self.setup(arg); end }
       }.should =~ /Invalid/
     end
 
-    it "prints error if readline_plugin symbol is invalid" do
+    it "prints error if readline symbol is invalid" do
       capture_stderr {
-        start :readline_plugin => :blah
+        start :readline => :blah
       }.should =~ /Invalid.*'blah'/
     end
 
-    it "prints no error if valid readline_plugin" do
+    it "prints no error if valid readline" do
       capture_stderr { start }.should == ''
     end
 
-    it 'prints no error if valid readline_plugin symbol' do
-      capture_stderr { start :readline_plugin => :ruby }.should == ''
-      Bond.config[:readline_plugin].should == Bond::Ruby
+    it 'prints no error if valid readline symbol' do
+      capture_stderr { start :readline => :ruby }.should == ''
+      Bond.config[:readline].should == Bond::Ruby
     end
 
     it "sets default mission" do
@@ -102,8 +102,8 @@ describe "Bond" do
 
   it "prints error if Readline setup fails" do
     Bond::Readline.expects(:setup).raises('WTF')
-    capture_stderr { Bond.start(:readline_plugin=>Bond::Readline) }.should =~ /Error.*Failed Readline.*'WTF'/
-    M.debrief :readline_plugin=>valid_readline_plugin
+    capture_stderr { Bond.start(:readline=>Bond::Readline) }.should =~ /Error.*Failed Readline.*'WTF'/
+    M.debrief :readline=>valid_readline
   end
 
   it "start prints error for failed completion file" do
@@ -120,13 +120,13 @@ describe "Bond" do
 
   describe "restart" do
     def start(options={}, &block)
-      Bond.start({:readline_plugin=>valid_readline_plugin}.merge(options), &block)
+      Bond.start({:readline=>valid_readline}.merge(options), &block)
     end
 
     it "deletes previous config" do
       start :blah=>''
       Bond.config[:blah].should.not == nil
-      Bond.restart({:readline_plugin=>valid_readline_plugin})
+      Bond.restart({:readline=>valid_readline})
       Bond.config[:blah].should == nil
     end
 
@@ -134,7 +134,7 @@ describe "Bond" do
       start
       complete(:method=>'blah') { [] }
       MethodMission.actions['blah'].should.not == nil
-      Bond.restart({:readline_plugin=>valid_readline_plugin})
+      Bond.restart({:readline=>valid_readline})
       MethodMission.actions['blah'].should == nil
     end
   end

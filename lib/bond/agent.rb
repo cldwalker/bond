@@ -8,7 +8,7 @@ module Bond
     attr_reader :weapon
 
     def initialize(options={}) #@private
-      setup_readline_plugin(options[:readline_plugin])
+      setup_readline(options[:readline])
       @default_mission_action = options[:default_mission] if options[:default_mission]
       Mission.eval_binding = options[:eval_binding] if options[:eval_binding]
       Search.default_search = options[:default_search] || :normal
@@ -78,7 +78,7 @@ module Bond
     end
 
     protected
-    def setup_readline_plugin(plugin)
+    def setup_readline(plugin)
       @weapon = plugin
       @weapon.setup(self)
     rescue

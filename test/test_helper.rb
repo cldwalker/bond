@@ -50,13 +50,13 @@ module TestHelpers
     Bond.complete(*args, &block)
   end
 
-  def valid_readline_plugin
+  def valid_readline
     Class.new { def self.setup(arg); end; def self.line_buffer; end }
   end
 
   def reset
     M.reset
-    M.debrief :readline_plugin => TestHelpers.valid_readline_plugin
+    M.debrief :readline => TestHelpers.valid_readline
   end
 end
 
@@ -65,5 +65,5 @@ class Bacon::Context
 end
 
 # Default settings
-Bond::M.debrief(:readline_plugin=>TestHelpers.valid_readline_plugin, :debug=>true)
+Bond::M.debrief(:readline=>TestHelpers.valid_readline, :debug=>true)
 include Bond

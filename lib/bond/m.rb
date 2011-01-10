@@ -47,14 +47,13 @@ module Bond
     # Validates and sets values in M.config.
     def debrief(options={})
       config.merge! options
-      config[:readline_plugin] ||= default_readline_plugin
-      if !config[:readline_plugin].is_a?(Module) &&
-        Bond.const_defined?(config[:readline_plugin].to_s.capitalize)
-        config[:readline_plugin] = Bond.const_get(
-          config[:readline_plugin].to_s.capitalize)
+      config[:readline] ||= default_readline
+      if !config[:readline].is_a?(Module) &&
+        Bond.const_defined?(config[:readline].to_s.capitalize)
+        config[:readline] = Bond.const_get(config[:readline].to_s.capitalize)
       end
-      unless %w{setup line_buffer}.all? {|e| config[:readline_plugin].respond_to?(e) }
-        $stderr.puts "Bond Error: Invalid readline plugin '#{config[:readline_plugin]}'."
+      unless %w{setup line_buffer}.all? {|e| config[:readline].respond_to?(e) }
+        $stderr.puts "Bond Error: Invalid readline plugin '#{config[:readline]}'."
       end
     end
 
@@ -114,7 +113,7 @@ module Bond
     end
 
     protected
-    def default_readline_plugin
+    def default_readline
       RUBY_PLATFORM[/mswin|mingw|bccwin|wince/i] ? Ruby :
         RUBY_PLATFORM[/java/i] ? Jruby : Bond::Readline
     end
