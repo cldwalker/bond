@@ -7,16 +7,17 @@ def dummy_makefile
   }
 end
 
-if RUBY_VERSION < '1.9.2' && RUBY_PLATFORM !~ /java/
+if RUBY_VERSION >= '1.9.2' || RUBY_PLATFORM[/java|mswin|mingw|bccwin|wince/i] ||
+  ARGV.include?('--without-readline')
+  dummy_makefile
+else
   dir_config("readline")
   have_library('readline')
   if !have_header('readline/readline.h')
-    puts "Bond was built without readline. To use it with readline: gem install bond" +
-      " -- --with-readline-dir=/path/to/readline"
-    dummy_makefile
+    abort "\n** Bond Install Error: Unable to find readline.h. Please try again. **\n"+
+    "To install with your readline: gem install bond -- --with-readline-dir=/path/to/readline\n"+
+    "To install without readline: gem install bond -- --without-readline"
   else
     create_makefile 'readline_line_buffer'
   end
-else
-  dummy_makefile
 end
