@@ -1,3 +1,9 @@
+== 0.4.0
+* Improve extconf.rb: support --without-readline, fail hard, detect windows
+* Add rb-readline support for windows and non-readline users
+* Rename :readline_plugin option to :readline
+* Allow :readline option to take a symbol
+
 == 0.3.5
 * Move yard-related functionality to bond-yard gem
   
