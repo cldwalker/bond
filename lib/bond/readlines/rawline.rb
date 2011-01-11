@@ -1,6 +1,4 @@
-# A readline plugin for use with {Rawline}[http://github.com/h3rald/rawline].
-# This plugin should be used in conjunction with {a Rawline
-# shell}[http://www.h3rald.com/articles/real-world-rawline-usage].
+# A pure ruby readline which requires {rawline}[http://github.com/h3rald/rawline].
 class Bond::Rawline < Bond::Readline
   def self.setup(agent)
     require 'rawline'

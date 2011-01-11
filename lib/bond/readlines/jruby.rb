@@ -1,3 +1,4 @@
+# Readline for Jruby
 class Bond::Jruby < Bond::Readline
   def self.readline_setup
     require 'readline'

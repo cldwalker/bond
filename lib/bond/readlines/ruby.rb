@@ -1,3 +1,4 @@
+# A pure ruby readline which requires {rb-readline}[https://github.com/luislavena/rb-readline].
 class Bond::Ruby < Bond::Readline
   def self.readline_setup
     require 'rb-readline'

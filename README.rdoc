@@ -1,32 +1,42 @@
-Note: To read a linked version of this README, {click here}[http://tagaholic.me/bond/doc/]
-
 == Description
 
-Bond is on a mission to improve autocompletion in ruby, especially for ripl/irb. Aside from doing
+Bond is on a mission to improve autocompletion in ruby, especially for irb/ripl. Aside from doing
 everything irb's can do and fixing its quirks, Bond can autocomplete argument(s) to methods,
-uniquely completing per module, per method and per argument. Bond brings irb's completion closer to
-bash/zsh as it provides a configuration system and a DSL for creating custom completions and
-completion rules. With this configuration system, users can customize their irb autocompletions and
+uniquely completing per module, per method and per argument. Bond brings ruby autocompletion closer
+to bash/zsh as it provides a configuration system and a DSL for creating custom completions and
+completion rules. With this configuration system, users can customize their autocompletions and
 share it with others. Bond can also load completions that ship with gems.  Bond is able to offer
-more than irb's completion since it uses a Readline C extension to get the full line of input when
-completing as opposed to irb's last-word approach.
+more than irb's completion since it uses the full line of input when completing as opposed to irb's
+last-word approach.
 
 == Install
 
-Install the gem with:
+To use bond with {Readline}[http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html] (version >=
+5.6 recommended) or JLine for JRuby users, install the gem with:
 
-    sudo gem install bond
+    gem install bond
+
+To use bond with {a pure ruby readline}[https://github.com/luislavena/rb-readline] i.e. Windows
+users or users without Readline:
+
+    gem install bond rb-readline -- --without-readline
+
+To use bond without readline support (and presumably use your own readline plugin):
+
+    gem install bond -- --without-readline
 
 == Setup
 
-To start off, replace irb's completion (require 'irb/completion') with Bond's enhanced version in your irbrc :
+If you're using {ripl}[http://github.com/cldwalker/ripl] instead of irb, bond is already setup.
+
+To start off, replace irb's completion (require 'irb/completion') with Bond's enhanced version in your irbrc:
 
   require 'bond'
   Bond.start
+  # For users using a pure ruby readline
+  Bond.start :readline => :ruby
 
-If you're using {ripl}[http://github.com/cldwalker/ripl], bond is used by default.
-
-This gives you more consistent method completion on any object, customizable completions
+This setup gives you more consistent method completion on any object, customizable completions
 and argument completion of some 80+ methods including Hash#[], Kernel#system, Kernel#require and some Rails methods.
 
 == Method Argument Completion
