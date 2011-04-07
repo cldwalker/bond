@@ -1,3 +1,6 @@
+== 0.4.1
+* Fix install on jruby 1.6
+
 == 0.4.0
 * Improve extconf.rb: support --without-readline, fail hard, detect windows
 * Add rb-readline support for windows and non-readline users
