@@ -223,6 +223,12 @@ has good instructions for reinstalling ruby with the official Readline.
 * timcharper for improving extconf.rb.
 * headius for jruby support
 
+== Bugs/Issues
+Please report them {on github}[http://github.com/cldwalker/bond/issues].
+
+== Contributing
+{See here}[http://tagaholic.me/contributing.html]
+
 == Links
 * http://tagaholic.me/2010/05/07/screencast-of-argument-autocompletion-for-methods-in-irb.html
 * http://tagaholic.me/2009/07/16/bond-from-irb-with-completion-love.html
