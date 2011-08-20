@@ -97,7 +97,7 @@ module Bond
     rescue StandardError, SyntaxError
       message = $!.is_a?(NoMethodError) && !@action.respond_to?(:call) &&
         !Rc.respond_to?(@action) ? "Completion action '#{@action}' doesn't exist." :
-        "Failed during completion action with '#{$!.message}'."
+        "Failed during completion action '#{name}' with '#{$!.message}'."
       raise FailedMissionError.new(self), message
     end
 
