@@ -27,7 +27,7 @@ To use bond without readline support (and presumably use your own readline plugi
 
 == Setup
 
-If you're using {ripl}[http://github.com/cldwalker/ripl] instead of irb, bond is already setup.
+If you're using {ripl}[https://github.com/cldwalker/ripl] instead of irb, bond is already setup.
 
 To start off, replace irb's completion (require 'irb/completion') with Bond's enhanced version in your irbrc:
 
