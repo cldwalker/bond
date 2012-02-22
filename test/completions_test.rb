@@ -31,7 +31,7 @@ describe "completions for" do
 
   describe "Kernel" do
     it "#raise" do
-      tab("raise Errno::ETIME").should == %w{Errno::ETIMEDOUT Errno::ETIME}
+      tab("raise Errno::ETIME").sort.should == %w{Errno::ETIME Errno::ETIMEDOUT}
     end
 
     it "#require" do
