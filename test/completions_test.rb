@@ -44,7 +44,7 @@ describe "completions for" do
   describe "Object" do
     it "#instance_of?" do
       expectations = ['Hash']
-      expectations = ["Hash", "Hash::"] if Config::CONFIG["RUBY_SO_NAME"].to_s[/rubinius/i]
+      expectations = ["Hash", "Hash::"] if RbConfig::CONFIG["RUBY_SO_NAME"].to_s[/rubinius/i]
       tab("[].instance_of? Has").should == expectations
     end
 
