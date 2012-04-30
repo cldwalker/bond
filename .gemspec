@@ -5,6 +5,7 @@ require File.dirname(__FILE__) + "/lib/bond/version"
 Gem::Specification.new do |s|
   s.name        = "bond"
   s.version     = Bond::VERSION
+  s.platform    = ENV['GEM_PLATFORM'] if ENV['GEM_PLATFORM']
   s.authors     = ["Gabriel Horner"]
   s.email       = "gabriel.horner@gmail.com"
   s.homepage    = "http://tagaholic.me/bond/"
@@ -18,8 +19,11 @@ Gem::Specification.new do |s|
   s.add_development_dependency 'mocha', '>= 0.9.8'
   s.add_development_dependency 'mocha-on-bacon'
   s.add_development_dependency 'bacon-bits'
-  s.files = Dir.glob(%w[{lib,test}/**/*.rb bin/* [A-Z]*.{txt,rdoc} ext/**/*.{rb,c} **/deps.rip]) + %w{Rakefile .gemspec}
+  s.files = Dir.glob(%w[{lib,test}/**/*.rb bin/* [A-Z]*.{txt,rdoc} **/deps.rip]) + %w{Rakefile .gemspec}
+  if ENV['GEM_PLATFORM'] != 'java'
+    s.files += Dir.glob("ext/**/*.{rb,c}")
+    s.extensions = ["ext/readline_line_buffer/extconf.rb"]
+  end
   s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
-  s.extensions = ["ext/readline_line_buffer/extconf.rb"]
   s.license = 'MIT'
 end
