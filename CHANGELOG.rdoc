@@ -1,3 +1,8 @@
+== 0.4.2
+* Start also releasing java version of gem
+* Put tests on travis
+* Fix tests for jruby
+
 == 0.4.1
 * Fix install on jruby 1.6
 
