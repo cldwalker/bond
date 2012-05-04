@@ -222,6 +222,7 @@ has good instructions for reinstalling ruby with the official Readline.
 * pd for compatibility with emacs' inf-ruby mode.
 * timcharper for improving extconf.rb.
 * headius for jruby support
+* tobias for a java version of the gem
 
 == Bugs/Issues
 Please report them {on github}[http://github.com/cldwalker/bond/issues].
