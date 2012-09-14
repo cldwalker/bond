@@ -15,8 +15,8 @@ Gem::Specification.new do |s|
   s.has_rdoc = 'yard'
   s.rdoc_options = ['--title', "Bond #{Bond::VERSION} Documentation"]
   s.add_development_dependency 'bacon', '>= 1.1.0'
-  s.add_development_dependency 'mocha', '>= 0.9.8'
-  s.add_development_dependency 'mocha-on-bacon'
+  s.add_development_dependency 'mocha', '~> 0.12.1'
+  s.add_development_dependency 'mocha-on-bacon', '~> 0.2.1'
   s.add_development_dependency 'bacon-bits'
   s.files = Dir.glob(%w[{lib,test}/**/*.rb bin/* [A-Z]*.{txt,rdoc} **/deps.rip]) + %w{Rakefile .gemspec .travis.yml}
   if ENV['GEM_PLATFORM'] != 'java'
