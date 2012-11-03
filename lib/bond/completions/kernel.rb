@@ -4,8 +4,10 @@ complete(:methods=>%w{Kernel#system Kernel#exec}) {|e|
     File.directory?(e) ? Dir.entries(e) : []
   }.flatten.uniq - ['.', '..']
 }
-complete(:method=>"Kernel#require", :search=>:files) {
-  paths = $:.map {|e| Dir["#{e}/**/*.{rb,bundle,dll,so}"].map {|f| f.sub(e+'/', '') } }.flatten
+complete(:methods=>%w{Kernel#require Kernel#load}, :search=>:files) {
+  paths = $:.map do |e|
+    Dir["#{e}/**/*.{rb,bundle,dll,so}"].map {|f| f.sub(e+'/', '') }
+  end.flatten
   if Object.const_defined?(:Gem)
     paths += Gem.path.map {|e| Dir["#{e}/gems/*/lib/*.{rb,bundle,dll,so}"].
       map {|f| f.sub(/^.*\//,'') } }.flatten
