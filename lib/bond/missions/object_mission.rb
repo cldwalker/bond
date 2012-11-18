@@ -28,8 +28,7 @@ class Bond::ObjectMission < Bond::Mission
   end
 
   def do_match(input)
-    super && eval_object(@matched[1]) && @evaled_object.class.respond_to?(:ancestors) &&
-      @evaled_object.class.ancestors.any? {|e| e.to_s =~ @object_condition }
+    super && eval_object(@matched[1]) && klass(@evaled_object).ancestors.any? {|e| e.to_s =~ @object_condition }
   end
 
   def after_match(input)
@@ -39,6 +38,12 @@ class Bond::ObjectMission < Bond::Mission
   end
 
   def default_action(obj)
-    obj.methods.map {|e| e.to_s} - OPERATORS
+    klass(obj).instance_methods.map {|e| e.to_s} - OPERATORS
+  end
+
+  def klass(obj)
+    (class << obj; self; end)
+  rescue TypeError # can't define singleton
+    obj.class
   end
 end

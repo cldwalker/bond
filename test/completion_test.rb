@@ -125,6 +125,11 @@ describe "Completion" do
         tab("%s[man oh].t").should be_methods_from(Symbol, 'oh].', :man)
         tab("%[man oh].t").should be_methods_from(String, 'oh].')
       end
+
+      it "with overridden class method" do
+        complete :on=>/(.*)./, :object=>'Object'
+        tab("obj = Object.new; def obj.class; end; obj.").should be_methods_from(Object, 'obj.')
+      end
     end
 
     describe "for" do
