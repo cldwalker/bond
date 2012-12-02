@@ -53,8 +53,8 @@ module Bond
     attr_reader :on
     # Takes same options as {Bond#complete}.
     def initialize(options)
-      raise InvalidMissionError, ":action" unless (options[:action] || respond_to?(:default_action))
-      raise InvalidMissionError, ":on" unless (options[:on] && options[:on].is_a?(Regexp)) || respond_to?(:default_on)
+      raise InvalidMissionError, ":action" unless (options[:action] || respond_to?(:default_action, true))
+      raise InvalidMissionError, ":on" unless (options[:on] && options[:on].is_a?(Regexp)) || respond_to?(:default_on, true)
       @action, @on = options[:action], options[:on]
       @place = options[:place] if options[:place]
       @name = options[:name] if options[:name]
