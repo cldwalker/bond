@@ -221,7 +221,8 @@ has good instructions for reinstalling ruby with the official Readline.
 * Takao Kouji for {commiting}[http://svn.ruby-lang.org/cgi-bin/viewvc.cgi/trunk/ext/readline/readline.c?view=diff&r1=24018&r2=24019] this Readline enhancement to ruby 1.9.2.
 * pd for compatibility with emacs' inf-ruby mode.
 * timcharper for improving extconf.rb.
-* headius for jruby support
+* headius and rking for jruby help
+* ConradIrwin for 2.0 and other fixes
 * tobias for a java version of the gem
 
 == Bugs/Issues
