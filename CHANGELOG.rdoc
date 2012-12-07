@@ -1,3 +1,8 @@
+== 0.4.3
+* Fix to support ruby 2.0
+* Fix to support objects with invalid .class
+* Fix mocha dev ependency issue
+
 == 0.4.2
 * Start also releasing java version of gem
 * Put tests on travis
