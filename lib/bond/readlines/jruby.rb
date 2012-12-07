@@ -4,7 +4,7 @@ class Bond::Jruby < Bond::Readline
     require 'readline'
     require 'jruby'
     class << Readline
-      ReadlineExt ||= org.jruby.ext.Readline
+      ReadlineExt = org.jruby.ext.Readline
       def line_buffer
         ReadlineExt.s_get_line_buffer(JRuby.runtime.current_context, JRuby.reference(self))
       end
