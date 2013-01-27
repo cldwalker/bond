@@ -38,7 +38,13 @@ class Bond::ObjectMission < Bond::Mission
   end
 
   def default_action(obj)
-    klass(obj).instance_methods.map {|e| e.to_s} - OPERATORS
+    klass_methods(obj).map {|e| e.to_s} - OPERATORS
+  end
+  
+  def klass_methods(obj)
+    klass(obj).instance_methods
+  rescue TypeError 
+    obj.class.instance_methods
   end
 
   def klass(obj)
