@@ -48,7 +48,7 @@ describe "Completion" do
   end
 
   it "completes hash coming from a method" do
-    tab('Bond.config[:r').should == ["Bond.config[:readline"]
+    tab('Bond.config[:r').should == ["config[:readline"]
   end
 
   it "methods don't swallow up default completion" do

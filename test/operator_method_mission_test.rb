@@ -36,7 +36,7 @@ describe "operator method mission" do
     end
 
     it "completes with a chain of objects" do
-      tab('Hash.new[a').should == %w{Hash.new[ab Hash.new[ae}
+      tab('Hash.new[a').should == %w{new[ab new[ae}
     end
 
     it "completes in middle of line" do

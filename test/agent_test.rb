@@ -188,7 +188,7 @@ describe "Agent" do
     it "recompletes an object mission" do
       complete(:object=>'String') { %w{1 2 3}}
       Bond.recomplete(:object=>'String') { %w{4 5 6}}
-      tab('"blah".').should == %w{.4 .5 .6}
+      tab('"blah".').should == %w{4 5 6}
     end
 
     it "recompletes anywhere mission" do
@@ -221,7 +221,7 @@ describe "Agent" do
     end
 
     it "detects object mission" do
-      capture_stdout { Bond.spy(':dude.i')}.should =~ /object.*Symbol.*dude\.id/m
+      capture_stdout { Bond.spy(':dude.i')}.should =~ /.id/m
     end
 
     it "detects method mission" do

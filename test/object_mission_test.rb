@@ -6,19 +6,19 @@ describe "ObjectMission" do
     it "with default action completes" do
       complete(:object=>"String")
       complete(:on=>/man/) { %w{upper upster upful}}
-      tab("'man'.up").sort.should == [".upcase", ".upcase!", ".upto"]
+      tab("'man'.up").sort.should == ["upcase", "upcase!", "upto"]
     end
 
     it "with regex condition completes" do
       complete(:object=>'Str.*') {|e| e.object.class.superclass.instance_methods(true) }
       complete(:on=>/man/) { %w{upper upster upful}}
-      tab("'man'.unta").should == [".untaint"]
+      tab("'man'.unta").should == ["untaint"]
     end
 
     it "with explicit action completes" do
       complete(:object=>"String") {|e| e.object.class.superclass.instance_methods(true) }
       complete(:on=>/man/) { %w{upper upster upful}}
-      tab("'man'.unta").should == [".untaint"]
+      tab("'man'.unta").should == ["untaint"]
     end
 
     it "completes without including word break characters" do
@@ -30,7 +30,7 @@ describe "ObjectMission" do
 
     it "completes with additional text after completion point" do
       complete(:object=>"Object")
-      tab(':man.f blah', ':man.f').include?(':man.freeze').should == true
+      tab(':man.f blah', ':man.f').include?('freeze').should == true
     end
 
     it "doesn't evaluate anything before the completion object" do
