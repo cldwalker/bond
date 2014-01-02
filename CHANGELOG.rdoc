@@ -1,7 +1,10 @@
+== 0.5.0
+* Fixes to support latest rb-readline and jruby
+
 == 0.4.3
 * Fix to support ruby 2.0
 * Fix to support objects with invalid .class
-* Fix mocha dev ependency issue
+* Fix mocha dev dependency issue
 
 == 0.4.2
 * Start also releasing java version of gem
