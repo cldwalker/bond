@@ -82,7 +82,7 @@ module Bond
     # Returns nil if not found.
     def find_gem_file(rubygem, file)
       begin gem(rubygem); rescue Exception; end
-      (dir = $:.find {|e| File.exists?(File.join(e, file)) }) && File.join(dir, file)
+      (dir = $:.find {|e| File.exist?(File.join(e, file)) }) && File.join(dir, file)
     end
 
     # Loads a completion file in Rc namespace.
@@ -94,7 +94,7 @@ module Bond
 
     # Loads completion files in given directory.
     def load_dir(base_dir)
-      if File.exists?(dir = File.join(base_dir, 'completions'))
+      if File.exist?(dir = File.join(base_dir, 'completions'))
         Dir[dir + '/*.rb'].each {|file| load_file(file) }
         true
       end
@@ -129,7 +129,7 @@ module Bond
     def load_plugin_file(rubygem)
       namespace, file = rubygem.split(/\/|-/, 2)
       file += '.rb' unless file[/\.rb$/]
-      if (dir = $:.find {|e| File.exists?(File.join(e, namespace, 'completions', file)) })
+      if (dir = $:.find {|e| File.exist?(File.join(e, namespace, 'completions', file)) })
         load_file File.join(dir, namespace, 'completions', file)
         true
       end
@@ -139,7 +139,7 @@ module Bond
       load_file File.join(File.dirname(__FILE__), 'completion.rb') unless config[:bare]
       load_dir File.dirname(__FILE__) unless config[:bare]
       load_gems *config[:gems] if config[:gems]
-      load_file(File.join(home,'.bondrc')) if File.exists?(File.join(home, '.bondrc')) && !config[:bare]
+      load_file(File.join(home,'.bondrc')) if File.exist?(File.join(home, '.bondrc')) && !config[:bare]
       load_dir File.join(home, '.bond') unless config[:bare]
     end
   end
