@@ -62,7 +62,7 @@ describe "Bond" do
 
   describe "start with :gems" do
     before {
-      File.stubs(:exists?).returns(true)
+      File.stubs(:exist?).returns(true)
       M.stubs(:load_file)
     }
 

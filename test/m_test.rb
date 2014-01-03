@@ -6,8 +6,8 @@ describe "M" do
     after { $:.pop }
 
     def mock_file_exists(file)
-      File.expects(:exists?).at_least(1).returns(false).with {|e| e != file }
-      File.expects(:exists?).times(1).returns(true).with {|e| e == file }
+      File.expects(:exist?).at_least(1).returns(false).with {|e| e != file }
+      File.expects(:exist?).times(1).returns(true).with {|e| e == file }
     end
 
     it "loads gem" do
