@@ -224,6 +224,7 @@ has good instructions for reinstalling ruby with the official Readline.
 * headius and rking for jruby help
 * ConradIrwin for 2.0 and other fixes
 * tobias for a java version of the gem
+* havenwood for 2.1 fixes
 * yui-knk, rev112 and dre-hh for bug fixes.
 
 == Bugs/Issues
