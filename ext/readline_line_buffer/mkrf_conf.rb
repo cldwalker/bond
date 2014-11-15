@@ -6,7 +6,7 @@ begin
   rescue NoMethodError
 end
 
-if Gem::Command.build_args.include?("--without-readline") || RUBY_PLATFORM =~ /java/
+if RUBY_VERSION >= '1.9.2' || RUBY_PLATFORM[/java|mswin|mingw|bccwin|wince/i] || ARGV.include?('--without-readline')
   # create dummy rakefile to indicate success
   puts "create dummy RAKE file!!!"
   puts %Q[#{File.join(File.dirname(__FILE__), "Rakefile")}]
