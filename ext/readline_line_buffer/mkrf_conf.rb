@@ -8,13 +8,10 @@ end
 
 if RUBY_VERSION >= '1.9.2' || RUBY_PLATFORM[/java|mswin|mingw|bccwin|wince/i] || ARGV.include?('--without-readline')
   # create dummy rakefile to indicate success
-  puts "create dummy RAKE file!!!"
-  puts %Q[#{File.join(File.dirname(__FILE__), "Rakefile")}]
   File.open(File.join(File.dirname(__FILE__), "Rakefile"), "w") do |io|
     io.write("task :default\n")
   end
 else
-  puts "create boring makefile"
   require "mkmf"
   dir_config("readline")
   have_library('readline')
