@@ -11,6 +11,9 @@ last-word approach.
 
 == Install
 
+Note: Bond is only supported on platforms with make e.g. OSX, Linux and Cygwin Windows. Once 1.8
+support is dropped this won't be an issue.
+
 To use bond with {Readline}[http://cnswww.cns.cwru.edu/php/chet/readline/rltop.html] (version >=
 5.6 recommended) or JLine for JRuby users, install the gem with:
 
