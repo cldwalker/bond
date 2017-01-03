@@ -34,11 +34,13 @@ describe "completions for" do
       tab("raise Errno::ETIME").sort.should == %w{Errno::ETIME Errno::ETIMEDOUT}
     end
 
-    it "#require" do
+    it "#require and #load" do
       mock_libs = ['net/http.rb', 'net/http/get.rb', 'abbrev.rb'].map {|e| $:[0] + "/#{e}" }
       Dir.stubs(:[]).returns(mock_libs)
       tab("require 'net/htt").should == %w{net/http.rb net/http/}
+      tab("load 'net/htt").should == %w{net/http.rb net/http/}
     end
+
   end
 
   describe "Object" do
