@@ -21,7 +21,7 @@ Gem::Specification.new do |s|
   s.files = Dir.glob(%w[{lib,test}/**/*.rb bin/* [A-Z]*.{txt,rdoc,md}]) + %w{Rakefile .gemspec .travis.yml}
   if ENV['GEM_PLATFORM'] != 'java'
     s.files += Dir.glob("ext/**/*.{rb,c}")
-    s.extensions = ["ext/readline_line_buffer/extconf.rb"]
+    s.extensions = ["ext/readline_line_buffer/mkrf_conf.rb"]
   end
   s.extra_rdoc_files = ["README.rdoc", "LICENSE.txt"]
   s.license = 'MIT'
