@@ -1,7 +1,7 @@
 # This is the default readline plugin for Bond. A valid plugin must be an object
 # that responds to methods setup and line_buffer as described below.
 class Bond::Readline
-  DefaultBreakCharacters = " \t\n\"\\'`><=;|&{("
+  DefaultBreakCharacters = " \t\n\"\\'`><=;|&{(."
 
   # Loads the readline-like library and sets the completion_proc to the given agent.
   def self.setup(agent)
@@ -11,6 +11,7 @@ class Bond::Readline
     Readline.completion_append_character = nil
     if Readline.respond_to?("basic_word_break_characters=")
       Readline.basic_word_break_characters = DefaultBreakCharacters
+      Readline.completer_word_break_characters = DefaultBreakCharacters
     end
 
     Readline.completion_proc = agent
